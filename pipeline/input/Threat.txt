@@ -1,0 +1,31 @@
+
+Discussion :thread: when do threat models make sense?
+At AISI we often use threat models to try to pin down the details of how risks could manifest. E.g. What malignant actors are we worried about? What capabilities would they need for the threat to manifest? What mitigations would need to fail for them to succeed? Threat models help us to:
+State our assumptions
+Prioritise what evidence we need to collect to understand whether our threat model is accurate
+Decide what interventions are likely to be effective to mitigate the threat.
+An example of a threat might be an AI-enabled cyber attack on the electricity grid. We could start by identifying which actors might want to do this, what they would need to carry out this attack and what existing protections exist that would prevent this from occurring. From mapping this out in detail, we could start proposing effective mitigations, for example:
+Mitigations that might prevent the attack from being successful, like deploying AI agents that protect important cyber attack targets
+Mitigations that help after the fact to minimise consequences, like back-up power supply options if the grid is attacked.
+In AISI, we have defaulted to threat models as our starting place of articulating our understanding of the world and guiding action, and I think this is mostly right for risks we look at, but I wonder if this is the most useful approach for all AI risks. I also wonder whether this framing closes us off from looking at some risks that are very important.
+What risks do I specifically mean?
+Humans are gradually disempowered as AI takes over decision-making, our standards of living get worse and we don’t have a good understanding of what’s going on.
+Power concentration and massive inequality that is destablising, between:
+AI companies and the rest of the economy
+The US and the rest of the world
+People who own land or compute and those who do not.
+Humans are forced to do a lot of manual labour as AI takes on all cognitive labour, demand for manual labour increases and most humans hate it.
+Humans are highly addicted to AI virtual characters or AI-invented belief systems that leave people unhappy and unfulfilled (or happy but in a world we might see as a dystopia from today's POV).
+States and non-state actors use AI in warfare leading to quickening to conflict and inadvertant escalation, the destruction of lives and human prosperity.
+Key features of these risks that make them hard to model as threats:
+Seeing them as threats implies taking a view on a tricky normative question, e.g. how much labour should humans do? If AI is better at cognitive labour, should it just take it all on? Is a world where everyone's main social relationships are AI a bad world if people self report being more happy and less lonely? Is a legitimate government's military use of AI good or bad?
+We cannot define all threat actors and aren't only tied to one type of capabilities. These risks will likely not be caused by a narrow set of malignant actors but come as a result of coordination problems. (Also for some risks like 5., some of the 'threat actors' are governments, which might make it practically awkward to articulate threat models for).
+The capabilities they rely on are general purpose, not based on a small risky, capability or set of knowledge (untrue for 5).
+Pls discuss!
+Interested to hear about people's views on:
+when threat models are/are not useful?
+should AISI stick only to risks we can model as threats and then mitigate as a security institute? If so, are we okay scoping out things like gradual disempowerment?
+What role should AISI play (if any) in gathering public opinion re. views on good futures with AI and putting forward a view of what a positive future with AI looks like?
+Background
+Societal Impacts research group (which includes Human Influence and Societal Resilience teams) most often hits against this question of what should AISI do about systemic risks. (Recommend #si-general-reading if you want to keep up with the kinds of things we're thinking about!)
+Human Influence team are currently thinking through our threat models, which have so far not been articulated as crisply as other workstreams, partly because of some of the considerations above.

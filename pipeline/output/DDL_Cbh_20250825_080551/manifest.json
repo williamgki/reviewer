@@ -1,0 +1,63 @@
+{
+  "pipeline": "ddl_paper_only",
+  "version": "1.0",
+  "paper_title": "Cbh",
+  "paper_file": "pipeline/input/CBH.txt",
+  "started_at": "2025-08-25T07:05:51.628531+00:00",
+  "completed_at": "2025-08-25T07:28:32.772556+00:00",
+  "total_time_minutes": 22.685733783245087,
+  "config": {
+    "ddl_minutes": 60,
+    "pairs_candidate_pool": 15000,
+    "pairs_to_generate": 3,
+    "ddl_keep_top": 100,
+    "evidence_quotes_per_daydream": 3,
+    "themes_max": 5,
+    "evidence_budget_total": 30,
+    "max_concepts": 30,
+    "api_base": "http://localhost:1234/v1",
+    "api_key": "lm-studio",
+    "model": "gpt-oss-120b",
+    "corpus_path": "/Users/willkirby/scrape 2/LW_scrape/chunked_corpus/contextual_chunks_complete.parquet"
+  },
+  "stage_timings": {
+    "concept_extraction": 28.68900179862976,
+    "daydream_loop": 546.5863420963287,
+    "evidence_binding": 785.8679690361023,
+    "composition": 0.00031304359436035156
+  },
+  "results": {
+    "concepts_extracted": 0,
+    "pairs_sampled": 3,
+    "daydreams_generated": 2,
+    "daydreams_accepted": 2,
+    "daydreams_bound": 0,
+    "binding_statistics": {
+      "bound_daydreams": 0,
+      "paper_only_daydreams": 0,
+      "unbound_daydreams": 2,
+      "supports": 0,
+      "contradicts": 0,
+      "neutral": 0,
+      "nli_fallback": 0,
+      "parquet_files_loaded": 1
+    },
+    "review_statistics": {
+      "word_count": 2238,
+      "quote_count": 0,
+      "theme_count": 3,
+      "unique_authors": 0
+    },
+    "review_path": "pipeline/output/DDL_Cbh_20250825_080551/ddl/editorial_freeflow.md"
+  },
+  "files": {
+    "concepts": "ddl/concepts.jsonl",
+    "sampled_pairs": "ddl/pairs.sampled.jsonl",
+    "generated_daydreams": "ddl/daydreams.generated.jsonl",
+    "accepted_daydreams": "ddl/daydreams.accepted.jsonl",
+    "bound_daydreams": "ddl/daydreams.bound.jsonl",
+    "paper_only_daydreams": "ddl/daydreams.paper_only.jsonl",
+    "unbound_daydreams": "ddl/daydreams.unbound.jsonl",
+    "final_review": "ddl/editorial_freeflow.md"
+  }
+}

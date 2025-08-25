@@ -1,0 +1,1 @@
+/var/folders/nh/g_q5q86j4tvd965dykzh8ff80000gn/T/tmp6rywct97.parquet: empty_text_ratio=100.0%

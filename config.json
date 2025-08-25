@@ -1,0 +1,158 @@
+{
+  "system": {
+    "version": "8.0",
+    "name": "Review DDL V8 - Hybrid Model System",
+    "description": "Hybrid setup: Qwen 235B (LM Studio) for creative tasks, Qwen 30B (Ollama) for binding speed"
+  },
+  
+  "llm": {
+    "api_base": "http://localhost:1234/v1",
+    "model": "gpt-oss-120b",
+    "timeout": 300,
+    "retry_attempts": 3
+  },
+  
+  "binding_llm": {
+    "api_base": "http://localhost:11434/v1",
+    "model": "qwen3-30b",
+    "timeout": 120,
+    "retry_attempts": 3
+  },
+  
+  "binder": {
+    "semantic": {
+      "enabled": false,
+      "model_name": "BAAI/bge-m3",
+      "index_cache_dir": "./.binder_index",
+      "max_docs": 10000000,
+      "topk": 200,
+      "weight_semantic": 0.65,
+      "weight_bm25": 0.35,
+      "normalize_embeddings": true
+    },
+    "parquet": {
+      "max_files": 200,
+      "file_selection": "round_robin"
+    }
+  },
+  
+  "corpus_path": "/Users/willkirby/scrape 2/LW_scrape/chunked_corpus/contextual_chunks_complete.parquet",
+  
+  "processing": {
+    "modes": {
+      "quick": {
+        "min_support": 1,
+        "min_oppose": 1,
+        "description": "Fast processing with lower thresholds"
+      },
+      "deep": {
+        "min_support": 3,
+        "min_oppose": 3,
+        "description": "Thorough analysis with higher evidence requirements"
+      }
+    },
+    "always_compose": true,
+    "semantic_fallback": true,
+    "anchor_window": 16
+  },
+  
+  "retrieval": {
+    "corpus_file": "/Users/willkirby/scrape 2/LW_scrape/chunked_corpus/contextual_chunks_complete.parquet",
+    "max_candidates": 320,
+    "nli_batch_size": 20,
+    "stop_early_threshold": {
+      "support": 2,
+      "oppose": 2
+    },
+    "precision_targets": {
+      "fpr_target": 0.35,
+      "fpr_acceptable": 0.50
+    },
+    "top_k": 10,
+    "enhanced_k": 20,
+    "dense_weight": 0.65,
+    "bm25_weight": 0.30,
+    "link_weight": 0.05,
+    "min_semantic_score": 0.01,
+    "rank_based_top_n": 5,
+    "per_doc_cap": 2,
+    "force_rebuild": false,
+    "note": "Enhanced retrieval: k=20, top_N=5, per_doc_cap=2 for variety"
+  },
+  
+  "evidence_tiers": {
+    "full": {
+      "description": "Complete Dreamer→Critic→Composer analysis",
+      "requirements": "Meets minimum support AND oppose thresholds"
+    },
+    "provisional": {
+      "description": "Hedged analysis with uncertainty markers", 
+      "requirements": "At least 1 support AND 1 oppose evidence"
+    },
+    "gap": {
+      "description": "Coverage Gap Cards with search recommendations",
+      "requirements": "Insufficient evidence on one or both sides"
+    }
+  },
+  
+  "output": {
+    "editorial": {
+      "target_word_count": {
+        "min": 1800,
+        "max": 2200
+      },
+      "max_claims": 6,
+      "include_evidence_summary": true,
+      "include_coverage_gaps": true
+    },
+    "manifest": {
+      "include_timing": true,
+      "include_evidence_stats": true,
+      "include_error_details": true
+    }
+  },
+  
+  "directories": {
+    "input": "pipeline/input",
+    "output": "pipeline/output", 
+    "working": "pipeline/working",
+    "corpus": "/Users/willkirby/scrape 2/LW_scrape/chunked_corpus",
+    "stage2": "stage2"
+  },
+  
+  "domain_whitelist": [
+    "lesswrong.com",
+    "alignmentforum.org", 
+    "arxiv.org",
+    "openai.com",
+    "anthropic.com",
+    "deepmind.com",
+    "intelligence.org",
+    "fhi.ox.ac.uk"
+  ],
+  
+  "precision_filters": {
+    "contexted_anchors": {
+      "enabled": true,
+      "window_size": 16,
+      "terms": {
+        "backdoor": {
+          "require_near": ["AI", "model", "training", "attack", "security"],
+          "block_near": ["car", "house", "door", "entrance"]
+        },
+        "board": {
+          "require_near": ["governance", "oversight", "committee", "director"],
+          "block_near": ["game", "chess", "surf", "diving", "wooden"]
+        },
+        "trigger": {
+          "require_near": ["model", "behavior", "activation", "response"],
+          "block_near": ["gun", "weapon", "finger", "pulled"]
+        }
+      }
+    },
+    "topic_blocklist": [
+      "sports", "games", "food", "recipes", "physical_security",
+      "entertainment", "movies", "music", "travel", "weather"
+    ]
+  }
+}

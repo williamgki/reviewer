@@ -1,0 +1,39 @@
+Monofact Rate and Misalignment
+David Demitri Africa, August 21, 2025
+
+Summary
+The monofact rate (fraction of distinct facts seen exactly once) is a constraint on hallucinations in models. Theory suggests a floor on hallucinations for calibrated models: holding monofact rate fixed, reducing hallucinations typically requires increasing miscalibration. Very early empirical work shows that deliberately injecting miscalibration via small, targeted repetition in SFT can materially reduce hallucinations while maintaining accuracy. This has a couple of interesting implications to reward hacking and misgeneralization. Finally, I describe experiments to treat the monofact rate as a controllable data property: reduce it with coverage/corroboration or route around it with evidence-gated generation, rather than globally breaking calibration.
+The Monofact Rate
+The Good-Turing missing mass estimator is a statistical technique used to estimate the probability of encountering an unseen species based on observed frequencies of known species. The Monofact rate is a version of this for facts: among distinct facts in your data, what fraction were seen exactly once? In long-tailed domains, we should expect that fraction stays stubbornly high as you scale up. 
+
+Kalai & Vempala (2024) show that a calibrated model that must guess about arbitrary facts (that is, all tokens have non-negative probability of being predicted) will hallucinate at a rate lower-bounded by: 
+
+hallucination >= monofact rate - miscalibration - small terms
+
+Even with perfect data and i.i.d. sampling, a calibrated model must place nontrivial probability mass on statements it can’t verify from the corpus. If you keep the monofact rate fixed, reducing hallucination generally requires increasing miscalibration.
+
+Miao & Kearns (2025) take the theory off the whiteboard by sampling facts from Pareto distributions to dial the monofact rate and show hallucinations go up as monofacts go up, swapping the population term for an empirical bin-wise KL/TV proxy (and it behaves sensibly as a practical guide), and introduce a simple intervention to show that repeating as little as 5% of training examples late in SFT deliberately injects miscalibration and cuts hallucinations by up to ~40%, while holding accuracy roughly steady. They test this on classical n-grams and a 220M encoder-decoder model circa 2020. 
+
+Okay. And?
+This twigs my research sense. There’s a weird data statistic that relates to an alignment-relevant behavior. They go from theory to empirics in a year which is unusually rapid as far as theory in LLMs go. Beyond these papers, there’s pretty little attention on this. And it seems like a tractable knob you can mess with.
+
+First thing it makes me think about is that miscalibration is a form of reward hacking? That is: post-training that reduces hallucinations also worsens model calibration. This is because if we penalize hallucinations but the data’s tail forces a floor in hallucinations, the easiest way to do this is to tamp down on your confidence or speak vaguely. So this solves the metric by calibrating poorly.
+
+Second thing is that hallucination is related to misgeneralization under distribution shift. Arbitrary facts are places where the model learned to generalize a confident style rather than the parametric knowledge/speaking the truth, and so it learns to produce plausible but ungrounded statements. 
+
+Third thing is maybe there is some learned misreporting of uncertainty/proto-deceptive behavior? Post-training punishes visible hallucinations but doesn’t reward calibration, so this teaches the model to decouple internal belief strength from expressed probability. Then models learn to strategically shape outward signals to influence oversight rather than faithfully reporting beliefs.
+
+Fourth thing is this maybe has some relation to human feedback. Human raters and verifiers are weakest where facts are rare/sparse, but selection pressure pushes the model to behaviors that pass in those blind spots. And maybe human raters are rare so there is propensity to hallucinate when on the topic of human preferences. And maybe this gets worse when you have novel states such as long-horizon tasks where the long tail corresponds to rare, high-stakes configurations.
+
+Finally is that relying on self-confidence seems a bit more fragile now. Some proposed auto-alignment and scalable oversight stacks rely on model probabilities. But if we expect post training to break calibration then we would expect the control methods attached to these stacks to degrade.
+Do We Want Targeted Hallucination?
+Maybe we want a model to hallucinate? If we flood pretraining with singleton “facts” about a harmful capability so the model becomes untrustworthy there, it might resist fine-tuning? This might not work (that is, can the hallucination from monofact rate even be targeted?) Although I’m not sure if this works as a defense in any case.
+Unreliability is a poor substitute for safety, and you would get stochastic harmful outputs instead of systematic harmful outputs.
+If the intervention in Miao & Kearns is that straightforward, then targeted repetition is all you need to collapse missing mass in that region and return to having harmful capabilities.
+Collateral damage? Possibly poisoning the information in the model would harm benign task or make unrelated benign outputs more harmful.
+
+Net: probably not promising as a safety strategy.
+Research Directions
+We should measure this at scale! That is, after scaling up replication to larger models (up to 1B?) and doing this in real corpuses, we should see if this effect persists. Further, we should also break down monofact rate by domain/language/style/modality/source to see if we can target interventions. Further, we should quantify the effect of deduplication and data cleaning. 
+
+We should also treat the monofact rate as a controllable data property via experimentations. That is, check if you can either reduce it via coverage and corroboration, or work around it via evidence-gated generation (does forcing retrieval/citations/deferral/abstention work?), rather than solving hallucinations by globally breaking calibration.

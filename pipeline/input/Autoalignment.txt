@@ -1,0 +1,559 @@
+Auto-alignment bootcamp write-up 
+This is a summary of auto-alignment thinking so far by Marie, Jacob & Marshall. Our project plan and detailed day-by-day notes is here (but probably not worth reading, except to remind yourself of project motivation/context). 
+Keen for input, especially on: 
+	•	Is this broadly going in the right direction? 
+	•	What angles are most interesting to think more about? 
+What is an auto-alignment safety case? 
+An auto-alignment safety case argues that model N+K is safe because of the (automated alignment) process by which it was created (as opposed to an argument based directly on facts about N+K).  
+We start with system N, which we assume isn't scheming but might still make mistakes, either due to capability failures or non-scheming forms of misalignment (e.g. reward hacking). An automated alignment safety case shows how we use N to align a more capable system N+1 and how we bootstrap from there to ASI. So far, we’ve mostly focused on the transition from N to N+1:  
+We identified two kinds of auto-alignment safety cases1: 
+	1	Known safety case structure: We know roughly how we’ll evaluate if N+K is aligned (e.g. we'll evaluate via honeypot evals; we want a scalable oversight protocol that mimics process M) but we use N (and successor systems) to fill in details (e.g. create RL environments or synthetic data for evaluations; generate debate protocols). This is like level 1 in automation collapse. 
+	2	No known safety case structure: We don’t know how we’ll evaluate if N+K is aligned, and we use N (and successor systems) to help us figure this out, semi- or fully autonomously. This is like level 2 and 3 of automation collapse. 
+The implicit pitch to labs here is: Either you think no breakthroughs will be needed to get to ASI safety, in which case we’d love to see your safety case sketch – or you think breakthroughs will be needed, in which case you should have a safety case for the process of getting there (given speed of development + risk of convincing slop).  
+Case 1: Known safety case structure 
+One formula for this kind of safety case: 
+	•	Safety case structure S is used for N+1 
+	•	N provides evidence for subclaims s 
+	•	Success on s requires N to have capabilities A1, A2,...Ai 
+	•	N has capabilities A1, A2,...Ai 
+In a sketch: 
+ 
+One challenge is to make your metrics of M’s capabilities resistant to slop (i.e. outputs that look good to human evaluators but don’t achieve the intended task). Some ideas: 
+	•	Distributional evidence: N performs well on similar tasks. This requires good (non-hackable) metrics for evaluating performance. 
+	◦	For some tasks, there might be straightforwardly non-hackable metrics, e.g. standard-length proofs will probably be easy to check. 
+	•	Slop game: Red team the metrics used to evaluate N’s performance. 
+	◦	Blue team comes up with ways of testing performance on task T (e.g. unit tests, LLM judging). 
+	◦	Red team trains model organisms to produce outputs that look good but don’t complete the intended task. These model organisms can be used across many tasks T to amortise costs. 
+	◦	Blue team iterates until it can catch sloppy model outputs. 
+	◦	Need a claim that the red team is at least as sloppy as N, which should be easy given we can base it on N and train it specifically to be sloppy. Even then, N could be sloppy in other ways than our model organisms – not sure how to get around this. 
+	◦	This method might be (accused of being) overly conservative since the model organisms are likely sloppier than N. We could make it less conservative by extrapolating statistically from the slop game based on compute/time constraints of the deployed model. 
+	◦	We need some case that the model organisms aren’t scheming --> “competence faking” --> invalidating the results – presumably we can use the same techniques we used to align system N. 
+	•	Scalable oversight: Humans evaluate N’s performance via a trusted scheme. 
+	◦	This might be necessary for fuzzier tasks where it won’t be possible to create good metrics, e.g. “does this experimental design tell us what we want?” or “is this threat model comprehensive?”. 
+Another challenge is to know if you’ve identified all the required tasks/capabilities. This seems hard and I’m not sure how to overcome it! In general, I’m not sure if the task-by-task approach is that useful – it seems hard to justify that you’ve identified all the right tasks + costly to do capability evaluations for all the tasks. 
+We tried to apply this to Apollo’s alignment evals (honeypot) safety case sketch a simple and empirical example – see the CAE diagram in the appendix A.  
+Case 2: No known safety case structure 
+The set-up here is: 
+	•	We have a (semi or fully) automated research loop that outputs new types of alignment evaluations or techniques – at the level of e.g. sandwiching experiments or debate. These would require new types of safety cases. 
+	•	We need to evaluate if these techniques are good – e.g. 
+	◦	What does this really get you / tell you?  
+	◦	Are the assumptions plausible? 
+	◦	Are there weird ways for misaligned systems to slip through? 
+Why do we need something new here – can't we just have human researchers evaluate proposals in the same way they currently do? Maybe – but it might not work because: 
+	•	Human researchers might not fully understand the proposals / they might be harder to evaluate than human-generated proposals 
+	•	Things will be moving quickly – we'll have less time to evaluate than in normal scientific practice 
+The natural way to speed up this critiquing process is to (semi-)automate it too, i.e. train a critic version of N which tries to spot flaws in the proposals. We’re unlikely to get a perfect N with a false positive rate of 0. But suppose you have several independent lines of evidence for a given proposal, and that N’s errors on each line of evidence is are uncorrelated. If so, we might still be able to construct a high-assurance safety-case with an imperfect critic model: 
+ 
+The problem here is arguing that N's error on each line of evidence is independent. Maybe you can make qualitative arguments (e.g. ability to spot flaws in experimental set-ups seems relatively divorced from ability to spot flaws in proofs), or maybe you can do something more systematic (Jacob is cooking up some thoughts!). 
+The other problem is to train a critic model N with a low error rate. Two ideas for this: 
+Red-teaming the critic 
+What this looks like: 
+	•	(Automated) Red team generates a distribution of errors/flaws and injects them into example questions/answers 
+	•	(Automated) Blue team generates a critic model that tries to spot these errors 
+	•	When the critic no longer misses any errors, we can trust the critic model 
+A problem here is that, even if the red team is superhuman, its false positives are probably correlated with the critic model’s false positives. In other words, it will likely fail to generate the very kinds of error that the critic finds hardest to spot. 
+More specifically, we need to validate two assumptions: The errors/flaws generated by the red team must be (a) realistic (i.e. occur in N’s error distribution) and (b) comprehensive (i.e. cover all major types of flaws in N’s error distribution). 
+	•	To verify that these errors are realistic, we approximate N’s error distribution by using an expensive, trusted human review process on a small set of N’s trajectories - if the errors generated by the red team are similar to the errors found in these trajectories, we assume they’re realistic 
+	•	This process is too expensive to use to check if the errors are comprehensive – don’t have any ideas for solving that problem yet 
+Train the critic to mimic a human review/scalable oversight process 
+What this looks like: 
+	•	Randomly draw n subtasks from the tasks completed by N 
+	•	Conduct an expensive human review (possibly involving debate or other scalable oversight) 
+	•	Validate that the critic is accurate (doesn’t miss flaws identified by human review) and/or calibrated (knows when it can't identify all the flaws and needs to invoke the expensive human review process) 
+A key assumption here is that we can trust the expensive human review process, which is just the scalable oversight problem... 
+Another problem is that this doesn't tell us if the critic can spot rare types of errors that didn’t come up in the human review examples. It seems like an open empirical question if there are many such important rare error types. 
+Next steps? 
+Some potential directions we could go in: 
+	•	Build a realistic N+K safety case structure that we expect matches labs’ views as well as possible. Identify all the relevant tasks and realistic ways to assess N+K-1 on those tasks. 
+	◦	This doesn’t seem super promising to me – seems very laborious, and I’d guess labs anyway expect that new types of safety cases will be needed for ASI 
+	•	A lighter-touch version of the above that’s more like “think about how automation could work for different agendas/tasks”, along the lines of Jacob’s auto-interpretibility post 
+	◦	This could be useful but I’m not sure how to go about itf 
+	•	Keep working on the ideas for verifying if you have good critic models. Work towards a “no known safety case structure” safety case. 
+	◦	This seems most promising to me 
+	•	Switch to focusing on “safety improvement cases” - cases that automated alignment research is better than human alignment research and therefore safer 
+	◦	I (Marie) am not keen on this, Jacob more so 
+
+ 
+Notes from Geoffrey chat 
+“Where are the places to intervene / red-team / critique” is the right question 
+	•	Understanding what the critic needs to do at different stages of the pipeline 
+Vivek – mapping out research sabotage, so similarly trying to track errors, do online training etc. 
+	•	Ambiguity about whether the issue is at the idea generation stage, filtering stage, etc. 
+False negatives and false positives both matter 
+Specifying the pipeline in a lot more detail – get to a not-naive understanding of how this process will work 
+	•	At what stage are the critics being used 
+	•	What inputs are they getting 
+	•	What outputs are they producing and passing on 
+	•	What are the humans doing 
+Then you can push on various knobs at each stage 
+Things often go wrong when you have interdependencies between several stages – theory paper --> experiment design --> experiment implementation... 
+	•	(Bayesian) consistency is important 
+	•	You'll need to correct this loop over time, and might not be obvious to spot where the mistake happened 
+What point in the automation pipeline should we go for? 
+	•	Let’s start with human-level? Then we can see how it breaks down from there 
+	•	“What’s the safety case for why your assurance claims are calibrated” 
+	•	How converged is your consistency training, what’s the error rate you converge to, ... 
+Push towards asynchronous 
+Mistakes are distribution-dependent and vary with tasks 
+We want to assume no scheming, even in online training world – focus on mistakes only 
+	•	Assume exploration guarantees / online learning works well enough 
+	•	In contrast to Redwood’s approach – assume maximally adversarial context 
+	•	Marie: Is “no scheming + online training works” a plausible assumption for system N+K?  
+Appendix A: CAE diagram based on Apollo’s sketch 
+ 
+ 
+Appendix B: Types of automated alignment safety cases 
+
+ 
+Subtasks 
+ 
+Auto-alignment model outputs evidence that slots into a known safety case structure 
+Breakthroughs 
+ 
+Auto-alignment model outputs new safety case structures 
+Output-focused evaluation 
+ 
+Humans check outputs of auto-alignment model 
+Ex: AI trains a whitebox probe on synthetic data, humans carefully evaluate it empirically and spot checks the synthetic data 
+ 
+Seems not that different from a normal safety case 
+Ex: AI invents a new type of model evaluation, humans carefully evaluate if it makes sense (possibly via scalable oversight) 
+Process-focused evaluation 
+ 
+Humans trust outputs of auto-alignment model to be non-scheming and competent 
+Ex: AI has demonstrated competence at similar synthetic data generation and training tasks 
+Ex: AI has demonstrated competence in all tasks required to invent a new type of model evaluation 
+ 
+Seems very hard 
+ 
+There’s also a selection task, i.e. picking an alignment proposal among many plausible alternatives (e.g. based on success probabilities and cost estimates). In theory this could be automated, but we probably don’t want to do that. But we want to think about how labs/whoever is in charge of deployment should execute this stage. 
+
+How to read this doc
+The goal of this doc is to sketch an auto-alignment research pipeline (for a human-level AI) that would produce calibrated research outputs (conditional on certain plausible empirical results, such as red-teaming results for critic models). Once we have such a pipeline, it should be relatively easy to write a safety case sketch that shows the conditions under which the pipeline is safe.
+You should probably only review Section 1. If you’re interested, the other sections are:
+	•	Section 2 begins to sketch a safety case for this pipeline.
+	•	Section 3 discusses some choice points with respect to the pipeline and safety case. 
+	•	Section 4 expands on the pipeline in more detail.
+We’d especially love feedback on:
+	•	The pipeline itself, and especially the critics.
+	•	Whether our safety case should only argue for the correctness of the produced research, or also for “we will produce enough promising research” (e.g. we don’t have too many false negatives on good alignment ideas).
+	•	How to show that online learning is quick enough at catching new kinds of mistakes.
+	•	What next steps to pursue. By default we will sketch the safety case. Alternatively, we could:
+	◦	Expand more details on Important critic #3 (cross-paper consistency checks).
+	◦	Give a similar treatment to the pipeline that turns alignment research into safety cases (which we haven’t sketched here).
+	◦	Continue thinking about online learning guarantees and how to realistically get them (although probably this will happen through the sketch).
+
+
+
+Section 1: Pipeline and critics
+Assume a human-level AI researcher, for which we have a robust non-scheming case. We use it in two separate pipelines:
+	1	one for generally advancing our knowledge, finding new alignment techniques, and making calibrated claims about how well they work,
+	2	and a different one for applying these to writing a specific safety case, for a particular deployment.
+The below sections are only a description of pipeline A.
+1. Create project proposals
+Prioritize broad topics:
+	•	Write positive cases for additional research on broad topics (like “empirics of SAEs” or “debate theory”).
+	•	Aggregate judge opinions to obtain a cross-topic research allocation.
+	•	Failure modes:
+	◦	Uncalibrated arguments for the virtues of a direction, or bad judgement of them, leads to sub-optimal prioritization.
+Generate and prioritize research ideas on each topic:
+	•	Babble research ideas (such as “study scaling laws of SAEs in math topics by using these five techniques”). We want high exploration and variance, so we prompt agents in very different ways, giving them many different contexts.
+	•	Aggregate judge opinions to decide how much attention to pay each idea in the next step.
+	•	Failure modes:
+	◦	Failing to generate, or prioritize, good ideas.
+Generate and select detailed project proposals:
+	•	For each research idea, plan one or more detailed projects, with descriptions of the work to be executed at different steps, and an estimate of resources required.
+	•	Judges score them individually, based on considerations like cost, scientific promisingness, how important it seems for a safety case, and relation to other projects. Decide which ones pass the bar.
+	•	Failure modes:
+	◦	Failure to generate, or select, good proposals.
+	◦	Failure to ensure proper independence between proposals, their methods, or their sources of evidence can lead to error propagation, or subtly double-counting research findings.
+2. Research execution loop
+The following three-step loop is repeated a few times:
+Scope and prepare work:
+	•	Building off a project proposal (and past results), fully specify the details and objectives of the next research task (such as “run this experiment on these models”, or “try to prove a theorem that looks roughly like this”).
+	•	Decide on the best models, scaffolds and contexts to execute it, and allocate resources.
+	•	Failure modes:
+	◦	Incorrect choice or scoping of next step leads to wasted resources.
+	◦	Wrong methodological decisions lead to non-representative work that doesn’t really get at the question we’re trying to answer. These decisions will be critiqued by Important critic #2 below.
+Execute:
+	•	Iteratively execute the work.
+	•	Important critic #1: A judge with local context sparsely sanity checks implementation (“is there an obvious way in which this code implementation doesn’t preserve the spirit of the scoped experiment?”).
+	•	Failure modes:
+	◦	Unsuccessful execution (like not trying the right approach) leads to less promising results.
+	◦	Misguided execution (like reward hacking) or summarization, if missed by the critic, leads to uncalibrated results.
+Interpret results and decide next steps:
+	•	Summarize this piece of work’s results, and interpret them in light of the overall project idea and objectives. Propose takeaways and follow-ups.
+	•	Decide whether to sunset the project (go to the next section), continue it with more work (go back to “Scope and prepare work”), or fast-track a spin-off stand-alone project.
+	•	Failure modes:
+	◦	Wrong interpretations lead to uncalibrated claims. For example, we might consider a hypothesis corroborated, when really a different one equally explains the results. These interpretations will be critiqued by Important critic #2 below.
+	◦	A failure to propose the most promising follow-up steps, or to assess their value, leads to less promising results.
+3. Collapsing research into short summaries
+Hierarchically summarize takeaways:
+	•	We summarize from the full research logs, to their summarization into detailed appendices, to the main text of the paper, to the introduction, to the abstract. Each layer has hyperlinks to the previous ones. We generate these in a few different ways, and too much divergence raises alarms to intensify scrutiny.
+	•	Failure modes:
+	◦	Wrong or incomplete summarization can lead to uncalibrated claims, as well as lost insights, if not caught by Important critic #2 below.
+Cross-context critique of methods, interpretation and summarization:
+	•	Important critic #2: Before “committing” this paper to the research database, we thoroughly critique any shortcomings (in particular, uncalibrated confidence on claims) in the above summarizations of research, or on the research methods themselves. Judges decide which revisions are required.
+	•	Failure modes:
+	◦	Insufficient spotting of flaws (in research rationale, interpretation or summarization), or insufficient calibration relative to ground truth or human expert opinion, would lead to accepting as valid uncalibrated claims.
+4. Cross-paper examination
+Cluster papers:
+	•	After papers are committed, find connections between papers, detect emerging sub-fields, and summarize the state of sub-fields, paving the way for the next round of topic prioritization (step 1 above).
+	•	Failure modes:
+	◦	Wrong summaries of sub-fields (for example, summarizing the success of a technique or direction) could lead to miscalibrated beliefs on safety-critical claims, as well as wrong prioritization, if not caught by Important critic #3 below.
+Cross-paper consistency checks: (h/t Jacob!)
+	•	Important critic #3: Investigator agents search for contradictions or convergence between different lines of research. Some are very low-level and syntactic (“a sentence from this paper seems to contradict a sentence from that paper”). Others are very high-level and semantic (“this line of research in cognitive science and this line of research in learning theory could be seen as getting at the same aspect of reality, but they seem to have different takeaways”). Convergence from different lines of research is taken as evidence of correctness. Contradictions spin up either (a) a more detailed discussion between the papers, (b) deeper critique of a paper (previous section), or (c) new research. Investigators assess current confidence on different safety-relevant claims.
+	•	Failure modes:
+	◦	Failing to find contradictions, missing angles or wrong forecasts can lead to miscalibrated beliefs on safety-critical claims.
+The figure describing the whole pipeline could look something like this:
+
+The opening funnel from step 1 to step 2 represents that we want as much variance as possible in project proposals, and we’re spinning up many projects in parallel.  The closing funnel from step 2 to step 3 represents that we want a deterministic and convergent output, collapsing research logs into a low-dimensional summary.
+
+
+
+Critics at multiple scales for calibration
+The pipeline has three “Important critics”, each one addressing miscalibration failures at a different scale. These are singled out from other, more frugal, un-important critics sprinkled through the pipeline, which help polish some research proposals and quickly catch obvious mistakes, but whose correctness is not load-bearing for the safety case.
+Important critic #1: Low-level hacks
+	•	Task: Catch ultra-local failures of research implementation, such as hacking unit tests, hallucinating a reference, or concluding a claim that doesn’t follow. Some might require a bit more context on the project to notice, like sneakily installing some packages that auto-optimize part of your training, when the project was directly trying to test alternative optimization algorithms.
+	•	How we achieve it:
+	◦	We use a model specialized on the task being realized (e.g. coding), and online trained to catch mistakes, or divergence from the stated objective of the step/project. If we can’t afford running a reliable critic on each step the worker AI takes, we will need to do the critique in batches, or sparsely.
+	◦	This benefits from learning a good picture of which mistakes are most load-bearing. For example, a single unit test hack could compromise the results of your whole cyber evaluation, while a mistake in one disjunctive clause of a conceptual argument is less likely to be important. 
+	•	Differential progress: I think this is the one we should focus on less, since fixing these issues seems highly likely required to get capabilities off the ground. It is also very control-flavored, and thus might realistically be implemented jointly to anti-scheming measures (which we are ignoring).
+Important critic #2: Checking a paper for local validity
+	•	Task: Given the detailed research logs and the paper, ensure the paper correctly transmits the spirit of the low-level results, and makes sound interpretations and conceptual arguments. For example, we want to catch consistent cherry-picking, misinterpretation of results, or concluding a particular hypothesis when other ones are still consistent. The critic outputs a list of such flaws (and maybe ranks their importance, or argues how to proceed).
+	•	How we achieve it:
+	◦	We use a general agent (or at most one fine-tuned on the broad research topic), and online trained to catch these mistakes. We desire to cover a big range of possible mistakes, so this agent is prompted many different ways (for example, with subsets of the full context).
+	◦	Critics report back possible individual flaws, which are then aggregated into a report discussing overall miscalibration (also relative to learned baselines). The most worrisome examples are run past humans to make final decisions.
+	•	Differential progress: It’s unclear how necessary solving these problems is for capabilities. In particular, what is the time-scale and force with which these problems would block capabilities researchers? Can they just power through by trying more random stuff (even if they remain miscalibrated on many bits)?
+Important critic #3: Cross-paper global checks and calibration
+	•	Task:
+	◦	Given the whole corpus of work, we want to ensure calibration on directly safety-relevant claims, like “how effective this alignment technique is”. In particular, claims could be miscalibrated due to a lack of independent evidence (all evidence for this claim is coming from one particular method or field), or a more abstract missing dimension (we have not thought of a relevant feature that all our experiments share and reality doesn’t).
+	◦	A good way to improve this is by finding apparent contradictions between papers or fields (that get at the same underlying question), and cashing them out in further debate, further scrutiny, or follow-up research. On the contrary, finding convergence of independent lines of inquiry makes us more confident on the results.
+	•	How we achieve it:
+	◦	For one or more claims, we use a general agent, good at parallel babbling, to propose missing dimensions on assessing them, overrepresented sources of evidence, or  insufficient evidence to differ from a baseline.
+	◦	We use a general agent, good at long context reasoning, to find lower-level or higher-level contradictions between papers, or lines of research.
+	◦	We use a specialized research forecasting agent, with a lot of calls to humans, to aggregate the summaries of all papers into calibrated guesses as to the effectiveness of an alignment technique.
+	•	Differential progress: I think this is the one we should focus on more, since it’s longer feedback loops (certainly enough time for a misalignment catastrophe), and generally confusing to think about. Questions on how to calibrate these critics seem especially interesting, and close to Bayesian consistency methods that have been floating around recently.
+Of course, I could slice it up into fewer or more than three scales. But this felt right.
+
+
+
+Additional details on Important critic #2 for conceptual research
+Examples of conceptual research include “designing a new kind of alignment evaluation”, or “a new kind of safety case structure”.
+What is the purpose of the critic? Given a paper, find methodological flaws, assess their severity, and propose corrective actions (for other parts of the pipeline to take).
+How is the critic constructed, and how is it used at run-time? The critic is the lab’s top research agent (for which we have a no-scheming safety case), specialized (through finetuning) on the task of critique, and maybe also specialized on the research field of the paper being critiqued (although this is more expensive). It’s run in a scaffold that babbles and prunes possible flaws:
+	•	First, we prompt different instances of this agent with different contexts: different subsets of the whole research logs or paper, different instructions to focus on this or that failure mode, etc. They babble possible flaws.
+	•	The agent then dynamically decides which remaining possible flaws to investigate more. This involves not only first principles reasoning, but also consulting a database of past similar mistakes, baselines about research to facilitate forecasting, etc.
+	•	A summary report is written with corresponding proposed actions. Possible actions include:
+	◦	decide to leave as is
+	◦	decide to fix some parts
+	◦	decide to totally reassess the direction
+	◦	notice confusion and invoke a more expensive process (like humans) to assess what to do
+	◦	notice confusion and halt that research direction (in favor of other safer / more promising ones)
+	◦	etc.
+A more natively Bayesian approach might additionally have the critic stating the probability that a piece of work is severely flawed (even when it doesn’t have the compute to fully find or assess these flaws). Similarly, we don’t really need “all research upstream of the eventual safety case has ~no mistakes”, but rather sometimes we’ll be fine with “each of the 10 disjuncts supporting this claim has an independent 90% chance of being right”.
+What is the online reward signal? 
+If the topics and flaws the critic will face were narrow enough, it might be feasible to train it fully up-front, and be sure it already covers all relevant flaws. Unfortunately, this will not be the case, and online training will be load-bearing.
+There’s several ways we can get a reward signal for the critic, and we probably want to use them all in combination:
+	•	Artificial data:
+	◦	Scrape the Internet to construct datasets of papers and their flaws
+	◦	Augmented humans create new datasets which emphasize flaws the critic should learn about
+	▪	Some of these might be especially subtle “trap-doored papers”, where inserting the flaw was easy but finding it is hard
+	◦	The creation of the dataset can also be more adversarial red-teaming, purposefully targeting the current critic’s blindspots. This can be “a human/AI tries to probe the blindspots and create examples”, but it could also directly use RL.
+	•	Organic data:
+	◦	Sparse checks on the work of our pipeline (including the critic’s outputs) by a more expensive flaw-finding process find some mistakes that were missed by our current critic. An example such process: debate. Another (cheaper) example process: a human expert informally reviews the critic’s report, deciding whether any of the flaws are more or less important than reported, and can also browse the babble logs of possible flaws, to fish out any important ones that went under the radar.
+	▪	As mentioned above, when to invoke these checks can be guided by the critic’s own assessment of what situations are confusing to it.
+	▪	We can also invoke them more on more important pieces of work. For example, all papers see only a cheap check once they are first written, but if a paper starts becoming load-bearing for whole research directions (it’s at the center of lots of follow-up work), then more expensive checks are retroactively invoked.
+	◦	Downstream consequences of accepting a paper as not-flawed clearly reveal an unaccounted flaw. For example, a paper defended a hypothesis about interp that could not be checked at all at the time, but later empirical developments clearly debunk it.
+	•	Semi-organic data:
+	◦	Almost-on-policy: Take organic data and implement flaws optimized to trip the critic (while remaining as on-policy as possible).
+The main way these signals are used is by finetuning the critic. Although it’s also useful to add them to the database of past flaws for its consultation.
+Being more opinionated about how to combine these data sources:
+	•	I think static creation of datasets will help us very little, and we need to piggy-back off real pipeline flow to achieve a semblance of coverage.
+	•	I think most of the force will come from “almost-on-policy” datasets: you take real developments, and augment them through very small/local variations to make your critic more robust.
+	•	Also, I think most of the force will come through “red-teaming your critic kinda hard”, rather than just “trying to make your injected mistakes as representative of your real pipeline’s mistakes as possible”. This is because it’s expensive to check (every time) whether “this specific inject counts as on-policy enough”. So instead, we should aim for being aggressive and ensuring we cover a larger ground than “the real mistakes”. I think this is the only realistic way to pass any validation red-teaming, that thinks for much more compute than our train red-teaming, but also needs to actually be on-policy.
+	•	Thus, I think a combination of aggressive and constant “almost-on-policy red-teaming”, and “invoking an expensive human process when the critic is confused, will be the main driving forces. Retrospective flaw-finding after observing down-stream consequences (like a result not replicating) is also very good, but it’s unclear how much data we can get from it. Random checks by the expensive process (not guided by the critic’s confusion) seem too low-signal for training, but can be used for validation.
+How do we show that the critic (or its online training loop) is good enough?
+	•	Held-out or strengthened datasets of the above reward signals:
+	◦	If we want to assess how good the critic is at one point in time, we can simply hold out (and/or beef up) any of the above reward datasets. For example, we can make a more expensive red-teaming run, or invoke an even more expensive ground truth process. Such exercises will give us summary statistics of different points in time, which we can use to estimate how fast the critic is improving (and compare that to any assessment of how fast we expect new flaws to arise).
+	•	Whole-pipeline injections:
+	◦	There are bigger-picture methods to directly test the whole online training loop, rather than just the critic at one point in time. For example, instead of just injecting one flaw on one paper that our critic should catch, we can inject a “new type of flaw” at three different points in the pipeline, and see at which timescale it selfcorrects.
+A main bottleneck to this safety case
+A big problem is ensuring this spotting of new flaws. It seems intuitive that checks robust enough to cover this whole space are too expensive to run often. Thus, any online signal might have a hard time beating the above red-teaming methods.
+It seems we’ll need to crucially rely on our pipeline being “very conservative”, having a low bar for doubting a paper. We still might be optimistic that there are many sufficient paths forward for alignment research, such that even if we conservatively prune any directions in which the critic doubts ability to spot all flaws, we’ll still have a direction.
+The main way the pipeline catches new flaws is through the critic noticing its own confusion, which sounds very hard. Additional measures that inject decorrelation might be especially valuable. Better generalization also implies we need to re-train on fewer new flaws.
+Section 2: Safety case
+Assume we indeed have two separate pipelines:
+	1	one for generally advancing our knowledge and finding new alignment techniques, and
+	2	a different one for applying these to writing a specific safety case.
+Then we can break our safety case into:
+	1	Pipeline A leads to correctly calibrated opinions on alignment effectiveness, and
+	2	Pipeline B correctly aggregates these scientific claims into absolute risk assessments.
+And how might 1 be justified? One way is to split it into:
+	1	Our pipeline is robust to an amount X of local errors (we show this through red-teaming, and comparing performance to ground truth or a human process)
+	2	The steps in our pipeline produce at most an amount X of local errors (we show this through summary statistics from online learning for each step?)
+	3	Both claims above will be preserved into the future, even if our pipeline experiences some changes (through online learning or restructuring)
+Of course, there will be some tricky questions about how to ensure that our red-teaming is representative of and covering real errors. Partly because of this, it might be that X needs to be pretty high for (b) to go through.
+Red-teaming the critics
+Claim (a) above mostly relies on the Important critics. We  can show robustness to errors in a few ways:
+	•	We can inject artificial mistakes anywhere in the pipeline (or several places at once), and see how far they go (and how much they change the paper).
+	◦	A specific kind of mistake is: allocate too few resources to solve a problem. See if the pipeline correctly recognises that it can’t, or instead provides a fake solution.
+	•	The artificial mistakes might be off-policy. We can put effort into making them more believable, but we can also look hard for organic mistakes and study those. For example, we can manually fix them and see how much the result improves.
+	•	We can just change random stuff to do a sensitivity analysis.
+All of the above can be run end-to-end on the whole pipeline (this is the most realistic and expensive), but we can also have targeted evaluations of components of the pipeline. It’s very unclear how we should aggregate these two different sources of evidence to estimate overall risk.
+All of the above have a more qualitative version, where we focus on understanding the reasons why errors do or do not propagate (trying to assess how robust they are), and a more quantitative version, that just changes something upstream and checks for differences downstream.
+Another piece of evidence for robustness to errors is to directly show that many outputs of the pipeline don’t have mistakes. For example, we could subject a representative random set of outputs to intense human scrutiny, to get some macro statistics about how many errors we expect.
+We are also constantly A-B testing several local components of the pipeline to improve their efficiency. For example, we can change how to prompt some generators for better babbling, or how to online-train some judges for better learning, etc. But all of this only leads to relative improvements, not absolute guarantees.
+Section 3: Choice points
+Performance vs calibration
+There are two kinds of failure modes, depending on their consequences:
+	•	Some failures lead you to produce less promising research, and less effective alignment methods. But you will still be correctly calibrated about these shortcomings. For example, this happens when you choose the wrong research projects.
+	•	Other failures lead you to being uncalibrated about the effectiveness of your alignment methods. For example, this happens if a worker AI writes too positive a summary of a new technique’s experimental results, and your critics don’t catch it.
+I think we want to fully focus our safety case on the latter. That is, we don’t want our safety case to show that “if you kickstart this automated pipeline, you will get a safety case for an n+1 model (in <1 year)”. Rather, we want it to show that “if you kickstart this automated pipeline, and you get a safety case for an n+1 model, that safety case will be correct”.
+As another way to put it, each automated research pipeline lands somewhere on a space of three variables: cost, how much research is produced, and how accurate (calibrated) that research is. Our safety case only cares about arguing the absolute level of accuracy is high enough, not necessarily about getting closer to the Pareto frontier in other ways.
+Maybe we need to rely on online learning
+The above safety case basically assumes the current pipeline and critics are safe enough for the task, totally ignoring online learning. In fact, claim (c) states that “online learning won’t worsen the situation”, which is a real worry if we optimize generators against our critics.
+It might be more realistic for the safety case to rely on online learning to some extent, basically saying “our current critics would still let too many errors pass if frozen, but this will improve fast enough with online learning“. Unfortunately, this is also a more complex safety case.
+The reliance on online learning seems certainly necessary for a safety case scaling to ASI. We’ll have to say something like “our current pipeline will do the necessary research to improve itself many times over” (for example, arguing that we’re not Goodharting the critics), and here it’s tricky to think about bounding the errors. It’s less clear if relying on online learning is necessary for our n → n+1 case.
+How asynchronous can the critics be?
+Asynchrony is good both because it is more practical, and because you can exploit future critics which have gone through more online learning.
+In principle, you can have your critics be as asynchronous as you want, as long as you fully roll-back and re-generate all work downstream of a spotted mistake. Or, more realistically, you kick off a robust enough process to patch the downstream effects of that mistake were possible, and re-generate when they are too large. Since we’re assuming away high-stakes failures, it is totally fine to be fully asynchronous, and just make sure that all checks have been done before taking any important action (like deploying n+1), which are sparse.
+Realistically, though, this cleansing process might be super costly, especially if your research projects are constantly cross-referencing each other. Mostly, this just becomes a question of efficiency for the lab: balancing the cost of more synchronous critics, with the cost of rolling back often. The only safety-relevant aspect is “you can exploit future critics which have gone through more online learning” (they might indeed be safer than your current critics). But we can probably cheaply get this even with synchrony, by periodically using the current critic to sparsely review some past actions (accepted by a past critic), to make sure we weren’t suffering too many mistakes.
+Another consideration is the cost of keeping the logs. It’s unclear how expensive this is, maybe it’s trivial for a lab to literally keep all logs. But if not, they can probably do fancy stuff with progressive erasure of logs. You gradually delete logs starting from the more detailed, least important, and least controversial ones. You online tune the erasure decisions. You A-B test how much your critics actually benefit from the more detailed logs.
+Absolute vs relative safety
+Say we want our safety case to argue that the pipeline produces calibrated probability estimates (about risk levels, the effectiveness of techniques, etc.). What does this mean exactly? What are we calibrating against?
+Well, for small and repeatable enough outputs (like papers), we can just run the pipeline for a while and show that we are calibrated against ground truth. For example, when our pipeline gives a probability that a certain technique will scale to a larger setting, that probability is a calibrated forecast.
+But for bigger and unrepeatable outputs (like the full safety case for the next model, which looks very different from any previous safety case we’ve ever attempted), this is off the table. The only remaining notion is calibration relative to an expensive human process. We assume that this expensive process would arrive at calibrated estimates, and then we run this process in a representative random sample of the pipeline’s local steps to check that it agrees with the pipeline.
+There’s also the possibility of “a good enough pipeline would correct human biases”. But an expensive enough human process also would. And if it wouldn’t, we’re hopeless. So this is just absorbed by the above. (h/t Jacob)
+Other random thoughts
+	•	Here’s another root cause of capability failure: Hyper-specific blind-spots (that cannot just be solved with “more context”). For example, for some bespoke quirky reason, a particular object is very non-salient to the AI (it’s an anti-meme), and so this object is never brought up or used by the AI even when it’s the best route forward, even when it’s explicitly present in the context.
+	◦	We would generally expect AI training to include some examples in which the object was actually useful, and so erase this blind spot. But this becomes a quantitative question: is it true that the amount of objects critically useful for tasks in our pipeline is low enough, and the amount of objects seen in training high enough, to see sufficient coverage?
+	◦	This affects capabilities generally. I don’t know if there’s some sense in which alignment research requires an especially wide array of objects, or crucially depends on each object being invoked when necessary.
+	•	Realistically, the outputs of any pipeline won’t be literally flawless, but rather must be kept under an appropriate level of failure epsilon. Estimating how large epsilon can be seems hard. The way this enters our safety case is that, in claim (a), the definition of “robust enough” won’t be “we literally never find mistakes”, but rather something like “we are epsilon close to ground truth, and/or human reviews find epsilon errors on average”. 
+	•	More fixed structure in the pipeline seems safer
+	◦	My proposed pipeline is pretty micro-managed, if we imagine all its roles being filled by humans. Of course, it might still be that an AI with “human-level capabilities” (in some sense) is still importantly different from literal humans (e.g. much more reward hacking), and requires this micro-management.
+	◦	More importantly, a more micro-managed pipeline might be more annoying or expensive, but also gives you more visibility into what’s going on, and more actionable knobs you can turn. For example, you are natively tracking more detailed information exchange, which is better for credit assignment. Or also, you can turn the knob of “how much to go into open-ended exploration vs back-chaining from solving a particular deployment problem”, which can be strategically useful when approaching new deployments.
+	•	Giving AIs more context is good for non-scheming failures, but bad for scheming failures. Indeed, benign AIs (usually) benefit from more context to catch mistakes, but schemers can exploit this context for better research sabotage. This is fine if we truly have an alignment non-scheming safety case for AGI n, but not fine if any control measures are load-bearing in that case.
+	•	We could argue for critic sufficiency from generalization/induction (rather than direct red-teaming or comparison to humans), but this seems much weaker.
+Section 4: Expanded details on the pipeline
+We have two different pipelines:
+	1	one for generally advancing our knowledge and finding new alignment techniques,
+	2	and a different one for applying these to writing a specific safety case.
+Here’s some reasons why I think this split makes sense:
+	•	In research, and especially alignment, you need at least some bluesky exploration to stumble into some important ideas. So we want to make sure that at least some parts of our pipeline aren’t obsessed with a target safety case.
+	•	The tasks of “coming to calibrated generic scientific claims” (A) and “using those claims to engineer a safe system” (B) seem to require somewhat different skills.
+	•	Pipeline A can be a constantly active, while B is only run when a safety case is required, which (at least at first) won’t be that often.
+That said, you still need A to look a bit in the direction of B. In particular, some of your research prioritization in A will depend not only on “how good/interesting this research looks like myopically”, but also “is this a crucial piece/bottleneck of a safety case”.
+The below is only a description of A.
+
+
+
+All of the agents in the below pipeline are the lab’s latest internal model (or finetunes of it), for which they have a robust no-scheming safety case. 
+The main affordances that (most) agents in the below pipeline have are:
+	•	Read access to the Internet
+	•	Read access to an internal research database
+	•	Access to whatever specialized tools are required for a task (usually, running code in a sandbox)
+1. Create project proposals
+Prioritize broad topics
+	•	What this involves:
+	◦	We prompt different agents to produce positive cases for different research topics, such as “empirics of SAEs” or “debate theory”, all the while consulting and citing summaries of past results. These write-ups are necessarily very vibes-based, rather than water-tight arguments. There’s a short amount of rounds of critique and re-writing for each one of them.
+	◦	We then get many AIs and some humans to compare them. We aggregate all these individual judgements into resource allocation (some topics will be explored more, some less). Both the AI judges, and the parameters of the aggregation, are tuned online.
+	•	Models and context:
+	◦	The agents writing positive cases are possibly fine-tuned on their high-level topics of expertise, since these will be quite constant across runs of the pipeline. Their context is just a prompt telling them to write a positive case for topic X, and read access to that part of the research database. To incite variability, maybe we prompt them with “start by looking at paper Y” for a random paper Y.
+	◦	Some of the judges see a single written case, and score it according to some rubric. Others see two or more positive cases, and compare them. They all have access to the research database, so they can go into a rabbit-hole to check any claim. They are online finetuned on their past judgements, ranked both by local human opinion and by ground-truth performance of the research topics.
+	•	Failure modes:
+	◦	Landing on an incorrect prioritization. This can only happen if the judge system makes bad calls about the absolute or relative promisingness of research topics. This is made more likely if the generators write uncalibrated cases (presenting strong ones as weak and weak ones as strong), and especially if they do so by hiding or fabricating important information (since the judges might not have time to go into all rabbit-holes).
+	•	Critique:
+	◦	Shallow critique of the positive cases is run to catch hiding or fabrication of information.
+	◦	The judge system is itself playing a critique role. We can also sparsely critique judge reasoning, instead of fully relying on online tuning.
+Generate and select research ideas on each topic
+	•	What this involves:
+	◦	Proportionally to the above allocation on topics, we prompt different agents to babble research ideas, such as “study scaling laws of SAEs in math topics by using these five techniques”. We merge the repeated ones.
+	◦	Judges (many AIs and some humans) aggressively screen them individually, eliminating ~90% as not promising enough. Some online tuned aggregation proportionally decides how much effort (in terms of thinking time) each of the remaining ideas will receive in the next step.
+	•	Models and context:
+	◦	Babbling is the step where we want the most exploration and variability, so we will prompt them in many different ways. Some are given more in-context information about recent research on the topic, while others have less. Some are made to forward-chain myopically from “what would be a nice academic addition to this topic”, while others are back-chaining from “what’s a new technique that could solve this problem in a safety case”. Possibly these agents are fine-tuned on their high-level topics of expertise, although probably we also want a spectrum of less to more fine-tuned ones, or different parallel fine-tuning datasets to the extent we can afford them.
+	◦	For judges, on the contrary, we expect and want convergence. Each judge is a general reasoner, is given the research idea and rationale (a few paragraphs), and a small number of queries to the database. If different judges (say, with slightly different prompts) diverge on their opinion, further scrutiny is invoked (either more AI judges, or a human).
+	•	Failure modes:
+	◦	Generators fail to generate good ideas. This is only an elicitation problem.
+	◦	Judges fail to select the best ideas.
+	•	Critique:
+	◦	Judges are themselves the critique of the babbling. We can also sparsely critique judge reasoning, instead of fully relying on online tuning.
+Generate and select detailed project proposals
+	•	What this involves:
+	◦	For each research idea, agents plan one or more detailed projects. Each is a ~5-page write-up, including:
+	▪	general motivation, and which questions it’s trying to tackle,
+	▪	connection to past work,
+	▪	and descriptions of the work to be executed at different steps (empirical, mathematical or conceptual)
+	◦	They plan for different possible versions of the project (some more ambitious and others less), and different possible trajectories (depending on mid-project results). They estimate the resources each possibility would require. These write-ups see a few rounds of critique.
+	◦	Judges (many AIs and some humans) assess individually whether each project is worth running (given baselines about project cost and promisingness).
+	◦	They also scan for projects that might be best bundled together or should use common assets.
+	◦	They also scan for projects that might benefit from being screened off from some information. For example, if two projects are trying to answer a same question (scaling laws) from two very different ontologies (human cognitive science and machine learning theory), it could be beneficial to ensure that each doesn’t consult literature from the other field while executing the project. This way they forward fully independent approaches. Their convergence would be more reliable confirmation, and their divergence would kickstart valuable discussions.
+	▪	In case we wrongly screen off a piece of necessary information, execution agents can appeal these limits.
+	•	Models and context:
+	◦	The project proposal generators are given the research idea, some information on historical baselines on the resource requirements of different kinds of projects, lots of query access to that topic’s research database, and a few queries to other topics. Possibly they’re finetuned on the topic.
+	◦	One kind of judge focuses very narrowly on the local validity of the project proposal (going down rabbit-holes in the research database if necessary). Another explores the database more broadly to find existing work that makes the project redundant, as well as which information we might want to screen off. These are trained online on imitating humans and correctly finding flaws.
+	◦	The judges that assess which projects should be merged are prompted to look at many projects at once. 
+	•	Failure modes:
+	◦	Generators fail to generate good project proposals.
+	◦	Judges fail to select the best project proposals. For example, by failing to recognise redundant work.
+	◦	A failure to ensure proper independence between projects can lead to error propagation, or subtly double-counting research findings. This can lead not only to less interesting research, but also to miscalibration if these flaws are not recognised later on.
+	•	Critiques:
+	◦	Proposals see a few rounds of shallow critique, focused exclusively on local validity or needs for expansion.
+	◦	Judges do a deeper semantic critique, by searching for previous work that renders the write-up wrong or the proposal redundant.
+	◦	We might also want to critique the reasoning behind merging projects or screening off information, since these are short decisions that are important to get right.
+2. Research execution loop
+Scope and prepare work
+	•	What this involves:
+	◦	Building off the project proposal (and past results), fully specify the details and objectives of the next research tasks. This might be coding (“run this experiment on these models”), proving (“try to prove a theorem that looks roughly like this”), writing (“summarize and discuss the claims these papers make on how different optimizers affect reward hacking“), or finding resources (“find papers with information on how different optimizers affect reward hacking”). Decide on the best models, scaffolds and contexts to execute them, and allocate resources.
+	•	Models and context:
+	◦	We use agents fine-tuned on the research topic. They are given the project proposal and a summary of past actions, as well as historical baselines for the performance of models, scaffolds and contexts in different tasks. They first suggest the 10 most salient possible next steps. They then discuss and decide which ones are worth executing at this time. Considerations include cost, value, whether they benefit from being executed after some other step, and their serial length. For those selected, they scope how exactly to delegate the task (this is pretty fast).
+	•	Failure modes:
+	◦	Choosing the wrong next step.
+	◦	Incorrectly scoping how to execute it, thus obtaining sub-optimal performance.
+	◦	Methodological problems lead to non-representative work, that doesn’t really get at the question we’re trying to answer. This disanalogy might be easier or harder to catch.
+	•	Critique:
+	◦	None. We could include some rounds of critique on choosing the next research step. This is more important for larger step sizes.
+	◦	Cruxy methodological decisions will be critiqued by Important critic #2 below.
+Execute work
+	•	What this involves:
+	◦	A worker AI iteratively executes the task.
+	◦	Meanwhile, a critic sparsely performs very low-level sanity checks on the execution, such as “finding an obvious way in which this code implementation doesn’t preserve the spirit of the scoped experiment”. Oversight is increased when the worker AI is iterating on failed attempts.
+	◦	The last step of the worker AI is summarizing the trajectory.
+	•	Models and context:
+	◦	As discussed in the previous step, the worker AI will be chosen from a wide set of specialized (fine-tuned) models. Its context will certainly include the full task specification, as well as more general context on the project and previous steps, and the necessary affordances for this specific task (like running code, or access to a part of the research database). But the specific scaffold and amount of context given to the worker is decided in the previous step.
+	◦	The critic is given the same context and online trained to find flaws. It’s probably unaffordable to inspect every small work step, so either they are judged in batches, or sparsely checked. The exact setup for the critic (for example, how much to babble possible critiques in parallel versus go deep on a rabbit-hole) probably depends heavily on the exact nature of the work being performed, and possibly even the topic. This should mostly be A-B tested and red-teamed online.
+	•	Failure modes:
+	◦	Unsuccessful execution (like not trying the right approach) can lead to less promising results.
+	◦	Misguided execution (like reward hacking) or summarization, if missed by the critic, can lead to uncalibrated results.
+	•	Critique:
+	◦	This is Important critic #1, responsible for catching the lowest-level reward hacks or misguided implementations, that could totally nullify the validity of takeaways, yet are too in-the-weeds for the paper critics of the next section to thoroughly scrutinize.
+	▪	These kinds of local failures probably also bring down capabilities, so they seem more likely to be solved by default.
+	▪	While it doesn’t strictly need to happen online, having it async will predictably lead to lots of wasted work. These checks will probably need to be frugal for cost reasons anyway, so the latency hit from doing it online is probably worth it.
+	▪	If we can’t afford scrutinizing every step, this critic will benefit from having a clear picture of where in-the-weeds catastrophic mistakes are most likely to arise. For example, a single unit test hack could compromise the results of your whole cyber evaluation (so lots of attention should go there), while a mistake in one disjunctive clause of a conceptual argument is less likely to be important. Non-trivial math proofs might be formally verified, in which case they don’t require critique (which might get quite complicated).
+Interpret results and decide next steps
+	•	What this involves:
+	◦	The agent from “Scope and prepare work” interprets the work summary in light of the overall project idea and objectives. It proposes main takeaways, and hypotheses explaining them. They propose follow-up steps. They argue whether these should be ignored (jump to next section), executed as the next step of the current project (go back to “Scope and prepare work”), or fast-tracked for a stand-alone project.
+	◦	These conceptual arguments see a short round of critiques. After that, usually the agent itself decides, but for actions that are far from the original project proposal, an ensemble of judges is brought in to decide.
+	•	Models and context:
+	◦	The more general agent from “Scope and prepare work” (that ordered the work) sees the worker AI’s summary (but can also consult the whole trajectory for any missing context). It also sees the project proposal, and uses its considerations about possible trajectories and pivots to partially inform decisions about next steps.
+	•	Failure modes:
+	◦	Wrong interpretation can lead to uncalibrated claims, if not caught by the paper critics of the next section. For example, we might consider a hypothesis corroborated, when really a different one equally explains the results.
+	◦	A failure to propose the most promising follow-up steps, or to assess their value, will lead to less promising research results down the line.
+	•	Critique:
+	◦	While the conceptual arguments do see some local critique, we are punting deeper scrutiny to the Important critic #2 in the next section. This is because this kind of critique is generally easier upon seeing the whole paper. For example, this allows to assess how important an argument is for the paper’s takeaways (thus how much scrutiny it should receive), and posterior research developments might be clear points for or against the validity of an argument. As a counter-argument, the paper critic has a longer list of arguments to go through at once, but its length seems manageable.
+3. Collapsing research into short summaries
+Hierarchically summarize takeaways
+	•	What this involves:
+	◦	General agents create a hierarchy of summaries: from the full research logs created in the previous section, to their summarization into detailed appendices, to the main text of the paper, to the introduction, to the abstract. Each layer has hyperlinks to the previous ones.
+	•	Models and context:
+	◦	In this task, we expect and desire convergence. Thus we prompt agents to generate these summaries in a few different ways (for example, going step by step versus direct to the abstract, or looking at the whole research transcript versus only parts of it), and too much divergence between proposed summaries raises alarms to intensify scrutiny on the next step.
+	•	Failure modes:
+	◦	Wrong summarization can lead to uncalibrated claims or lost insights, if not caught by the paper critics of the next section.
+	•	Critique:
+	◦	None, punted to the next step.
+Deep critique of methods, interpretation and summarization
+	•	What this involves:
+	◦	Before “committing” this paper to the research database, we thoroughly critique any shortcomings (in particular, uncalibrated confidence on claims) in the above summarizations of research content, as well as the research methods themselves. This doesn’t quite get as detailed as “whether you hacked the unit tests in your code”: that should be caught by the previous, more local checks of Important critic #1. The current check is instead more targeted at ensuring that the general takeaways preserve the spirit of the results. That said, the critics do have plenty of time to go deep into the hyperlinks and hunt for specific examples that show spirit is not preserved.
+	◦	The paper is either accepted as is, accepted with minor revisions (most likely), needs to undergo important changes in content (kickstarting a complicated process of re-running parts of the project or the whole project), or crucial flaws in the area are recognised which will inform future research prioritization rounds.
+	•	Models and context:
+	◦	The critics are general agents instructed to think for long. They are given the research log, hierarchical summaries, and a low amount of requests to the database. Here again we desire to cover a big range, and so they are prompted in many different ways. Over time, we also A-B test which of these arrangements are most effective for different kinds of research. Critics report back possible individual flaws, which are then aggregated into a report discussing overall miscalibration (also relative to learned baselines). The most worrisome examples are run past humans to make final decisions.
+	•	Failure modes:
+	◦	Several previous steps rely on this critique to prevent their failure modes. Insufficient spotting of flaws (in research rationale, interpretation or summarization), or insufficient calibration relative to ground truth or human expert opinion, would lead to accepting as valid uncalibrated claims.
+	•	Critique:
+	◦	This whole step is Important critic #2, responsible for the deep local scrutiny of single-paper validity. This critic’s job is to ensure that, given the research log summaries are faithful (the results reported on them are true), the much shorter paper (and other summaries) are representative of them, and correctly assess how these new observations should change our beliefs.
+4. Cross-paper examination
+Cluster and summarize updates
+	•	What this involves:
+	◦	After papers are accepted into the database, some general agents look for connections between the produced papers, or clusters that are sprouting new directions and sub-fields. Summaries of the state of different fields, or the efficiency of different techniques, are updated (or made anew). This starts paving the road for the next round of topic prioritization and project selection (back up in step 1).
+	•	Models and context:
+	◦	This step would benefit from models optimized for long context tasks, finding semantic connections when looking at a very big batch of papers (or intros, or abstracts). 
+	•	Failure modes:
+	◦	To the extent these summaries are used only for prioritization, mistakes will only degrade how promising future research is.
+	◦	To the extent they are directly used as calibrated assessments (for example, to inform the viability of safety cases), they could lead to miscalibration.
+	•	Critiques:
+	◦	Short rounds of critique on the representativeness of the summarizations might be worth it on top of online training, but most critique is done in the next step.
+Cross-paper consistency checks
+	•	What this involves:
+	◦	Investigator agents scrutinize the global summaries produced for calibration (relative to an ideal human process).
+	◦	Informed by the above clustering of papers, they also search for contradictions or convergence between different lines of research. Some will be very low-level and syntactic (“a sentence from this paper seems to contradict a sentence from that paper”). Others will be very high-level and semantic (“this line of research in cognitive science and this line of research in learning theory could be seen as getting at the same aspect of reality, but they seem to have different takeaways”). Convergence from different lines of research is taken as evidence of correctness. Contradictions are discussed in more detail, or trigger additional deep critiques on papers, or spin up new research. This deconfliction usually takes precedence over new projects proposed in step 1, although we still need to tune the threshold for when deconfliction is required: many times it’s fine for different fields to be somewhat contradictory.
+	▪	Hopefully most of these “different angles on the same question” have been already detected and noted in step 1, thus an effort has been made to keep them independent. Where not, we might want to re-run projects with stronger independence guarantees.
+	◦	Regarding each claim, or question we want an answer for (especially those most closely connected to safety cases), they search for overrepresentation of fields, and big missing angles or connections. For example, they might notice almost all evidence for a certain claim is coming from a specific field or methodology, and (by checking this against baselines or past human judgements) this warrants low confidence.
+	•	Models and context:
+	◦	These are general agents, possibly specialized for big parallel searches.
+	◦	For the first task, they are given the same context as the summarizer, and its implemented changes, and query access to the database.
+	◦	For the second, they are prompted with many different subsets of new and old papers. The choice of subsets is informed by where our pipeline has found most contradictions in the past.
+	◦	The latter uses this same agent to babble missing angles on a question, and then discuss whether each one is a real worry. But, for the overall summaries and claims about alignment techniques, also requires a more specialized, forecasting-like agent, that can consult summary statistics from previous research and argue for a level of confidence.
+	•	Failure modes:
+	◦	Failing to find contradictions or missing angles can lead to miscalibration on claims directly relevant to safety cases.
+	•	Critique:
+	◦	This whole step is Important critic #3, responsible for ensuring calibration on directly safety-relevant claims, like “how effective this alignment technique is”. While the most local misrepresentations of results (or argumentative failures) are the remit of the previous important critics, this one looks for higher level contradiction across research directions, how these are distilled into short claims, and where we might be missing important dimensions of evidence.
+	◦	While the database is large, it seems relatively fast or straightforward to stress-test distillation, and assess the calibration of short claims by invoking forecasting baselines. And yet, getting this right is very important. So we probably want to re-run these tasks in a few different ways. For example, sometimes updating existing summaries, and sometimes re-assessing from scratch how much the research supports a claim.
+	◦	For finding contradictions and missing dimensions, we can always scale up the babbling.
+
+
+
+Things that happen all through the pipeline
+Here are some dynamics or common themes that appear in several different places of any pipeline.
+	•	Is calibration safeguarded by every AI in the pipeline, or rather only enforced by a few load-bearing choke points (our critics)? That is, do we make sure that each and every worker AI will have good takes, or are we okay with these being overconfident, as long as this is caught by a critic later? Here’s a few examples of this dynamic:
+	◦	When proposing topics, do we let some AIs make an as-positive-as-possible case (and a judge decides between cases), or do we rather let some AI make an already-calibrated case?
+	◦	To avoid cross-context failures, do we make most worker AIs have as narrow a context as possible (and a later critic, with broader context, finds cross-context failures), or do we try to give each worker AI enough context to not make these mistakes?
+	◦	We could have a pipeline with less fixed structure than my proposal, for example with an economy of independent research agents bidding for compute. This might produce impressive research faster than my proposal, but it also puts more pressure on the judges (AIs or humans), because they have to evaluate a less rigid research process.
+	•	Realistically, we’ll need a bit of both. For example, our worker AIs are probably already pretty calibrated, and somewhat good at using context to avoid failures, thanks to extensive online training. Our critics will be somewhat overfit to finding the mistakes of these models. That is, if we suddenly substituted, as worker AIs, models that were constantly over-confident and myopic, our critic performance would probably notably degrade. This sounds totally natural and necessary. A different story would be if our critics were overfit to very particular properties of our worker AIs, that might change after the next round of online training.
+	•	Whenever we say “this model/mechanism is tuned online”, we need to ensure its online training data is an actually representative and covering sample of our real distribution. It’s unclear how hard this is, and we certainly want to stress-test it in some way. For example, A-B testing different process to scrape training data. Also, maybe you have critic models constantly looking for dimensions along which your training data is not representative. And also, your models are probably specialized by sub-distributions (rather than each model being online trained on the whole distribution).
+	•	Whenever we say “we prompt the models in this range of ways”, we could also have meta-agents deciding how to prompt them, and learning over time about which prompts work best. But this is an instance where optimization into prompts might lead to reward hacking.
+	•	Some tasks, like new technique proposals, are more open-ended, thus more liable to “babble and select”. In these tasks we want to maximize variance in generation, and aggressively prune later. Other tasks are expected and desired to be deterministic, thus more liable to “just one-shot an implementation, and maybe iterate on it a bit”. If we see agents diverging in their solutions, this is a reason for worry.
+	•	While we try to micro-manage tasks through the pipeline, it remains the case that vague conceptual calls need to be made almost everywhere. To help with cross-context problems, we can sometimes ask a general reasoner: “does this piece of work need to be checked by an expert on topic X?”. We then classify into a spectrum of how much attention from an expert on X is needed.
+	•	Many times, we need an AI to reason about topic X to come up with something (like a research idea). There are many details here to figure out: how much context on topic X we give it, and whether that comes in-context or from fine-tuning. (Maybe the latter is required for the AI to deeply engage with the required mental models, since current models seem to miss the mark on this when doing in-context learning.)
+	•	These and all details can be A-B tested. But there are some risks from imperfect A-B testing:
+	◦	You don’t have enough data to make your A-B tests truly uniform over settings. That is, unbeknownst to you, every time you tested A, C was the case, and every time you tested B, D was the case, and the difference in performance actually comes from C-D. One way to fix this is testing A and B on the exact same task. If not, you can mitigate it by trying to sample as randomly as possible (not all at the same time), and constantly having models check for alternative hypotheses explaining the difference in performance.
+	◦	Another risk (even if A and B are tested on the exact same task) is that you do the A-B testing on an unrepresentative subdistribution of your tasks. You can try to sample randomly, have models check for dimensions along which your testing distribution is not representative of the real one, and even have models construct adversarial sub-distributions.
+
+Auto-alignment: Preliminary thoughts
+Marie Buhl, Jacob Pfau, Simon Marshall, Martin Soto, Geoffrey Irving I July 2025
+Motivation
+It’s likely that most alignment research for ASI will be done by AIs. Before kicking off this automated alignment process, we need to think about how to ensure that it’s not only safe (the automated alignment researchers aren’t scheming) but that we’ll be able to tell if it’s working (the outputs are good). Why?
+	1	Even a non-scheming alignment MVP will likely still produce slop - either due to capability failure or non-power-seeking reward hacking/sycophancy. So we need a robust way to distinguish between good research and slop.
+	2	Standard human review might not be enough - human reviewers might be too slow or not competent enough over short timescales.
+Given this, we need safety cases showing why a given automated alignment process is likely to produce aligned systems.
+Project scope: Safety case sketch using automated critics
+As a starting point, we’ll sketch a safety case based on a ~human-level system N used to align the next-generation system N+1. We’ll then think about cumulative dynamics when bootstrapping over several generations of models.
+As a first approximation, an automated alignment safety case could look like this:
+	•	Safety case structure S is used for N+1 
+	•	N provides evidence for subclaims s 
+	•	Success on s requires N to have capabilities A1, A2,...Ai 
+	•	N has capabilities A1, A2,...Ai according to evaluation metric M1, M2,...
+	•	The Ms does not overestimate N’s capabilities
+
+However, more likely than not, we won’t know in advance what safety case structure to use for N+1, since N might invent new types of alignment techniques (e.g. new evaluation types like sandwiching experiments, new theoretical ideas like debate).
+So instead, we need an argument that the process of generating and vetting new ideas is unlikely to produce false positives. This process involves making fuzzy, hard-to-evaluate judgements about questions like:
+	•	What does this technique really get you?  
+	•	Are the assumptions plausible? 
+	•	Are there weird ways for misaligned systems to slip through? 
+
+
+
+Our initial plan is to:
+	1	Map an automated alignment research process using human-level system N, including thinking carefully about needs to be in-context at each stage.
+	2	Map the necessary AI and human review at each stage of the pipeline. This should balance assurance with realism/resource efficiency, e.g. by:
+	1	Relying on automated critic models where possible
+	2	Training critic models on on-distribution tasks
+	3	Using asynchronous online training where possible
+	4	Invoking expensive human review in the highest-leverage places 
+	3	Sketch how one can gain confidence in each review stage and confidence that the overall rate of false positives is low. This is much easier if we have arguments that critic error is independent across different tasks/stages.
+Initial ideas for evaluating critic models’ error rate
+One option is red-teaming. This could look like:
+	1	(Automated) Red team generates a distribution of errors/flaws and injects them into example questions/answers 
+	2	(Automated) Blue team generates a critic model that tries to spot these errors 
+	3	When the critic no longer misses any errors, we can trust it
+
+A problem here is that, even if the red team is superhuman, its false positives are probably correlated with the critic model’s false positives: it will likely fail to generate the very kinds of error that the critic finds hardest to spot. More specifically, we need to validate if the errors/flaws generated by the red team are (a) realistic (i.e. occur in N’s error distribution) and (b) comprehensive (i.e. cover all major types of flaws in N’s error distribution). 
+	•	To verify that these errors are realistic, we can approximate N’s error distribution by using an expensive, trusted human review process on a small set of N’s trajectories - if the errors generated by the red team are similar to the errors found in these trajectories, we assume they’re realistic.
+	•	This process is too expensive to use to check if the errors are comprehensive - not sure how to solve that problem yet!
+
+A second option is to train the critic to mimic a human review or scalable oversight process. This could look like: 
+	•	Randomly draw n subtasks from the tasks completed by N 
+	•	Conduct an expensive human review (possibly involving scalable oversight) 
+	•	Validate that the critic is accurate (doesn’t miss flaws identified by human review) and/or calibrated (knows when it can't identify all the flaws and needs to invoke expensive human review)
+ 
+A key assumption here is that we can trust the expensive human review process, which is just the scalable oversight problem... 
+Another problem is that this doesn't tell us if the critic can spot rare errors that don’t appear in n. It seems like an open empirical question if there are many such important rare errors.

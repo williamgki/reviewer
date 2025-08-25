@@ -1,0 +1,68 @@
+{
+  "pipeline": "ddl_paper_only",
+  "version": "1.0",
+  "paper_title": "Cbh",
+  "paper_file": "pipeline/input/CBH.txt",
+  "started_at": "2025-08-25T12:49:24.473453+00:00",
+  "completed_at": "2025-08-25T12:50:25.154807+00:00",
+  "total_time_minutes": 1.011355964342753,
+  "config": {
+    "ddl_minutes": 60,
+    "pairs_candidate_pool": 15000,
+    "pairs_to_generate": 20,
+    "ddl_keep_top": 10,
+    "evidence_quotes_per_daydream": 3,
+    "themes_max": 5,
+    "evidence_budget_total": 30,
+    "max_concepts": 30,
+    "api_base": "http://localhost:1234/v1",
+    "api_key": "lm-studio",
+    "model": "gpt-oss-120b",
+    "corpus_path": "/Users/willkirby/scrape 2/LW_scrape/chunked_corpus/contextual_chunks_complete.parquet",
+    "accept_by": "rows",
+    "rows_min": 500000,
+    "docs_min": 50000,
+    "files_min": 600
+  },
+  "stage_timings": {
+    "concept_extraction": 25.264667987823486,
+    "daydream_loop": 35.41591191291809,
+    "evidence_binding": 1.9073486328125e-06,
+    "composition": 0.00031185150146484375
+  },
+  "results": {
+    "concepts_extracted": 6,
+    "pairs_sampled": 0,
+    "daydreams_generated": 0,
+    "daydreams_accepted": 0,
+    "daydreams_bound": 0,
+    "binding_statistics": {
+      "bound_daydreams": 0,
+      "paper_only_daydreams": 0,
+      "unbound_daydreams": 0,
+      "supports": 0,
+      "contradicts": 0,
+      "neutral": 0,
+      "nli_fallback": 0,
+      "parquet_files_loaded": 50
+    },
+    "review_statistics": {
+      "word_count": 59,
+      "quote_count": 0,
+      "theme_count": 3,
+      "unique_authors": 0
+    },
+    "review_path": "pipeline/output/CBH_lexical_20250825_134915/ddl/editorial_freeflow.md"
+  },
+  "binder_metrics": {},
+  "files": {
+    "concepts": "ddl/concepts.jsonl",
+    "sampled_pairs": "ddl/pairs.sampled.jsonl",
+    "generated_daydreams": "ddl/daydreams.generated.jsonl",
+    "accepted_daydreams": "ddl/daydreams.accepted.jsonl",
+    "bound_daydreams": "ddl/daydreams.bound.jsonl",
+    "paper_only_daydreams": "ddl/daydreams.paper_only.jsonl",
+    "unbound_daydreams": "ddl/daydreams.unbound.jsonl",
+    "final_review": "ddl/editorial_freeflow.md"
+  }
+}

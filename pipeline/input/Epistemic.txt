@@ -1,0 +1,199 @@
+LESSWRONG
+Beware Epistemic Collapse
+9 min read
+•
+Introduction
+•
+Could AI Really Help Solve This?
+•
+More Drivers of Destabilisation
+•
+The New Underclass of Those Who Do Not Wish to Enhance
+•
+The World From a “Normal” Human’s Perspective
+•
+Preventing Epistemic Collapse
+•
+Conclusion
+•
+Acknowledgements
+AI Governance
+AI Timelines
+Social Reality
+13
+Beware Epistemic Collapse
+by Ben Norman
+20th Aug 2025
+Linkpost from futuresonder.substack.com
+If an intelligence explosion occurs, the vast majority of people will be confused, misled, and epistemically disempowered – with no agency over the future. Unless we try to change this.
+
+Introduction
+While knowledge is invisible,[1] it defines and shapes the world around us. It dictates how we decide what is true, and how we take action on such truths. It is undeniable that the advent of superintelligent AI systems would irreversibly change how we relate to knowledge on both an individual and societal level.
+
+MacAskill and Moorhouse refer to this as epistemic disruption in their paper “Preparing for the Intelligence Explosion”. When defining the intelligence explosion, they use the analogy of a compressed century. What if all the scientific, social, philosophical, and political advancements of the 21st century were compressed into just 10 years? MacAskill compares humanity’s situation to:
+
+"A mediaeval king suddenly needing to upgrade from bows and arrows to nuclear weapons to deal with an ideological threat from a country he's never heard of, while simultaneously grappling with learning that he descended from monkeys and his god doesn't exist.” (emphasis mine)
+
+The authors already identify several ways in which superintelligence would affect society’s decision-making abilities. These include: super-persuasion, stubborn resistance to valid arguments, viral ideologies, and ignoring new crucial considerations (e.g. discovering something as big as heliocentrism). The relevant section of the paper is fairly short – so I’d encourage you to go read it if you haven’t already, before proceeding with this post.
+
+While I agree with all of the risks identified in the section, I believe that the authors are massively underestimating just how turbulent and destabilising the situation would be for humanity. It is far from clear that the impact will “likely be positive overall”, as they claim. It very well may be. But we are probably underrating the amount of work required for that to be the case.
+
+Beyond epistemic disruption (which I take to imply manageable turbulence), I think we would be facing a potential epistemic collapse – a systemic breakdown of how humanity decides what is true. If we take seriously their idea of a century of progress compressed into a decade (or less), we face a very difficult challenge in helping people adapt when fundamental beliefs are rapidly proven wrong – and how they decide what to believe in the first place. Even if we solve the technical challenges relating to AI (e.g. alignment), this social/psychological adjustment will be very hard to get right.
+
+Could AI Really Help Solve This?
+Yes, the benefits they identify from AI-enhanced reasoning (fact/argument checking, automated forecasting, and augmented/automated wisdom), would definitely help. But these solutions assume a level of epistemic stability that may not exist during the intelligence explosion. Consider fact-checking. The authors point to community notes on Twitter/X as a success story that AI could build upon. But community notes work precisely because they operate within a shared epistemic framework – users may disagree on facts, but they generally agree on what constitutes evidence. What happens if superintelligence discovers that our fundamental assumptions about causality, consciousness, or even logic are wrong? You probably can't fact-check your way out of something like this.
+
+I think there’s a much stronger case for automated forecasting working, but it too has a critical weakness: trust. They suggest AI systems could "build up a strong track record" that generalises to controversial domains. But track records take time to establish, and time is exactly what people won't have during an intelligence explosion. More fundamentally, if people's entire worldviews are crumbling monthly, why would they trust anything, even an AI with a perfect prediction record? We already see this with something like climate denial. There are many cases where overwhelming evidence doesn't overcome worldview-level resistance.
+
+"Augmented and automated wisdom" presumes people will want to turn to augmented wisdom when they perceive their most basic beliefs as being under assault. During an epistemic collapse, we’d lose any shared framework for determining what counts as “augmented wisdom” versus “augmented manipulation”. Some people may embrace every new AI-delivered truth uncritically. Others will reject everything defensively. Most will probably oscillate between the two, without any stable ground for making distinctions. The crisis would be the fragmentation, not just which direction people end up fragmenting. We already have seen this pattern, albeit more slowly. Darwin published On the Origin of Species over 100 years ago, yet only ~41% of humanity accepts evolution. COVID-19's uncertainty didn't lead to collective learning but to an explosion of conspiracy theories. Each group inhabited completely different realities[2].
+
+MacAskill and Moorhouse conclude that “selection pressures will probably favour desired traits on the epistemic front” because users will prefer honest and truthful models. But this assumes people can accurately assess truthfulness when their entire epistemic environment is breaking down before them. It seems that current evidence also suggests otherwise – social media algorithms already optimise for engagement over truth, and users consistently choose content that confirms their biases over content that challenges them. Sycophancy is a very big problem in current AI systems.
+
+During an intelligence explosion, all these issues would be magnified. How do you select for “truthfulness” when the nature of truth itself is being revised monthly? Most users plausibly would select for AI systems that provide psychological comfort and coherent narratives, not those delivering difficult truths about the changing nature of reality as we know it!
+
+Maybe AI will just get good at changing people’s minds, and we won’t need to worry about all this. But, how would this work in practice? Would this create over-reliance on the AI and whatever goals/values it is aligned to (e.g. in terms of the model spec or if it was controlled by a very small group of people)?
+
+More Drivers of Destabilisation
+Beyond the risks identified above, the intelligence explosion would plausibly introduce entirely new epistemic threats. Ones that sound like they are straight out of a sci-fi movie.
+
+Consider the concept of digital resurrection. Superintelligent AI could create hyperrealistic simulations of deceased individuals based on their digital footprints, writings, and recordings. Imagine your dead grandmother calling you, sounding exactly like herself, sharing memories only she would know (realistically interpolated from data), and giving you advice about your life. Is this really her preferences and wisdom, or an AI's best guess? While some people would adjust to this and improve their “cognitive security” measures, many would not be able to keep pace with the rate of technological change.
+
+Or preference extrapolation – AI systems that claim to know what you "really" want better than you do, based on patterns in your behaviour you're not even conscious of. When an AI can predict your choices with 99.9% accuracy and explain unconscious drives you didn't know you had, who is the authority on your own preferences? I’d imagine that some people would agree to adhere to AI-revealed-preferences, while others would double down on their own human cognition.
+
+The New Underclass of Those Who Do Not Wish to Enhance
+This situation isn't helped by the fact that the intelligence explosion likely would make transhumanist[3] interventions (e.g., cognitive enhancement[4], physical enhancement, direct neural interfaces, and so on) available to those who desire them and have the means to access them.
+
+But what about the ones who do not wish to enhance and/or augment their capabilities?
+
+A new "naturalist" underclass may emerge. Even if people have the tools to overcome their epistemic crisis, many would probably purposefully choose not to implement them due to fear, appeal to nature fallacies, or just extremely strong emotional aversion. Humanity has integrated with technology in the past (e.g. glasses, medicine, vaccines, etc), and we continue to become more transhumanist. However, this would be a sudden jump like nothing we've seen before.[5] Our normal human brain is not designed for the blindingly fast levels of change that would be accompany the intelligence explosion. Our species’ technological capabilities have raced ahead, but our brains remain mostly unchanged since they evolved about 200,000 years ago. The enhancements required to keep up would be drastic – not just wearing a device, but fundamentally restructuring how your brain processes information (or even relying on an external AI system to process and simplify nearly all the information you receive).
+
+Therefore, people who say no (which could plausibly be a very large percentage of the human population) will have no say – or a very limited say – in what the future looks like. This would be massively disempowering. They would functionally become children (or, even newborns if the intelligence explosion gets really crazy) in a world run by incomprehensible adults. Democracy would become impossible when citizens are operating at such fundamentally different cognitive levels[6]. The un-enhanced would be using entirely obsolete frameworks for determining truth. Meanwhile, the enhanced would be moving further into AI-mediated realities the rest of humanity couldn’t even begin to perceive if they had thousands of years at their disposal.
+
+The World From a “Normal” Human’s Perspective
+Here's a fictional scenario (written with the help of Claude) of what epistemic collapse might feel like for a “normal” human:
+
+Sarah is a 45-year-old teacher. The year is 2034, two years into the intelligence explosion[7]. Like most of humanity, she was effectively kept in the dark that an intelligence explosion was even occurring. Though, now she could see it before her eyes. The future had come crashing down upon the present, and the world was beginning to look more and more like sci-fi.
+
+Sarah refused all forms of enhancement, due to fears about keeping her brain “untouched” and placing her trust in “mother” nature[8] instead. Every morning she faces the same problem: she can't tell what's true anymore. Her enhanced sister sends her "fact-checked" news through an AI system that claims to filter manipulation, but how can Sarah verify the fact-checker? She's stuck trusting black boxes or trusting nothing. Her dead mother called yesterday. Perfect voice, shared memories only they knew, offering advice about her divorce. Sarah has heard about digital resurrection, but knowing doesn't make her immune to just how scarily realistic it is. Are these her mother's actual preferences? An AI's best guess? The technology to verify doesn't exist in any form she can understand.
+
+At work (assuming she is even able to find employment in such a world), enhanced colleagues operate through AI-mediated channels she can't access. When she asks what they're teaching, they try to explain but the conceptual frameworks they use just don’t exist in her un-enhanced brain.
+
+She watches her social circle fragment. Many adhere to AI-led cults and/or new religions. AI romantic partners are very common, and many are advocating for legal protections for such systems. Her brother embraces every AI revelation uncritically – "the best AI scientists say we do actually live in a simulation, and here are the objectively morally valuable actions to take!" Her best friend rejects everything defensively – "they're rewriting reality to control us!" Most people, like Sarah, move back and forth between the two, with no stable ground for distinguishing augmented wisdom from augmented manipulation.
+
+Various forms of human enhancement are widespread in this world, and do not face issues relating to equality of access. The enhanced tell her she's choosing to be left behind. But when worldview-shattering discoveries and understanding them requires restructuring your brain, what choice is that really? She's become unable to participate in day-to-day life, let alone decisions shaping humanity's future.
+
+Preventing Epistemic Collapse
+So, what can we do to prevent this from becoming our future? I don't have good answers for how to prevent epistemic collapse, and it seems like a very hard problem – very worth of its “grand challenge” title. But I think it's worth bringing attention to it, and that’s what this post is trying to do. Here are some thoughts on what future work in this area could look like:
+
+Learning from historical transitions. We need to find institutions and movements that have managed major belief changes successfully. E.g., what allowed some societies to navigate the shift from religious to secular worldviews without completely fragmenting?
+Epistemic scaffolding. Maybe we need transitional institutions that can help people adjust gradually. This might mean AI systems designed to translate between different cognitive levels, or social structures that maintain continuity even as understanding shifts.
+Better evaluation of AI persuasion. We need evaluations that test AI's ability to shift entire worldviews, not just individual opinions. How persuasive can these systems become? How quickly?
+Mapping epistemic resilience. What does the current state of epistemic resilience actually look like? There are already people thinking about and working on “AI for epistemics”, and there are some talent-building initiatives on this (like the Fellowship on AI for Human Reasoning).
+Truth-tracking without understanding. Can we develop systems that let un-enhanced humans make good decisions even when they can't understand the underlying reality? This sounds paradoxical, but I’d argue we already do this in some sense. Most people don't understand how airplanes fly but trust them anyway.
+Conclusion
+I hope I’m wrong. Maybe AI's impact on epistemics will be positive overall. But I think we’re still underestimating just how bad it could get. The difference between "disruption" and "collapse" matters. Disruption implies turbulence we can navigate. Collapse means the system breaks.
+
+During the intelligence explosion, I think we're looking at potential collapse – where humanity loses any shared framework for determining what's true, and where most people become cognitively excluded from civilisation's decisions. This would be a very bad future, and we must work to prevent it.
+
+Acknowledgements
+Thank you to Duncan McClements for providing useful feedback.
+
+ 
+
+^
+Unless you view human nerve cells and astrocytes up close and figure out what our beliefs physically look like (or do something vaguely similar with mechanistic interpretability in AI), etc, etc.
+
+^
+A quarter of the UK population believes COVID was a hoax.
+
+^
+This is my favourite definition of transhumanism.
+
+^
+“Machines of Loving Grace”, an excellent (though optimistic) essay on a world with “powerful AI systems”, does a very good job of describing what AI-accelerated neuroscience and biology could enable.
+
+^
+The jump from "wearing glasses" to "installing GPT-12 in your prefrontal cortex" isn't gradual adaptation.
+
+^
+Obviously, citizens are already operating at different cognitive levels, but one would imagine the difference between a “normal” human and a human with AI-enhanced reasoning would be far greater than the gap between an 85-IQ citizen and a 130-IQ citizen.
+
+^
+This date is an illustrative example and not representative of my actual timelines.
+
+^
+“Mother” is in quotation marks because she is, in reality, arguably a terrible mother
+
+New to LessWrong?
+Getting Started
+
+FAQ
+
+Library
+
+1.
+Unless you view human nerve cells and astrocytes up close and figure out what our beliefs physically look like (or do something vaguely similar with mechanistic interpretability in AI), etc, etc.
+
+2.
+A quarter of the UK population believes COVID was a hoax.
+
+3.
+This is my favourite definition of transhumanism.
+
+4.
+“Machines of Loving Grace”, an excellent (though optimistic) essay on a world with “powerful AI systems”, does a very good job of describing what AI-accelerated neuroscience and biology could enable.
+
+5.
+The jump from "wearing glasses" to "installing GPT-12 in your prefrontal cortex" isn't gradual adaptation.
+
+6.
+Obviously, citizens are already operating at different cognitive levels, but one would imagine the difference between a “normal” human and a human with AI-enhanced reasoning would be far greater than the gap between an 85-IQ citizen and a 130-IQ citizen.
+
+7.
+This date is an illustrative example and not representative of my actual timelines.
+
+8.
+“Mother” is in quotation marks because she is, in reality, arguably a terrible mother
+
+13
+Beware Epistemic Collapse
+1
+Trevor Hill-Hand
+New Comment
+
+
+1 comment, sorted by top scoring
+Click to highlight new comments since: Today at 3:27 PM
+[
+-
+]
+Trevor Hill-Hand
+2h
+1
+0
+This may seem like it's coming out of left field, but reading A Fire Upon the Deep a few weeks ago helped me find a calm perspective on this idea. In-universe the characters straight up have some of these discussions over the course of the book, and there's so much of all this stuff happening "just off screen".
+
+The story is in part about the folly and impossibility of something as easy and comforting as "trust" between agents and systems in radically different scales and realities. Yet they are forced to coexist and interact regardless.
+
+I haven't read his other books yet, but his lectures and interviews have also been extremely fascinating; I am surprised I haven't seen much mention of Vernor Vinge until recently, though perhaps it's a "roman concrete" problem where he's assumed to have been read? Forgive me if I am sounding like, "Guys guys have you heard about this great old sci-fi called Frankenstein!"
+
+Reply
+Moderation Log
+Curated and popular this week
+196
+Church Planting: When Venture Capital Finds Jesus
+Elizabeth
+2d
+17
+402
+How Does A Blind Model See The Earth?
+henry
+6d
+38
+149
+Hyperbolic model fits METR capabilities estimate worse than exponential model
+gjm
+1d
+6
+1
+Comments

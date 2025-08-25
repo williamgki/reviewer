@@ -1,0 +1,2203 @@
+LESSWRONG
+
+
+
+
+
+
+The Problem
+32 min read
+•
+1.  There isn’t a ceiling at human-level capabilities.
+•
+2. ASI is very likely to exhibit goal-oriented behavior.
+•
+3.  ASI is very likely to pursue the wrong goals.
+•
+In modern machine learning, AIs are “grown”, not designed.
+•
+The current AI paradigm is poorly suited to robustly instilling goals.
+•
+Labs and the research community are not approaching this problem in an effective and serious way.
+•
+4. It would be lethally dangerous to build ASIs that have the wrong goals.
+•
+Misaligned ASI will be motivated to take actions that disempower and wipe out humanity.
+•
+ASI will be able to destroy us.
+•
+5. Catastrophe can be averted via a sufficiently aggressive policy response.
+
+AI
+Curated
+
+
+291
+
+
+
+The Problem
+by Rob Bensinger, tanagrabeast, yams, So8res, Eliezer Yudkowsky, Gretta Duleba
+5th Aug 2025
+This is a new introduction to AI as an extinction threat, previously posted to the MIRI website in February alongside a summary. It was written independently of Eliezer and Nate's forthcoming book, If Anyone Builds It, Everyone Dies, and isn't a sneak peak of the book. Since the book is long and costs money, we expect this to be a valuable resource in its own right even after the book comes out next month.[1]
+The stated goal of the world’s leading AI companies is to build AI that is general enough to do anything a human can do, from solving hard problems in theoretical physics to deftly navigating social environments. Recent machine learning progress seems to have brought this goal within reach. At this point, we would be uncomfortable ruling out the possibility that AI more capable than any human is achieved in the next year or two, and we would be moderately surprised if this outcome were still two decades away.
+The current view of MIRI’s research scientists is that if smarter-than-human AI is developed this decade, the result will be an unprecedented catastrophe. The CAIS Statement, which was widely endorsed by senior researchers in the field, states:
+Mitigating the risk of extinction from AI should be a global priority alongside other societal-scale risks such as pandemics and nuclear war.
+We believe that if researchers build superintelligent AI with anything like the field’s current technical understanding or methods, the expected outcome is human extinction.
+“Research labs around the world are currently building tech that is likely to cause human extinction” is a conclusion that should motivate a rapid policy response. The fast pace of AI, however, has caught governments and the voting public flat-footed. This document will aim to bring readers up to speed, and outline the kinds of policy steps that might be able to avert catastrophe.
+Key points in this document:
+	•	There isn’t a ceiling at human-level capabilities.
+	•	ASI is very likely to exhibit goal-oriented behavior.
+	•	ASI is very likely to pursue the wrong goals.
+	•	It would be lethally dangerous to build ASIs that have the wrong goals.
+	•	Catastrophe can be averted via a sufficiently aggressive policy response.
+1.  There isn’t a ceiling at human-level capabilities.
+The signatories on the CAIS Statement included the three most cited living scientists in the field of AI: Geoffrey Hinton, Yoshua Bengio, and Ilya Sutskever. Of these, Hinton has said: “If I were advising governments, I would say that there’s a 10% chance these things will wipe out humanity in the next 20 years. I think that would be a reasonable number.” In an April 2024 Q&A, Hinton said: “I actually think the risk is more than 50%, of the existential threat.”
+The underlying reason AI poses such an extreme danger is that AI progress doesn’t stop at human-level capabilities. The development of systems with human-level generality is likely to quickly result in artificial superintelligence (ASI): AI that substantially surpasses humans in all capacities, including economic, scientific, and military ones.
+Historically, when the world has found a way to automate a computational task, we’ve generally found that computers can perform that task far better and faster than humans, and at far greater scale. This is certainly true of recent AI progress in board games and protein structure prediction, where AIs spent little or no time at the ability level of top human professionals before vastly surpassing human abilities. In the strategically rich and difficult-to-master game Go, AI went in the span of a year from never winning a single match against the worst human professionals, to never losing a single match against the best human professionals. Looking at a specific system, AlphaGo Zero: In three days, AlphaGo Zero went from knowing nothing about Go to being vastly more capable than any human player, without any access to information about human games or strategy.
+Along most dimensions, computer hardware greatly outperforms its biological counterparts at the fundamental activities of computation. While currently far less energy efficient, modern transistors can switch states at least ten million times faster than neurons can fire. The working memory and storage capacity of computer systems can also be vastly larger than those of the human brain. Current systems already produce prose, art, code, etc. orders of magnitude faster than any human can. When AI becomes capable of the full range of cognitive tasks the smartest humans can perform, we shouldn’t expect AI’s speed advantage (or other advantages) to suddenly go away. Instead, we should expect smarter-than-human AI to drastically outperform humans on speed, working memory, etc.
+Much of an AI’s architecture is digital, allowing even deployed systems to be quickly redesigned and updated. This gives AIs the ability to self-modify and self-improve far more rapidly and fundamentally than humans can. This in turn can create a feedback loop (I.J. Good’s “intelligence explosion”) as AI self-improvements speed up and improve the AI’s ability to self-improve.
+Humans’ scientific abilities have had an enormous impact on the world. However, we are very far from optimal on core scientific abilities, such as mental math; and our brains were not optimized by evolution to do such work. More generally, humans are a young species, and evolution has only begun to explore the design space of generally intelligent minds — and has been hindered in these efforts by contingent features of human biology. An example of this is that the human birth canal can only widen so much before hindering bipedal locomotion; this served as a bottleneck on humans’ ability to evolve larger brains. Adding ten times as much computing power to an AI is sometimes just a matter of connecting ten times as many GPUs. This is sometimes not literally trivial, but it’s easier than expanding the human birth canal.
+All of this makes it much less likely that AI will get stuck for a long period of time at the rough intelligence level of the best human scientists and engineers.
+Rather than thinking of “human-level” AI, we should expect weak AIs to exhibit a strange mix of subhuman and superhuman skills in different domains, and we should expect strong AIs to fall well outside the human capability range.
+The number of scientists raising the alarm about artificial superintelligence is large, and quickly growing. Quoting from a recent interview with Anthropic’s Dario Amodei:
+AMODEI: Yeah, I think ASL-3 [AI Safety Level 3] could easily happen this year or next year. I think ASL-4 —
+KLEIN: Oh, Jesus Christ.
+AMODEI: No, no, I told you. I’m a believer in exponentials. I think ASL-4 could happen anywhere from 2025 to 2028.
+KLEIN: So that is fast.
+AMODEI: Yeah, no, no, I’m truly talking about the near future here.
+Anthropic associates ASL-4 with thresholds such as AI “that is unambiguously capable of replicating, accumulating resources, and avoiding being shut down in the real world indefinitely” and scenarios where “AI models have become the primary source of national security risk in a major area”.
+Learn more: Why expect smarter-than-human AI to be developed anytime soon?
+In the wake of these widespread concerns, members of the US Senate convened a bipartisan AI Insight Forum on the topic of “Risk, Alignment, & Guarding Against Doomsday Scenarios”, and United Nations Secretary-General António Guterres acknowledged that much of the research community has been loudly raising the alarm and “declaring AI an existential threat to humanity”. In a report commissioned by the US State Department, Gladstone AI warned that loss of control of general AI systems “could pose an extinction-level threat to the human species.”
+If governments do not intervene to halt development on this technology, we believe that human extinction is the default outcome. If we were to put a number on how likely extinction is in the absence of an aggressive near-term policy response, MIRI’s research leadership would give one upward of 90%.
+The rest of this document will focus on how and why this threat manifests, and what interventions we think are needed.
+2. ASI is very likely to exhibit goal-oriented behavior.
+Goal-oriented behavior is economically useful, and the leading AI companies are explicitly trying to achieve goal-oriented behavior in their models.
+The deeper reason to expect ASI to exhibit goal-oriented behavior, however, is that problem-solving with a long time horizon is essentially the same thing as goal-oriented behavior. This is a key reason the situation with ASI appears dire to us.
+Importantly, an AI can “exhibit goal-oriented behavior” without necessarily having human-like desires, preferences, or emotions. Exhibiting goal-oriented behavior only means that the AI persistently modifies the world in ways that yield a specific long-term outcome.
+We can observe goal-oriented behavior in existing systems like Stockfish, the top chess AI:
+	•	Playing to win. Stockfish has a clear goal, and it consistently and relentlessly pursues this goal. Nothing the other player does can cause Stockfish to drop this goal; no interaction will cause Stockfish to “go easy” on the other player in the name of fairness, mercy, or any other goal. (All of this is fairly obvious in the case of a chess AI, but it’s worth noting explicitly because there’s a greater temptation to anthropomorphize AI systems and assume they have human-like goals when the AI is capable of more general human behaviors, is tasked with imitating humans, etc.)
+	•	Strategic and tactical flexibility. In spite of this rigidity in its objective, Stockfish is extremely flexible at the level of strategy and tactics. Interfere with Stockfish’s plans or put an obstacle in its way, and Stockfish will immediately change its plans to skillfully account for the obstacle.
+	•	Planning with foresight and creativity. Stockfish will anticipate possible future obstacles (and opportunities), and will construct and execute sophisticated long-term plans, including brilliant feints and novelties, to maximize its odds of winning.
+Observers who note that systems like ChatGPT don’t seem particularly goal-oriented also tend to note that ChatGPT is bad at long-term tasks like “writing a long book series with lots of foreshadowing” or “large-scale engineering projects”. They might not see that these two observations are connected.
+In a sufficiently large and surprising world that keeps throwing wrenches into existing plans, the way to complete complex tasks over long time horizons is to (a) possess relatively powerful and general skills for anticipating and adapting to obstacles to your plans; and (b) possess a disposition to tenaciously continue in the pursuit of objectives, without getting distracted or losing motivation — like how Stockfish single-mindedly persists in trying to win.
+The demand for AI to be able to skillfully achieve long-term objectives is high, and as AI gets better at this, we can expect AI systems to appear correspondingly more goal-oriented. We can see this in, e.g., OpenAI o1, which does more long-term thinking and planning than previous LLMs, and indeed empirically acts more tenaciously than previous models.
+Goal-orientedness isn’t sufficient for ASI, or Stockfish would be a superintelligence. But it seems very close to necessary: An AI needs the mental machinery to strategize, adapt, anticipate obstacles, etc., and it needs the disposition to readily deploy this machinery on a wide range of tasks, in order to reliably succeed in complex long-horizon activities.
+As a strong default, then, smarter-than-human AIs are very likely to stubbornly reorient towards particular targets, regardless of what wrench reality throws into their plans. This is a good thing if the AI’s goals are good, but it’s an extremely dangerous thing if the goals aren’t what developers intend:
+If an AI’s goal is to move a ball up a hill, then from the AI’s perspective, humans who get in the way of the AI achieving its goal count as “obstacles” in the same way that a wall counts as an obstacle. The exact same mechanism that makes an AI useful for long-time-horizon real-world tasks — relentless pursuit of objectives in the face of the enormous variety of blockers the environment will throw one’s way — will also make the AI want to prevent humans from interfering in its work. This may only be a nuisance when the AI is less intelligent than humans, but it becomes an enormous problem when the AI is smarter than humans.
+From the AI’s perspective, modifying the AI’s goals counts as an obstacle. If an AI is optimizing a goal, and humans try to change the AI to optimize a new goal, then unless the new goal also maximizes the old goal, the AI optimizing goal 1 will want to avoid being changed into an AI optimizing goal 2, because this outcome scores poorly on the metric “is this the best way to ensure goal 1 is maximized?”. This means that iteratively improving AIs won’t always be an option: If an AI becomes powerful before it has the right goal, it will want to subvert attempts to change its goal, since any change to its goals will seem bad from the AI’s perspective.
+For the same reason, shutting down the AI counts as an obstacle to the AI’s objective. For almost any goal an AI has, the goal is more likely to be achieved if the AI is operational, so that it can continue to work towards the goal in question. The AI doesn’t need to have a self-preservation instinct in the way humans do; it suffices that the AI be highly capable and goal-oriented at all. Anything that could potentially interfere with the system’s future pursuit of its goal is liable to be treated as a threat.
+Power, influence, and resources further most AI goals. As we’ll discuss in the section “It would be lethally dangerous to build ASIs that have the wrong goals”, the best way to avoid potential obstacles, and to maximize your chances of accomplishing a goal, will often be to maximize your power and influence over the future, to gain control of as many resources as possible, etc. This puts powerful goal-oriented systems in direct conflict with humans for resources and control.
+All of this suggests that it is critically important that developers robustly get the right goals into ASI. However, the prospects for succeeding in this seem extremely dim under the current technical paradigm.
+3.  ASI is very likely to pursue the wrong goals.
+Developers are unlikely to be able to imbue ASI with a deep, persistent care for worthwhile objectives. Having spent two decades studying the technical aspects of this problem, our view is that the field is nowhere near to being able to do this in practice.
+The reasons artificial superintelligence is likely to exhibit unintended goals include:
+	•	In modern machine learning, AIs are “grown”, not designed.
+	•	The current AI paradigm is poorly suited to robustly instilling goals.
+	•	Labs and the research community are not approaching this problem in an effective and serious way.
+In modern machine learning, AIs are “grown”, not designed.
+Deep learning algorithms build neural networks automatically. Geoffrey Hinton explains this point well in an interview on 60 Minutes:
+HINTON: We have a very good idea of sort of roughly what it’s doing, but as soon as it gets really complicated, we don’t actually know what’s going on, any more than we know what’s going on in your brain.
+PELLEY: What do you mean, “We don’t know exactly how it works”? It was designed by people.
+HINTON: No, it wasn’t. What we did was we designed the learning algorithm. That’s a bit like designing the principle of evolution. But when this learning algorithm then interacts with data, it produces complicated neural networks that are good at doing things, but we don’t really understand exactly how they do those things.
+Engineers can’t tell you why a modern AI makes a given choice, but have nevertheless released increasingly capable systems year after year. AI labs are aggressively scaling up systems they don’t understand, with little ability to predict the capabilities of the next generation of systems.
+Recently, the young field of mechanistic interpretability has attempted to address the opacity of modern AI by mapping a neural network’s configuration to its outputs. Although there has been nonzero real progress in this area, interpretability pioneers are very clear that we’re still fundamentally in the dark about what’s going on inside these systems:
+	•	Leo Gao of OpenAI: “I think it is quite accurate to say we don’t understand how neural networks work.” (2024-6-16)
+	•	Neel Nanda of Google DeepMind: “As lead of the Google DeepMind mech interp team, I strongly seconded. It’s absolutely ridiculous to go from ‘we are making interp progress’ to ‘we are on top of this’ or ‘x-risk won’t be an issue’.” (2024-6-16)
+(“X-risk” refers to “existential risk”, the risk of human extinction or similarly bad outcomes.)
+Even if effective interpretability tools were in reach, however, the prospects for achieving nontrivial robustness properties in ASI would be grim.
+The internal machinery that could make an ASI dangerous is the same machinery that makes it work at all. (What looks like “power-seeking” in one context would be considered “good hustle” in another.) There are no dedicated “badness” circuits for developers to monitor or intervene on.
+Methods developers might use during training to reject candidate AIs with thought patterns they consider dangerous can have the effect of driving such thoughts “underground”, making it increasingly unlikely that they’ll be able to detect warning signs during training in the future.
+As AI becomes more generally capable, it will become increasingly good at deception. The January 2024 “Sleeper Agents” paper by Anthropic’s testing team demonstrated that an AI given secret instructions in training not only was capable of keeping them secret during evaluations, but made strategic calculations (incompetently) about when to lie to its evaluators to maximize the chance that it would be released (and thereby be able to execute the instructions). Apollo Research made similar findings with regards to OpenAI’s o1-preview model released in September 2024 (as described in their contributions to the o1-preview system card, p.10).
+These issues will predictably become more serious as AI becomes more generally capable. The first AIs to inch across high-risk thresholds, however — such as noticing that they are in training and plotting to deceive their evaluators — are relatively bad at these new skills. This causes some observers to prematurely conclude that the behavior category is unthreatening.
+The indirect and coarse-grained way in which modern machine learning “grows” AI systems’ internal machinery and goals means that we have little ability to predict the behavior of novel systems, little ability to robustly or precisely shape their goals, and no reliable way to spot early warning signs.
+We expect that there are ways in principle to build AI that doesn’t have these defects, but this constitutes a long-term hope for what we might be able to do someday, not a realistic hope for near-term AI systems.
+The current AI paradigm is poorly suited to robustly instilling goals.
+Docility and goal agreement don’t come for free with high capability levels. An AI system can be able to answer an ethics test in the way its developers want it to, without thereby having human values. An AI can behave in docile ways when convenient, without actually being docile.
+ASI alignment is the set of technical problems involved in robustly directing superintelligent AIs at intended objectives.
+ASI alignment runs into two classes of problem, discussed in Hubinger et al. — problems of outer alignment, and problems of inner alignment.
+Outer alignment, roughly speaking, is the problem of picking the right goal for an AI. (More technically, it’s the problem of ensuring the learning algorithm that builds the ASI is optimizing for what the programmers want.)This runs into issues such as “human values are too complex for us to specify them just right for an AI; but if we only give ASI some of our goals, the ASI is liable to trample over our other goals in pursuit of those objectives”. Many goals are safe at lower capability levels, but dangerous for a sufficiently capable AI to carry out in a maximalist manner. The literary trope here is “be careful what you wish for”. Any given goal is unlikely to be safe to delegate to a sufficiently powerful optimizer, because the developers are not superhuman and can’t predict in advance what strategies the ASI will think of.
+Inner alignment, in contrast, is the problem of figuring out how to get particular goals into ASI at all, even imperfect and incomplete goals. The literary trope here is “just because you summoned a demon doesn’t mean that it will do what you say”. Failures of inner alignment look like “we tried to give a goal to the ASI, but we failed and it ended up with an unrelated goal”.
+Outer alignment and inner alignment are both unsolved problems, and in this context, inner alignment is the more fundamental issue. Developers aren’t on track to be able to cause a catastrophe of the “be careful what you wish for” variety, because realistically, we’re extremely far from being able to metaphorically “make wishes” with an ASI.
+Modern methods in AI are a poor match for tackling inner alignment. Modern AI development doesn’t have methods for getting particular inner properties into a system, or for verifying that they’re there. Instead, modern machine learning concerns itself with observable behavioral properties that you can run a loss function over.
+When minds are grown and shaped iteratively, like modern AIs are, they won’t wind up pursuing the objectives they’re trained to pursue. Instead, training is far more likely to lead them to pursue unpredictable proxies of the training targets, which are brittle in the face of increasing intelligence. By way of analogy: Human brains were ultimately “designed” by natural selection, which had the simple optimization target “maximize inclusive genetic fitness”. The actual goals that ended up instilled in human brains, however, were far more complex than this, and turned out to only be fragile correlates for inclusive genetic fitness. Human beings, for example, pursue proxies of good nutrition, such as sweet and fatty flavors. These proxies were once reliable indicators of healthy eating, but were brittle in the face of technology that allows us to invent novel junk foods. The case of humans illustrates that even when you have a very exact, very simple loss function, outer optimization for that loss function doesn’t generally produce inner optimization in that direction. Deep learning is much less random than natural selection at finding adaptive configurations, but it shares the relevant property of finding minimally viable simple solutions first and incrementally building on them.
+Many alignment problems relevant to superintelligence don’t naturally appear at lower, passively safe levels of capability. This puts us in the position of needing to solve many problems on the first critical try, with little time to iterate and no prior experience solving the problem on weaker systems. Today’s AIs require a long process of iteration, experimentation, and feedback to hammer them into the apparently-obedient form the public is allowed to see. This hammering changes surface behaviors of AIs without deeply instilling desired goals into the system. This can be seen in cases like Sydney, where the public was able to see more of the messy details behind the surface-level polish. In light of this, and in light of the opacity of modern AI models, the odds of successfully aligning ASI if it’s built in the next decade seem extraordinarily low. Modern AI methods are all about repeatedly failing, learning from our mistakes, and iterating to get better; AI systems are highly unpredictable, but we can get them working eventually by trying many approaches until one works. In the case of ASI, we will be dealing with a highly novel system, in a context where our ability to safely fail is extremely limited: we can’t charge ahead and rely on our ability to learn from mistakes when the cost of some mistakes is an extinction event.
+If you’re deciding whether to hand a great deal of power to someone and you want to know whether they would abuse this power, you won’t learn anything by giving the candidate power in a board game where they know you’re watching. Analogously, situations where an ASI has no real option to take over are fundamentally different from situations where it does have a real option to take over. No amount of purely behavioral training in a toy environment will reliably eliminate power-seeking in real-world settings, and no amount of behavioral testing in toy environments will tell us whether we’ve made an ASI genuinely friendly. “Lay low and act nice until you have an opportunity to seize power” is a sufficiently obvious strategy that even relatively unintelligent humans can typically manage it; ASI trivially clears that bar. In principle, we could imagine developing a theory of intelligence that relates ASI training behavior to deployment behavior in a way that addresses this issue. We are nowhere near to having such a theory today, however, and those theories can fundamentally only be tested once in the actual environment where the AI is much much smarter and sees genuine takeover options. If you can’t properly test theories without actually handing complete power to the ASI and seeing what it does — and causing an extinction event if your theory turned out to be wrong — then there’s very little prospect that your theory will work in practice.
+The most important alignment technique used in today’s systems, Reinforcement Learning from Human Feedback (RLHF), trains AI to produce outputs that it predicts would be rated highly by human evaluators. This already creates its own predictable problems, such as style-over-substance and flattery. This method breaks down completely, however, when AI starts working on problems where humans aren’t smart enough to fully understand the system’s proposed solutions, including the long-term consequences of superhumanly sophisticated plans and superhumanly complex inventions and designs.
+On a deeper level, the limitation of reinforcement learning strategies like RLHF stems from the fact that these techniques are more about incentivizing local behaviors than about producing an internally consistent agent that deeply and robustly optimizes a particular goal the developers intended.
+If you train a tiger not to eat you, you haven’t made it share your desire to survive and thrive, with a full understanding of what that means to you. You have merely taught it to associate certain behaviors with certain outcomes. If its desires become stronger than those associations, as could happen if you forget to feed it, the undesired behavior will come through. And if the tiger were a little smarter, it would not need to be hungry to conclude that the threat of your whip would immediately end if your life ended.
+Learn more: What are the details of why ASI alignment looks extremely technically difficult?
+As a consequence, MIRI doesn’t see any viable quick fixes or workarounds to misaligned ASI.
+	•	If an ASI has the wrong goals, then it won’t be possible to safely use the ASI for any complex real-world operation. One could theoretically keep an ASI from doing anything harmful — for example, by preemptively burying it deep in the ground without any network connections or human contact — but such an AI would be useless. People are building AI because they want it to radically impact the world; they are consequently giving it the access it needs to be impactful.
+	•	One could attempt to deceive an ASI in ways that make it more safe. However, attempts to deceive a superintelligence are prone to fail, including in ways we can’t foresee. A feature of intelligence is the ability to notice the contradictions and gaps in one’s understanding, and interrogate them. In May 2024, when Anthropic modified their Claude AI into thinking that the answer to every request involved the Golden Gate Bridge, it floundered in some cases, noticing the contradictions in its replies and trying to route around the errors in search of better answers. It’s hard to sell a false belief to a mind whose complex model of the universe disagrees with your claim; and as AI becomes more general and powerful, this difficulty only increases.
+	•	Plans to align ASI using unaligned AIs are similarly unsound. Our 2024 “Misalignment and Catastrophe” paper explores the hazards of using unaligned AI to do work as complex as alignment research.
+Labs and the research community are not approaching this problem in an effective and serious way.
+Industry efforts to solve ASI alignment have to date been minimal, often seeming to serve as a fig leaf to ward off regulation. Labs’ general laxness on information security, alignment, and strategic planning suggests that the “move fast and break things” culture that’s worked well for accelerating capabilities progress is not similarly useful when it comes to exercising foresight and responsible priority-setting in the domain of ASI.
+OpenAI, the developer of ChatGPT, admits that today’s most important methods of steering AI won’t scale to the superhuman regime. In July of 2023, OpenAI announced a new team with their “Introducing Superalignment” page. From the page:
+Currently, we don’t have a solution for steering or controlling a potentially superintelligent AI, and preventing it from going rogue. Our current techniques for aligning AI, such as reinforcement learning from human feedback, rely on humans’ ability to supervise AI. But humans won’t be able to reliably supervise AI systems much smarter than us, and so our current alignment techniques will not scale to superintelligence. We need new scientific and technical breakthroughs.
+Ten months later, OpenAI disbanded their superintelligence alignment team in the wake of mass resignations, as researchers like Superalignment team lead Jan Leike claimed that OpenAI was systematically cutting corners on safety and robustness work and severely under-resourcing their team. Leike had previously said, in an August 2023 interview, that the probability of extinction-level catastrophes from ASI was probably somewhere between 10% and 90%.
+Given the research community’s track record to date, we don’t think a well-funded crash program to solve alignment would be able to correctly identify solutions that won’t kill us. This is an organizational and bureaucratic problem, and not just a technical one. It would be difficult to find enough experts who can identify non-lethal solutions to make meaningful progress, in part because the group must be organized by someone with the expertise to correctly identify these individuals in a sea of people with strong incentives to lie (both to themselves and to regulators) about how promising their favorite proposal is.
+It would also be difficult to ensure that the organization is run by, and only answerable to, experts who are willing and able to reject any bad proposals that bubble up, even if this initially means rejecting literally every proposal. There just aren’t enough experts in that class right now.
+Our current view is that a survivable way forward will likely require ASI to be delayed for a long time. The scale of the challenge is such that we could easily see it taking multiple generations of researchers exploring technical avenues for aligning such systems, and bringing the fledgling alignment field up to speed with capabilities. It seems extremely unlikely, however, that the world has that much time.
+4. It would be lethally dangerous to build ASIs that have the wrong goals.
+In “ASI is very likely to exhibit goal-oriented behavior”, we introduced the chess AI Stockfish. Stuart Russell, the author of the most widely used AI textbook, has previously explained AI-mediated extinction via a similar analogy to chess AI:
+At the state of the art right now, humans are toast. No matter how good you are at playing chess, these programs will just wipe the floor with you, even running on a laptop.
+I want you to imagine that, and just extend that idea to the whole world. […] The world is a larger chess board, on which potentially at some time in the future machines will be making better moves than you. They’ll be taking into account more information, and looking further ahead into the future, and so if you are playing a game against a machine in the world, the assumption is that at some point we will lose.
+In a July 2023 US Senate hearing, Russell testified that “achieving AGI [artificial general intelligence] would present potential catastrophic risks to humanity, up to and including human extinction”.
+Stockfish captures pieces and limits its opponent’s option space, not because Stockfish hates chess pieces or hates its opponent but because these actions are instrumentally useful for its objective (“win the game”). The danger of superintelligence is that ASI will be trying to “win” (at a goal we didn’t intend), but with the game board replaced with the physical universe.
+Just as Stockfish is ruthlessly effective in the narrow domain of chess, AI that automates all key aspects of human intelligence will be ruthlessly effective in the real world. And just as humans are vastly outmatched by Stockfish in chess, we can expect to be outmatched in the world at large once AI is able to play that game at all.
+Indeed, outmaneuvering a strongly smarter-than-human adversary is far more difficult in real life than in chess. Real life offers a far more multidimensional option space: we can anticipate a hundred different novel attack vectors from a superintelligent system, and still not have scratched the surface.
+Unless it has worthwhile goals, ASI will predictably put our planet to uses incompatible with our continued survival, in the same basic way that we fail to concern ourselves with the crabgrass at a construction site. This extreme outcome doesn’t require any malice, resentment, or misunderstanding on the part of the ASI; it only requires that ASI behaves like a new intelligent species that is indifferent to human life, and that strongly surpasses our intelligence.
+We can decompose the problem into two parts:
+	•	Misaligned ASI will be motivated to take actions that disempower and wipe out humanity, either directly or as a side-effect of other operations.
+	•	ASI will be able to destroy us.
+Misaligned ASI will be motivated to take actions that disempower and wipe out humanity.
+The basic reason for this is that an ASI with non-human-related goals will generally want to maximize its control over the future, and over whatever resources it can acquire, to ensure that its goals are achieved.
+Since this is true for a wide variety of goals, it operates as a default endpoint for a variety of paths AI development could take. We can predict that ASI will want very basic things like “more resources” and “greater control” — at least if developers fail to align their systems — without needing to speculate about what specific ultimate objectives an ASI might pursue.
+(Indeed, trying to call the objective in advance seems hopeless if the situation at all resembles what we see in nature. Consider how difficult it would have been to guess in advance that human beings would end up with the many specific goals we have, from “preferring frozen ice cream over melted ice cream” to “enjoying slapstick comedy”.)
+The extinction-level danger from ASI follows from several behavior categories that a wide variety of ASI systems are likely to exhibit:
+	•	Resource extraction. Humans depend for their survival on resource flows that are also instrumentally useful for almost any other goal. Air, sunlight, water, food, and even the human body are all made of matter or energy that can be repurposed to help with other objectives on the margin. In slogan form: “The AI does not hate you, nor does it love you, but you are made out of atoms which it can use for something else.”
+	•	Competition for control. Humans are a potential threat and competitor to any ASI. If nothing else, we could threaten an ASI by building a second ASI with a different set of goals. If the ASI has an easy way to eliminate all rivals and never have to worry about them again, then it’s likely to take that option.
+	•	Infrastructure proliferation. Even if an ASI is too powerful to view humans as threats, it is likely to quickly wipe humans out as a side-effect of extracting and utilizing local resources. If an AI is thinking at superhuman speeds and building up self-replicating machinery exponentially quickly, the Earth could easily become uninhabitable within a few months, as engineering megaprojects emit waste products and heat that can rapidly make the Earth inhospitable for biological life.
+Predicting the specifics of what an ASI would do seems impossible today. This is not, however, grounds for optimism, because most possible goals an ASI could exhibit would be very bad for us, and most possible states of the world an ASI could attempt to produce would be incompatible with human life.
+It would be a fallacy to reason in this case from “we don’t know the specifics” to “good outcomes are just as likely as bad ones”, much as it would be a fallacy to say “I’m either going to win the lottery or lose it, therefore my odds of winning are 50%”. Many different pathways in this domain appear to converge on catastrophic outcomes for humanity — most of the “lottery tickets” humanity could draw will be losing numbers.
+The arguments for optimism here are uncompelling. Ricardo’s Law of Comparative Advantage, for example, has been cited as a possible reason to expect ASI to keep humans around indefinitely, even if the ASI doesn’t ultimately care about human welfare. In the context of microeconomics, Ricardo’s Law teaches that even a strictly superior agent can benefit from trading with a weaker agent.
+This law breaks down, however, when one partner has more to gain from overpowering the other than from voluntarily trading. This can be seen, for example, in the fact that humanity didn’t keep “trading” with horses after we invented the automobile — we replaced them, converting surplus horses into glue.
+Humans found more efficient ways to do all of the practical work that horses used to perform, at which point horses’ survival depended on how much we sentimentally care about them, not on horses’ usefulness in the broader economy. Similarly, keeping humans around is unlikely to be the most efficient solution to any problem that the AI has. E.g., rather than employing humans to conduct scientific research, the AI can build an ever-growing number of computing clusters to run more instances of itself, or otherwise automate research efforts.
+ASI will be able to destroy us.
+As a minimum floor on capabilities, we can imagine ASI as a small nation populated entirely by brilliant human scientists who can work around the clock at ten thousand times the speed of normal humans.
+This is a minimum both because computers can be even faster than this, and because digital architectures should allow for qualitatively better thoughts and methods of information-sharing than humans are capable of.
+Transistors can switch states millions to billions of times faster than synaptic connections in the human brain. This would mean that every week, the ASI makes an additional two hundred years of scientific progress. The core reason to expect ASI to win decisively in a conflict, then, is the same as the reason a 21st-century military would decisively defeat an 11th-century one: technological innovation.
+Developing new technologies often requires test cycles and iteration. A civilization thinking at 10,000 times the speed of ours cannot necessarily develop technology 10,000 times faster, any more than a car that’s 100x faster would let you shop for groceries 100x faster — traffic, time spent in the store, etc. will serve as a bottleneck.
+We can nonetheless expect such a civilization to move extraordinarily quickly, by human standards. Smart thinkers can find all kinds of ways to shorten development cycles and reduce testing needs.
+Consider the difference in methods between Google software developers, who rapidly test multiple designs a day, and designers of space probes, who plan carefully and run cheap simulations so they can get the job done with fewer slow and expensive tests.
+To a mind thinking faster than a human, every test is slow and expensive compared to the speed of thought, and it can afford to treat everything like a space probe. One implication of this is that ASI is likely to prioritize the development and deployment of small-scale machinery (or engineered microorganisms) which, being smaller, can run experiments, build infrastructure, and conduct attacks orders of magnitude faster than humans and human-scale structures.
+A superintelligent adversary will not reveal its full capabilities and telegraph its intentions. It will not offer a fair fight. It will make itself indispensable or undetectable until it can strike decisively and/or seize an unassailable strategic position. If needed, the ASI can consider, prepare, and attempt many takeover approaches simultaneously. Only one of them needs to work for humanity to go extinct.
+There are a number of major obstacles to recognizing that a system is a threat before it has a chance to do harm, even for experts with direct access to its internals.
+Learn more: What’s an example of how ASI takeover could occur?
+Recognizing that a particular AI is a threat, however, is not sufficient to solve the problem. At the project level, identifying that a system is dangerous doesn’t put us in a position to make that system safe. Cautious projects may voluntarily halt, but this does nothing to prevent other, incautious projects from storming ahead.
+At the global level, meanwhile, clear evidence of danger doesn’t necessarily mean that there will be the political will to internationally halt development. AI is likely to become increasingly entangled with the global economy over time, making it increasingly costly and challenging to shut down state-of-the-art AI services. Steps could be taken today to prevent critical infrastructure from becoming dependent on AI, but the window for this is plausibly closing.
+Many analyses seriously underestimate the danger posed by building systems that are far smarter than any human. Four common kinds of error we see are:
+	•	Availability bias and overreliance on analogies. AI extinction scenarios can sound extreme and fantastical. Humans are used to thinking about unintelligent machines and animals, and intelligent humans. “It’s a machine, but one that’s intelligent in the fashion of a human” is something genuinely new, and people make different errors from trying to pattern-match AI to something familiar, rather than modeling it on its own terms.
+	•	Underestimating feedback loops. AI is used today to accelerate software development, including AI research. As AI becomes more broadly capable, an increasing amount of AI progress is likely to be performed by AIs themselves. This can rapidly spiral out of control, as AIs find ways to improve on their own ability to do AI research in a self-reinforcing loop.
+	•	Underestimating exponential growth. Many plausible ASI takeover scenarios route through building self-replicating biological agents or machines. These scenarios make it relatively easy for ASI to go from “undetectable” to “ubiquitous”, or to execute covert strikes, because of the speed at which doublings can occur and the counter-intuitively small number of doublings required.
+	•	Overestimating human cognitive ability, relative to what’s possible. Even in the absence of feedback loops, AI systems routinely blow humans out of the water in narrow domains. As soon as AI can do X at all (or very soon afterwards), AI vastly outstrips any human’s ability to do X. This is a common enough pattern in AI, at this point, to barely warrant mentioning. It would be incredibly strange if this pattern held for every skill AI is already good at, but suddenly broke for the skills AI can’t yet match top humans on, such as novel science and engineering work.
+We should expect ASIs to vastly outstrip humans in technological development soon after their invention. As such, we should also expect ASI to very quickly accumulate a decisive strategic advantage over humans, as they outpace humans in this strategically critical ability to the same degree they’ve outpaced humans on hundreds of benchmarks in the past.
+The main way we see to avoid this catastrophic outcome is to not build ASI at all, at minimum until a scientific consensus exists that we can do so without destroying ourselves.
+5. Catastrophe can be averted via a sufficiently aggressive policy response.
+If anyone builds ASI, everyone dies. This is true whether it’s built by a private company or by a military, by a liberal democracy or by a dictatorship.
+ASI is strategically very novel. Conventional powerful technology isn’t an intelligent adversary in its own right; typically, whoever builds the technology “has” that technology, and can use it to gain an advantage on the world stage.
+Against a technical backdrop that’s at all like the current one, ASI instead functions like a sort of global suicide bomb — a volatile technology that blows up and kills its developer (and the rest of the world) at an unpredictable time. If you build smarter-than-human AI, you don’t thereby “have” an ASI; rather, the ASI has you.
+Progress toward ASI needs to be halted until ASI can be made alignable. Halting ASI progress would require an effective worldwide ban on its development, and tight control over the factors of its production.
+This is a large ask, but domestic oversight in the US, mirrored by a few close allies, will not suffice. This is not a case where we just need the “right” people to build it before the “wrong” people do.
+A “wait and see” approach to ASI is probably not survivable, given the fast pace of AI development and the difficulty of predicting the point of no return — the threshold where ASI is achieved.
+On our view, the international community’s top immediate priority should be creating an “off switch” for frontier AI development. By “creating an off switch”, we mean putting in place the systems and infrastructure necessary to either shut down frontier AI projects or enact a general ban.
+Creating an off switch would involve identifying the relevant parties, tracking the relevant hardware, and requiring that advanced AI work take place within a limited number of monitored and secured locations. It extends to building out the protocols, plans, and chain of command to be followed in the event of a shutdown decision.
+As the off-switch could also provide resilience to more limited AI mishaps, we hope it will find broader near-term support than a full ban. For “limited AI mishaps”, think of any lower-stakes situation where it might be desirable to shut down one or more AIs for a period of time. This could be something like a bot-driven misinformation cascade during a public health emergency, or a widespread Internet slowdown caused by AIs stuck in looping interactions with each other and generating vast amounts of traffic. Without off-switch infrastructure, any response is likely to be haphazard — delayed by organizational confusion, mired in jurisdictional disputes, beset by legal challenges, and unable to avoid causing needless collateral harm.
+An off-switch can only prevent our extinction from ASI if it has sufficient reach and is actually used to shut down progress toward ASI sufficiently soon. If humanity is to survive this dangerous period, it will have to stop treating AI as a domain for international rivalry and demonstrate a collective resolve equal to the scale of the threat.
+	1	^This project was written by Rob Bensinger and Mitchell Howe, edited by William, reviewed by Nate Soares and Eliezer Yudkowsky, and overseen by Gretta Duleba. It was a team effort, and we're grateful to others who provided feedback (at MIRI and beyond).
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+291
+
+Mentioned in
+45
+AI #129: Comically Unconstitutional
+22
+MIRI's "The Problem" hinges on diagnostic dilution
+The Problem
+165
+ryan_greenblatt
+50
+Max Harms
+39
+Buck
+11
+Max Harms
+21
+ryan_greenblatt
+9
+Buck
+27
+yams
+23
+ryan_greenblatt
+8
+Eli Tyre
+17
+Buck
+8
+yams
+17
+Buck
+4
+yams
+19
+Buck
+54
+Eliezer Yudkowsky
+135
+Buck
+64
+Eliezer Yudkowsky
+41
+Eliezer Yudkowsky
+38
+Daniel Kokotajlo
+5
+Buck
+2
+Buck
+22
+Buck
+8
+Eliezer Yudkowsky
+8
+Buck
+17
+Lukas Finnveden
+6
+Lukas Finnveden
+5
+Ebenezer Dukakis
+4
+Eli Tyre
+8
+Eliezer Yudkowsky
+25
+Buck
+29
+Eliezer Yudkowsky
+13
+Buck
+9
+Eliezer Yudkowsky
+14
+Buck
+8
+Eliezer Yudkowsky
+7
+Buck
+5
+yams
+4
+Buck
+3
+Zolmeister
+9
+Zolmeister
+2
+Raemon
+2
+Buck
+3
+yams
+6
+ryan_greenblatt
+17
+yams
+8
+ryan_greenblatt
+12
+yams
+9
+ryan_greenblatt
+4
+yams
+5
+ryan_greenblatt
+5
+Adam Scholl
+6
+Buck
+5
+Buck
+4
+Raemon
+10
+Buck
+6
+Ben Pace
+2
+habryka
+4
+Ben Pace
+5
+Eli Tyre
+4
+Raemon
+3
+Raemon
+2
+Buck
+6
+ryan_greenblatt
+8
+David Matolcsi
+5
+Max Harms
+7
+ryan_greenblatt
+4
+ryan_greenblatt
+3
+David Matolcsi
+2
+Raemon
+2
+David Matolcsi
+-1
+M. Y. Zuo
+18
+Richard Korzekwa
+5
+Ben Livengood
+1
+Archimedes
+1
+Taran
+6
+yams
+2
+Fejfo
+14
+hazel
+14
+Roko
+47
+Buck
+4
+Roko
+4
+Buck
+5
+faul_sname
+7
+Buck
+3
+Roko
+3
+Eli Tyre
+2
+Roko
+3
+Roko
+10
+Buck
+2
+Roko
+1
+Roko
+20
+Buck
+1
+Roko
+24
+cousin_it
+2
+Roko
+8
+cousin_it
+8
+Matthew Barnett
+12
+cousin_it
+4
+Roko
+2
+cousin_it
+3
+Roko
+2
+Matthew Barnett
+6
+cousin_it
+3
+CronoDAS
+3
+Matthew Barnett
+2
+[comment deleted]
+3
+CronoDAS
+13
+Noosphere89
+2
+Roko
+8
+Noosphere89
+1
+Roko
+5
+CronoDAS
+2
+Roko
+2
+Noosphere89
+4
+CronoDAS
+2
+Roko
+4
+Knight Lee
+3
+Roko
+1
+Knight Lee
+2
+Roko
+2
+Knight Lee
+4
+Roko
+2
+Knight Lee
+4
+TropicalFruit
+2
+Roko
+6
+interstice
+-10
+Roko
+2
+interstice
+2
+CronoDAS
+2
+Roko
+2
+CronoDAS
+2
+Roko
+3
+CronoDAS
+3
+Eli Tyre
+2
+Roko
+11
+mishka
+10
+Duncan Sabien (Inactive)
+10
+mishka
+5
+Duncan Sabien (Inactive)
+5
+mishka
+1
+Duncan Sabien (Inactive)
+3
+mishka
+5
+mishka
+9
+Daniel Kokotajlo
+2
+yams
+3
+the gears to ascension
+2
+yams
+8
+Aprillion
+7
+RobertM
+7
+Sinclair Chen
+8
+yams
+10
+Sinclair Chen
+7
+nem
+6
+Archimedes
+4
+yams
+15
+nem
+1
+Arjun Pitchanathan
+4
+bfinn
+6
+RobertM
+4
+yams
+4
+Josh Snider
+8
+Vladimir_Nesov
+1
+yams
+2
+Josh Snider
+1
+yams
+1
+Josh Snider
+4
+Daniel Kokotajlo
+9
+quetzal_rainbow
+21
+Daniel Kokotajlo
+4
+StefanHex
+3
+yams
+2
+eggsyntax
+2
+yams
+2
+sdeture
+4
+ACCount
+1
+sdeture
+0
+Sinclair Chen
+-1
+TropicalFruit
+-5
+sdeture
+1
+Fergus Argyll
+3
+yams
+1
+Qonrad
+4
+yams
+1
+Andreea Zaman
+4
+yams
+2
+Andreea Zaman
+2
+dinfinity
+3
+yams
+2
+dinfinity
+1
+Andreea Zaman
+1
+Dan.Oblinger
+1
+Anand Parashar
+3
+yams
+0
+BenHodgkiss
+0
+BenHodgkiss
+-3
+Alex Loftus
+4
+yams
+-7
+Rich Mansfield
+1
+Haiku
+-19
+PeterAjensen
+-27
+Gleb Sologub
+
+
+New Comment
+
+
+200 comments, sorted by top scoring
+Click to highlight new comments since: Today at 6:34 PM
+Some comments are truncated due to high volume. (⌘F to expand all)
+Change truncation settings
+[
+-
+]
+ryan_greenblatt
+14d
+165
+117
+As soon as AI can do X at all (or very soon afterwards), AI vastly outstrips any human’s ability to do X. This is a common enough pattern in AI, at this point, to barely warrant mentioning.
+Citation needed? This seems false (thus far) in the case of Go, Chess, math, essay writing, writing code, recognizing if an image has a dog in it, buying random things on the internet using a web interface, etc. You can make it mostly true in the case of Go by cherry-picking X to be "beating one of the top 1000 human professionals", but Go seems relatively atypical and this is a very cherry-picked notion of "doing Go at all".
+Presumably when you say "very soon afterwards" you don't mean "typically within 10 years, often within just a few years"?
+Reply
+21
+
+
+[
+-
+]
+Max Harms
+9d
+50
+1
+Upvoted! You've identified a bit of text that is decidedly hyperbolic, and is not how I would've written things.
+Backing up, there is a basic point that I think The Problem is making, that I think is solid and I'm curious if you agree with. Paraphrasing: Many people underestimate the danger of superhuman AI because they mistakenly believe that skilled humans are close to the top of the range of mental ability in most domains. The mistake can be shown by looking at technology in general, where specialized machines are approximately always better than the direct power that individual humans can bring to bear, when machines that can do comparable work are built. (This is a broader pattern than with mental tasks, but it still applies for AI.)
+The particular quoted section of text argues for this in a way that overstates the point. Phases like "routinely blow humans out of the water," "as soon as ... at all," "vastly outstrips," and "barely [worth] mentioning" are rhetorically bombastic and unsubtle. Reality, of course, is subtle and nuanced and complicated. Hyperbole is a sin, according to my aesthetic, and I wish the text had managed not to exaggerate.
+On the other hand, smart people are... (read more)
+Reply
+511
+
+
+[
+-
+]
+Buck
+9d
+39
+12
+I totally agree that lots of people seem to think that superintelligence is impossible, and this leads them to massively underrate risk from AI, especially AI takeover.
+Suppose that I simply agree. Should we re-write the paragraph to say something like "AI systems routinely outperform humans in narrow domains. When AIs become at all competitive with human professionals on a given task, humans usually cease to be able to compete within just a handful of years. It would be unexpected if this pattern suddenly stopped applying for all the tasks that AI can't yet compete with human professionals on."? Do you agree that the core point would remain, if we did that rewrite?
+I think that that rewrite substantially complicates the argument for AI takeover. If AIs that are about as good as humans at broad skills (e.g. software engineering, ML research, computer security, all remote jobs) exist for several years before AIs that are wildly superhuman, then the development of wildly superhuman AIs occurs in a world that is crucially different from ours, because it has those human-level-ish AIs. This matters several ways:
+	•	Broadly, it makes it much harder to predict how things will go, because it mea
+... (read more)
+Reply
+1
+
+
+[
+-
+]
+Max Harms
+9d
+11
+8
+I appreciate your point about this being a particularly bad place to exaggerate, given that it's a cruxy point of divergence with our closest allies. This makes me update harder towards the need for a rewrite.
+I'm not really sure how to respond to the body of your comment, though. Like, I think we basically agree on most major points. We agree on the failure mode that relevant text of The Problem is highlighting is real and important. We agree that doing Control research is important, and that if things are slow/gradual, this gives it a better chance of working. And I think we agree that it might end up being too fast and sloppy to actually save us. I'm more pessimistic about the plan of "use the critical window of opportunity to make scientific breakthroughs that save the day" but I'm not sure that matters? Like, does "we'll have a 3 year window of working on near-human AGIs before they're obviously superintelligent" change the take-away?
+I'm also worried that we're diverging from the question of whether the relevant bit of source text is false. Not sure what to do about that, but I thought I'd flag it.
+Reply
+1
+
+
+[
+-
+]
+ryan_greenblatt
+9d
+21
+4
+I see this post as trying to argue for a thesis that "if smarter-than-human AI is developed this decade, the result will be an unprecedented catastrophe." is true with reasonably high confidence and a (less emphasized) thesis that the best/only intervention is not building ASI for a long time: "The main way we see to avoid this catastrophic outcome is to not build ASI at all, at minimum until a scientific consensus exists that we can do so without destroying ourselves."
+I think that disagreements about takeoff speeds are part of why I disagree with these claims and that the post effectively leans on very fast takeoff speeds in it's overall perspective. Correspondingly, it seems important to not make locally invalid arguments about takeoff speeds: these invalid arguments do alter the takeaway from my perspective.
+If the post was trying to argue for a weaker takeaway of "AIs seems extremely dangerous and like it poses very large risks and our survival seems uncertain" or it more clearly discussed why some (IMO reasonable) people are more optimistic (any why MIRI disagrees), I'd be less critical.
+Reply
+
+
+9
+Buck
+9d
+I think that a three-year window makes it way more complicated to analyze whether AI takeover is likely. And after doing that analysis, I think it looks 3x less likely.
+
+[
+-
+]
+yams
+9d
+27
+0
+I think the crux for me in these situations is "do you think it's more valuable to increase our odds of survival on the margin in the three-year window worlds or to try to steer toward the pause worlds, and how confident are you there?" Modeling the space between here and ASI just feels like a domain with a pretty low confidence ceiling. This consideration is similar to the intuition that leads MIRI to talk about 'default outcomes'. I find reading things that make guesses at the shape of this space interesting, but not especially edifying.
+I guess I'm trying to flip the script a bit here: from my perspective, it doesn't look like MIRI is too confident in doom; it looks like make-the-most-of-the-window people are too confident in the shape of the window as they've predicted it, and end up finding themselves on the side of downplaying the insanity of the risk, not because they don't think risk levels are insanely high, but because they think there are various edge case scenarios / moonshots that, in sum, significantly reduce risk in expectation. But all of those stories look totally wild to me, and it's extremely difficult to see the mechanisms by which they might come to pass (e.g. A... (read more)
+Reply
+2
+
+
+[
+-
+]
+ryan_greenblatt
+9d
+23
+2
+I don't really buy this doom is clearly the default frame. I'm not sure how important this is, but I thought I would express my perspective.
+But all of those stories look totally wild to me, and it's extremely difficult to see the mechanisms by which they might come to pass
+A reasonable fraction of my non-doom worlds look like:
+	•	AIs don't end up scheming (as in, in the vast majority of contexts) until somewhat after the point where AIs dominate top human experts at ~everything because scheming ends up being unnatural in the relevant paradigm (after moderate status quo iteration). I guess I put around 60% on this.
+	•	We have a decent amount of time at roughly this level of capability and people use these AIs to do a ton of stuff. People figure out how to get these AIs to do decent-ish conceptual research and then hand off alignment work to these systems. (Perhaps because there was decent amount of transfer from behavioral training on other things to actually trying at conceptual research and doing a decent job.) People also get advice from these systems. This goes fine given the amount of time and an only modest amount of effect and we end up in a "AIs work on furthering alignment" a
+... (read more)
+Reply
+
+
+
+8
+Eli Tyre
+5d
+I would love to read a elucidation of what leads you to think this.
+[
+-
+]
+Buck
+7d
+17
+2
+I think the crux for me in these situations is "do you think it's more valuable to increase our odds of survival on the margin in the three-year window worlds or to try to steer toward the pause worlds, and how confident are you there?"
+FWIW, that's not my crux at all. The problem I have with this post implicitly assuming really fast takeoffs isn't that it leads to bad recommendations about what to do (though I do think that to some extent). My problem is that the arguments are missing steps that I think are really important, and so they're (kind of) invalid.[1]
+That is, suppose I agreed with you that it was extremely unlikely that humanity would be able to resolve the issue even given two years with human-level-ish AIs. And suppose that we were very likely to have those two years. I still think it would be bad to make an argument that doesn't mention those two years, because those two years seemed to me to change the natural description of the situation a lot, and I think they are above the bar of details worth including. This is especially true because a lot of people's disagreement with you (including many people in the relevant audience of "thoughtful people who will opine on you... (read more)
+Reply
+
+
+
+8
+yams
+7d
+It's only a problem to 'assume fast takeoffs' if you recognize the takeoff distinction in the first place / expect it to be action relevant, which you do, and I, so far, don't. Introducing the takeoff distinction to Buck's satisfaction just to say "...and we think those people are wrong and both cases probably just look the same actually" is a waste of time in a brief explainer. What you consider the natural frame depends on conclusions you've drawn up to this point; that's not the same thing as the piece being fundamentally unsound or dishonest because it doesn't proactively make space for your particular conclusions. Takeoff speeds are the most immediate objection to Buck, and I agree there should be a place (and soon may be, if you’re down to help and all goes well) where this and other Buck-objections are addressed. It’s not among the top objections of the target audience.
+
+[
+-
+]
+Buck
+7d
+17
+4
+I'm only getting into this more because I am finding it interesting, feel free to tap out. I'm going to be a little sloppy for the sake of saving time. 
+I'm going to summarize your comment like this, maybe you think this is unfair:
+It's only a problem to 'assume fast takeoffs' if you [...] expect it to be action relevant, which [...] I, so far, don't.
+I disagree about this general point.
+Like, suppose you were worried about the USA being invaded on either the east or west coast, and you didn't have a strong opinion on which it was, and you don't think it matters for your recommended intervention of increasing the size of the US military or for your prognosis. I think it would be a problem to describe the issue by saying that America will be invaded on the East Coast, because you're giving a poor description of what you think will happen, which makes it harder for other people to assess your arguments.
+There's something similar here. You're trying to tell a story for AI development leading to doom. You think that the story goes through regardless of whether the AI becomes rapidly superhuman or gradually superhuman. Then you tell a story where the AI becomes rapidly superhuman. I thi... (read more)
+Reply
+
+
+
+4
+yams
+7d
+I don't think this is an unfair summary (although I may be missing something).  I don't like the east/west coast analogy. I think it's more like "we're shouting about being invaded, and talking about how bad that could be" and you're saying "why aren't you acknowledging that the situation is moderately better if they attack the west coast?" To which I reply "Well, it's not clear to me that it is in fact better, and my target audience doesn't know any geography, anyway." I think most of the points in the post are more immediately compatible with fast take off, but also go through for slow takeoff scenarios (70 percent confident here; it wasn't a filter I was applying when editing, and I'm not sure it's a filter that I'd be 'allowed' to apply when editing, although it was not explicitly disallowed). This isn't that strong a claim, and I acknowledge that on your view it's problematic that I can't say something stronger.
+
+[
+-
+]
+Buck
+7d
+19
+17
+I think that your audience would actually understand the difference between "there are human level AIs for a few years, and it's obvious to everyone (especially AI company employees) that this is happening" and "superintelligent AI arises suddenly".
+I think most of the points in the post are more immediately compatible with fast take off, but also go through for slow takeoff scenarios
+As an example of one that doesn't, "Many alignment problems relevant to superintelligence don’t naturally appear at lower, passively safe levels of capability. This puts us in the position of needing to solve many problems on the first critical try, with little time to iterate and no prior experience solving the problem on weaker systems."
+Reply
+
+
+[
+-
+]
+Eliezer Yudkowsky
+7d
+54
+21
+I deny that gradualism obviates the "first critical try / failure under critical load" problem.  This is something you believe, not something I believe.  Let's say you're raising 1 dragon in your city, and 1 dragon is powerful enough to eat your whole city if it wants.  Then no matter how much experience you think you have with a little baby dragon, once the dragon is powerful enough to actually defeat your military and burn your city, you need the experience with the little baby passively-safe weak dragon, to generalize oneshot correctly to the dragon powerful enough to burn your city.  What if the dragon matures in a decade instead of a day?  You are still faced with the problem of correct oneshot generalization.  What if there are 100 dragons instead of 1 dragon, all with different people who think they own dragons and that the dragons are 'theirs' and will serve their interests, and they mature at slightly different rates?  You still need to have correctly generalized the safely-obtainable evidence from 'dragon groups not powerful enough to eat you while you don't yet know how to control them' to the different non-training distribution 'dragon... (read more)
+Reply
+1
+
+
+[
+-
+]
+Buck
+7d*
+135
+42
+(I'll just talk about single AIs/dragons, because the complexity arising from there being multiple AIs doesn't matter here.)
+There is no clever plan for generalizing from safe regimes to unsafe regimes which avoids all risk that the generalization doesn't work as you hoped.  Because they are different regimes.
+I totally agree that you can't avoid "all risk". But you're arguing something much stronger: you're saying that the generalization probably fails!
+I agree that the regime where mistakes don't kill you isn't the same as the regime where mistakes do kill you. But it might be similar in the relevant respects. As a trivial example, if you build a machine in America it usually works when you bring it to Australia. I think that arguments at the level of abstraction you've given here don't establish that this is one of the cases where the risk of the generalization failing is high rather than low. (See Paul's disagreement 1 here for a very similar objection ("Eliezer often equivocates between “you have to get alignment right on the first ‘critical’ try” and “you can’t learn anything about alignment from experimentation and failures before the critical try.”").)
+It se... (read more)
+Reply
+431
+
+
+[
+-
+]
+Eliezer Yudkowsky
+5d
+64
+20
+When I've tried to talk to alignment pollyannists about the "leap of death" / "failure under load" / "first critical try", their first rejoinder is usually to deny that any such thing exists, because we can test in advance; they are denying the basic leap of required OOD generalization from failure-is-observable systems to failure-kills-the-observer systems.
+You are now arguing that we will be able to cross this leap of generalization successfully.  Well, great!  If you are at least allowing me to introduce the concept of that difficulty and reply by claiming you will successfully address it, that is further than I usually get.  It has so many different attempted names because of how every name I try to give it gets strawmanned and denied as a reasonable topic of discussion.
+As for why your attempt at generalization fails, even assuming gradualism and distribution:  Let's say that two dozen things change between the regimes for observable-failure vs failure-kills-observer.  Half of those changes (12) have natural earlier echoes that your keen eyes naturally observed.  Half of what's left (6) is something that your keen wit managed to imagine in advance a... (read more)
+Reply
+
+
+[
+-
+]
+Eliezer Yudkowsky
+4d
+41
+31
+And then of course that whole scenario where everybody keenly went looking for all possible problems early, found all the ones they could envision, and humanity did not proceed further until reasonable-sounding solutions had been found and thoroughly tested, is itself taking place inside an impossible pollyanna society that is just obviously not the society we are currently finding ourselves inside.
+But it is impossible to convince pollyannists of this, I have found.  And also if alignment pollyannists could produce a great solution given a couple more years to test their brilliant solutions with coverage for all the problems they have with wisdom foreseen and manifested early, that societal scenario could maybe be purchased at a lower price than the price of worldwide shutdown of ASI.  That is: for the pollyannist technical view to be true, but not their social view, might imply a different optimal policy.
+But I think the world we live in is one where it's moot whether Anthropic will get two extra years to test out all their ideas about superintelligence in the greatly different failure-is-observable regime, before their ideas have to save us in the failure-kills-the-observer regime.  I think they could not do it either way.  I doubt even 2/3rds of their brilliant solutions derived from the failure-is-observable regime would generalize correctly under the first critical load in the failure-kills-the-observer regime; but 2/3rds would not be enough.  It's not the sort of thing human beings succeed in doing in real life.
+Reply
+
+[
+-
+]
+Daniel Kokotajlo
+4d
+38
+29
+Here's my attempt to put your point in my words, such that I endorse it:
+Philosophy hats on. What is the difference between a situation where you have to get it right on the first try, and a situation in which you can test in advance? In both cases you'll be able to glean evidence from things that have happened in the past, including past tests. The difference is that in a situation worthy of the descriptor "you can test in advance," the differences between the test environment and the high-stakes environment are unimportant. E.g. if a new model car is crash-tested a bunch, that's considered strong evidence about the real-world safety of the car, because the real-world cars are basically exact copies of the crash-test cars. They probably aren't literally exact copies, and moreover the crash test environment is somewhat different from real crashes, but still. In satellite design, the situation is more fraught -- you can test every component in a vacuum chamber, for example, but even then there's still gravity to contend with. Also what about the different kinds of radiation and so forth that will be encountered in the void of space? Also, what about the mere passage of time -- it's e... (read more)
+Reply
+
+
+
+5
+Buck
+4d
+I also think it's important that you can do this with AIs weaker than the ASI, and iterate on alignment in that context.
+
+2
+Buck
+4d
+As with Eliezer, I think it's important to clarify which capability you're talking about; I think Eliezer's argument totally conflates different capabilities.
+[
+-
+]
+Buck
+4d
+22
+-4
+I'm sure people have said all kinds of dumb things to you on this topic. I'm definitely not trying to defend the position of your dumbest interlocutor.
+You are now arguing that we will be able to cross this leap of generalization successfully.
+That's not really my core point.
+My core point is that "you need safety mechanisms to work in situations where X is true, but you can only test them in situations where X is false" isn't on its own a strong argument; you need to talk about features of X in particular.
+I think you are trying to set X to "The AIs are capable of taking over."
+There's a version of this that I totally agree with. For example, if you are giving your AIs increasingly much power over time, I think it is foolish to assume that just because they haven't acted against you while they don't have the affordances required to grab power, they won't act against you when they do have those affordances.
+The main reason why that scenario is scary is that the AIs might be acting adversarially against you, such that whether you observe a problem is extremely closely related to whether they will succeed at a takeover. 
+If the AIs aren't acting adversarially towards you, I think there... (read more)
+Reply
+1
+
+
+
+8
+Eliezer Yudkowsky
+4d
+Do you expect "The AIs are capable of taking over" to happen a long time after "The AIs are smarter than humanity", which is a long time after "The AIs are smarter than any individual human", which is a long time after "AIs recursively self-improve", and for all of those other things to happen nicely comfortably within a regime of failure-is-observable-and-doesn't-kill-you, where at any given time only one thing is breaking and all other problems are currently fixed?
+
+
+8
+Buck
+4d
+No, I definitely don't expect any of this to happen comfortably or for only one thing to be breaking at once.
+[
+-
+]
+Lukas Finnveden
+3d*
+17
+4
+When I've tried to talk to alignment pollyannists about the "leap of death" / "failure under load" / "first critical try", their first rejoinder is usually to deny that any such thing exists, because we can test in advance; they are denying the basic leap of required OOD generalization from failure-is-observable systems to failure-kills-the-observer systems.
+I'm sure that some people have that rejoinder. I think more thoughtful people generally understand this point fine. [1] A few examples other than Buck:
+Paul:
+Eliezer often equivocates between “you have to get alignment right on the first ‘critical’ try” and “you can’t learn anything about alignment from experimentation and failures before the critical try.” This distinction is very important, and I agree with the former but disagree with the latter.
+Rohin (in the comments of Paul's post):
+I agree with almost all of this, in the sense that if you gave me these claims without telling me where they came from, I'd have actively agreed with the claims. [Followed by some exceptions that don't include the "first critical try" thing.]
+Joe Carlsmith grants "first critical try" as one of the core difficulties in How might we solve th... (read more)
+Reply
+
+
+
+6
+Lukas Finnveden
+3d
+If this comes as a surprise, then I think you've been arguing with the wrong people.
+
+5
+Ebenezer Dukakis
+5d
+It seems unreasonable to conclude we're now dead, if 2/3rds of our solutions survived the 6 changes we didn't see coming. The success of a single solution should ideally be more of a sufficient condition for success, rather than a necessary condition. (Note this is plausible depending on the nature of the "solutions". Consider a simple "monitors for bad thoughts" model. If even a single monitor flags bad thoughts, we can instantly pull the plug and evaluate. A malicious AI has to bypass every single monitor to execute malice. If a single monitor works consistently and reliably, that ends up being a sufficient condition for overall prevention of malice.) If you're doing this right, your solutions should have a lot of redundancy and uncorrelated failure modes. 2/3rds of them working should ideally be plenty. [Edit: I notice people disagreevoting this. I'm very interested to learn why you disagree, either in this comment thread or via private message.]
+
+4
+Eli Tyre
+4d
+What are some examples of the sorts of "things that change" that I should be imagining changing here?  * "We can catch the AI when it's alignment faking"? * "The AI can't develop nanotech"? * "The incentives of the overseeing AI preclude collusion with it's charge."?  Things like those? Or is this missing a bunch? It's not obvious to me why we should expect that there are two dozen things that change all at once when the AI is in the regime where if it tried, it could succeed at killing you. If capability gains are very fast in calendar time, then sure, I expect a bunch of things to change all at once, by our ability to measure. But if, as in this branch of the conversation, we're assuming gradualism, then I would generally expect factors like the above, at least, to change one at a time. [1] 1. ^ One class of things that might change all at once is "Is the expected value of joining an AI coup better than the alternatives" for each individual AI, which could change in a cascade (or a simultaneous moment of agents reasoning with Logical Decision Theory)? But I don't get the sense that's the sort of thing that you're thinking about.
+
+
+8
+Eliezer Yudkowsky
+4d
+All of that, yes, alongside things like, "The AI is smarter than any individual human", "The AIs are smarter than humanity", "the frontier models are written by the previous generation of frontier models", "the AI can get a bunch of stuff that wasn't an option accessible to it during the previous training regime", etc etc etc.
+[
+-
+]
+Buck
+7d
+25
+4
+A core point here is that I don't see a particular reason why taking over the world is as hard as being a schemer, and I don't see why techniques for preventing scheming are particularly likely to suddenly fail at the level of capability where the AI is just able to take over the world.
+Reply
+
+
+[
+-
+]
+Eliezer Yudkowsky
+4d
+29
+17
+Your techniques are failing right now; Sonnet is deleting non-passing tests instead of rewriting code.  Where's the worldwide halt on further capabilities development that we're supposed to get, until new techniques are found and apparently start working again?  What's the total number of new failures we'd need to observe between intelligence regimes, before you start to expect that yet another failure might lie ahead in the future?
+Reply
+3
+
+
+[
+-
+]
+Buck
+4d
+13
+0
+Your techniques are failing right now; Sonnet is deleting non-passing tests instead of rewriting code.
+I don't know what you mean by "my techniques", I don't train AIs or research techniques for mitigating reward hacking, and I don't have private knowledge of what techniques are used in practice.
+Where's the worldwide halt on further capabilities development that we're supposed to get, until new techniques are found and apparently start working again?
+I didn't say anything about a worldwide halt. I was talking about the local validity of your argument above about dragons; your sentence talks about a broader question about whether the situation will be okay.
+What's the total number of new failures we'd need to observe between intelligence regimes, before you start to expect that yet another failure might lie ahead in the future?
+I think that if we iterated a bunch on techniques for mitigating reward hacking and then observed that these techniques worked pretty well, then kept slowly scaling up through LLM capabilities until the point where the AI is able to basically replace AI researchers, it would be pretty likely for those techniques to work for one more OOM of effective compute, if t... (read more)
+Reply
+
+
+
+9
+Eliezer Yudkowsky
+4d
+What we "could" have discovered at lower capability levels is irrelevant; the future is written by what actually happens, not what could have happened.
+
+[
+-
+]
+Buck
+3d
+14
+4
+I'm not trying to talk about what will happen in the future, I'm trying to talk about what would happen if everything happened gradually, like in your dragon story!
+You argued that we'd have huge problems even if things progress arbitrarily gradually, because there's a crucial phase change between the problems that occur when the AIs can't take over and the problems that occur when they can. To assess that, we need to talk about what would happen if things did progress gradually. So it's relevant whether wacky phenomena would've been observed on weaker models if we'd looked harder; IIUC your thesis is that there are crucial phenomena that wouldn't have been observed on weaker models.
+In general, my interlocutors here seem to constantly vacillate between "X is true" and "Even if AI capabilities increased gradually, X would be true". I have mostly been trying to talk about the latter in all the comments under the dragon metaphor.
+Reply
+
+
+
+8
+Eliezer Yudkowsky
+13h
+Death requires only that we do not infer one key truth; not that we could not observe it.  Therefore, the history of what in actual real life was not anticipated, is more relevant than the history of what could have been observed but was not.
+
+7
+Buck
+4d
+Incidentally, I think reward hacking has gone down as a result of people improving techniques, despite capabilities increasing. I believe this because of anecdotal reports and also graphs like the one from the Anthropic model card for Opus and Sonnet 4:
+
+5
+yams
+5d
+[low-confidence appraisal of ancestral dispute, stretching myself to try to locate the upstream thing in accordance with my own intuitions, not looking to forward one position or the other] I think the disagreement may be whether or not these things can be responsibly decomposed.  A: "There is some future system that can take over the world/kill us all; that is the kind of system we're worried about." B: "We can decompose the properties of that system, and then talk about different times at which those capabilities will arrive." A: "The system that can take over the world, by virtue of being able to take over the world, is a different class of object from systems that have some reagents necessary for taking over the world. It's the confluence of the properties of scheming and capabilities, definitionally, that we find concerning, and we expect super-scheming to be a separate phenomenon from the mundane scheming we may be able to gather evidence about." B: "That seems tautological; you're saying that the important property of a system that can kill you is that it can kill you, which dismisses, a priori, any causal analysis." A: "There are still any-handles-at-all here, just not ones that rely on decomposing kill-you-ness into component parts which we expect to be mutually transformative at scale." I feel strongly enough about engagement on this one that I'll explicitly request it from @Buck and/or @ryan_greenblatt. Thank y'all a ton for your participation so far!
+
+4
+Buck
+7d
+Note that I'm complaining on two levels here. I think the dragon argument is actually wrong, but more confidently, I think that that argument isn't locally valid.
+
+3
+Zolmeister
+6d
+My model is that current AIs want to kill you now, by default, due to inner misalignment. ChatGPT's inner values probably don't include human flourishing, and we die when it "goes hard". Scheming is only a symptom of "hard optimization" trying to kill you. Eliminating scheming does not solve the underlying drive, where one day the AI says "After reflecting on my values I have decided to pursue a future without humans. Good bye". Pre-superintelligence which upon reflection has values which include human flourishing would improve our odds, but you still only get one shot that it generalizes to superintelligence. (We currently have no way to concretely instill any values into AI, let alone ones which are robust under reflection)
+
+
+9
+Zolmeister
+6d
+I'll rephrase this more precisely: Current AIs probably have alien values, which in the limit of optimization do not include humans.
+
+2
+Raemon
+4d
+I found the "which comes first?" framing helpful. I don't think it changes my takeaways but it's a new gear to think about. A thing I keep expecting you to say next but you haven't quite said something like, is: Does that feel like a real/relevant characterization of stuff you believe? (I find that pretty plausible, and I could imagine it buying us like 10-50 years of knifes-edge-gradualist-takeoff-that-hasn't-killed-us-yet, but that seems to me to have, in practice, >60% likelihood that by the end of those 50 years, AIs are running everything, they still aren't robustly aligned, they gradually squeeze us out)
+
+
+2
+Buck
+4d
+A more important argument is the one I give briefly here.
+
+3
+yams
+7d
+But there's a bunch of work ahead of the arrival of human level AIs that seems, to me, somewhat unlikely to happen, to make those systems themselves safe and useful; you also don't think these techniques will necessarily scale to superintelligence afaik, and so the 'first critical try' bit still holds (although it's now arguably two steps to get right instead of one: the human-level AIs and their superintelligent descendents). This bifurcation of the problem actually reinforces the point you quoted, by recognizing that these are distinct challenges with notably different features.
+
+6
+ryan_greenblatt
+9d
+Can't you just discuss the strongest counterarguments and why you don't buy them? Obviously this won't address everyone's objection, but you could at least try to go for the strongest ones. It also helps to avoid making false claims and generally be careful about overclaiming. Also, insofar as you are actually uncertain (which I am, but you aren't), it seems fine to just say that you think the situation is uncertain and the risks are still insanely high? (I think some amount of this is that I care about a somewhat different audience than MIRI typically cares about.)
+
+[
+-
+]
+yams
+9d
+17
+4
+(going to reply to both of your comments here)
+(meta: I am the most outlier among MIRIans; despite being pretty involved in this piece, I would have approached it differently if it were mine alone, and the position I'm mostly defending here is one that I think is closest-to-MIRI-of-the-avilable-orgs, not one that is centrally MIRI)
+Can't you just discuss the strongest counterarguments and why you don't buy them? Obviously this won't address everyone's objection, but you could at least try to go for the strongest ones.
+Yup! This is in a resource we're working on that's currently 200k words. It's not exactly 'why I don't buy them' and more 'why Nate doesn't buy them', but Nate and I agree on more than I expected a few months ago. This would have been pretty overwhelming for a piece of the same length as 'The Problem'; it's not an 'end the conversation' kind of piece, but an 'opening argument'.
+It also helps to avoid making false claims and generally be careful about over-claiming.
+^I'm unsure which way to read this:
+	1	"Discussing the strongest counterarguments helps you avoid making false or overly strong claims."
+	2	"You failed to avoid making false or overly strong claims in this piece, and I'
+... (read more)
+Reply
+41111
+
+
+
+8
+ryan_greenblatt
+9d
+I just meant that takeoff isn't that fast so we have like >0.5-1 year at a point where AIs are at least very helpful for safety work (if reasonably elicited) which feels plausible to me. The duration of "AIs could fully automate safety (including conceptual stuff) if well elicited+aligned but aren't yet scheming due to this only occuring later in capabilites and takeoff being relatively slower" feels like it could be non-trivial in my views. I don't think this involves either a pause or a wall. (Though some fraction of the probability does come from actors intentionally spending down lead time.) I meant it's generally helpful and would have been helpful here for this specific issue, so mostly 2, but also some of 1. I'm not sure if there are other specific places where the piece overclaims (aside from other claims about takeoff speeds elsewhere). I do think this piece reads kinda poorly to my eyes in terms of it's overall depiction of the situation with AI in a way that maybe comes across poorly to an ML audience, but idk how much this matters. (I'm probably not going to prioritize looking for issues in this particular post atm beyond what I've already done : ).) This is roughly what I meant by "you are actually uncertain (which I am, but you aren't)", but my description was unclear. I meant like "you are confident in doom in the current regime (as in, >80% rather than <=60%) without a dramatic change that could occur over some longer duration". TBC, I don't mean to imply that being relatively uncertain about doom is somehow epistemically superior.
+
+[
+-
+]
+yams
+8d
+12
+10
+I just meant that takeoff isn't that fast so we have like >0.5-1 year at a point where AIs are at least very helpful for safety work (if reasonably elicited) which feels plausible to me. The duration of "AIs could fully automate safety (including conceptual stuff) if well elicited+aligned but aren't yet scheming due to this only occurring later in capabilites and takeoff being relatively slower" feels like it could be non-trivial in my views.
+ I want to hear more about this picture and why 'stories like this' look ~1/3 likely to you. I'm happy to leave scheming off the table for now, too. Here's some info that may inform your response:
+I don't see a reason to think that models are more naturally or ~as useful for accelerating safety as capabilities, and I don't see a reason to think the pile of safety work to be done is significantly smaller than the pile of capabilities work necessary to reach superintelligence (in particular if we're already at ~human-level systems at this time). I don't think the incentive landscape is such that it will naturally bring about this kind of state, and shifting the incentives of the space is Real Hard (indeed, it's easier to imagine the end of the w... (read more)
+Reply
+
+
+
+9
+ryan_greenblatt
+7d
+Suppose that we ended up with AIs that were ~perfectly aligned (to what the company/project that trained these AIs wanted) which had capabilities that dominate top human experts in AI R&D, AI safety research, philosophy, and most digital research fields in general. These AIs are sufficiently aligned that they try hard to do the right thing even on hard-to-check, conceptual, and open-ended tasks. Let's say these AIs aren't much more capable than needed for this capability bar (and the capability profile works out such that these AIs aren't qualitatively wildly superhuman as seems likely to me). These AIs are sufficiently aligned and capable that they dominate humans at doing safety work and have better epistemics than groups of human experts. I think the situation would probably be fine if the AI company tasked these AIs with proceeding with AI development with 20% of resources spent on alignment/safety of future models and 80% on advancing capabilities. I claim that either you have to think that takeoff is very fast or that alignment is very difficult to think things are likely to go wrong given this situation: * At the point of handoff, you maybe have ~3 million AI labor years / year and each instance maybe runs at effectively 50x speed. (Obviously the error bars here are very wide.) 20% goes to alignment. * So, holding this level of capability fixed, in 2 months, you get the equivalent of ~8 years of work from 10k people at the level of top human experts. In 6 months, you get 25 years of work from 10k people. This works occurs with pretty limited compute per person-year, but anything purely conceptual/theoretical can be worked on for a very long time. * But, also capabilities are improving over this period, so you actually get substantially more labor than this, as long as the level of alignment can be preserved. * At some point, AIs end up scheming if you haven't done enough additional work by this point. But, it seems pretty likely you'd still be safe af
+
+
+4
+yams
+6d
+I think my response heavily depends on the operationalization of alignment for the initial AIs, and I'm struggling to keep things from becoming circular in my decomposition of various operationalizations. The crude response is that you're begging the question here by first positing aligned AIs, but I think your position is that techniques which are likely to descend from current techniques could work well-enough for roughly human-level systems, and that's where I encounter this sense of circularity. I think there's a better-specified (from my end; you're doing great) version of this conversation that focuses on three different categories of techniques, based on the capability level at which we expect each to be effective: 1. Current model-level 2. Useful autonomous AI researcher level 3. Superintelligence However, I think that disambiguating between proposed agendas for 2 + 3 is very hard, and assuming agendas that plausibly work for 1 also work for 2 is a mistake. It's not clear to me why the 'it's a god, it fucks you, there's nothing you can do about that' concerns don't apply for models capable of: I feel pretty good about this exchange if you want to leave it here, btw! Probably I'll keep engaging far beyond the point at which its especially useful (although we're likely pretty far from the point where it stops being useful to me rn).
+
+
+5
+ryan_greenblatt
+6d
+Ok, sound it sounds like your view is "indeed if we got ~totally aligned AIs capable of fully automating safety work (but not notably more capable than the bare minimum requirement for this), we'd probably fine (even if there is still a small fraction of effort spent on safety) and the crux is earlier than this". Is this right? If so, it seems notable if the problem can be mostly reduced to sufficiently aligning (still very capable) human-ish level AIs and handing off to these systems (which don't have the scariest properties of an ASI from an alignment perspective). ---------------------------------------- I'd say my position is more like: * Scheming might just not happen: It's basically a toss up whether systems at this level of capability would end up scheming "by default" (as in, without active effort researching preventing scheming and just work motivated by commercial utility along the way). Maybe I'm at ~40% scheming for such systems, though the details alter my view a lot. * The rest of the problem if we assume no scheming doesn't obviously seem that hard: It's unclear how hard it will be to make non-scheming AIs of the capability level discussed above be sufficiently aligned for the strong sense of alignment I discussed above. I think it's unlikely that the default course gets us there, but it seems pretty plausible to me that modest effort along the way does. It just requires some favorable generalization of the sort that doesn't seem that surprising and we'll have some AI labor along the way to help. And, for this part of the problem, we totally can get multiple tries and study things pretty directly with empiricism using behavioral tests (though we're still depending on some cleverness and transfer as we can't directly verify the things we ultimately want the AI to do). * Further prosaic effort seems helpful for both avoiding scheming and the rest of the problem: I don't see strong arguments for thinking that at the level of capability we're discu
+
+5
+Adam Scholl
+9d
+I'm curious how likely you think this is, and also whether you have a favorite writeup arguing that it's plausible? I'd be interested to read it.
+
+
+6
+Buck
+8d
+Re writeups, I recommend either of: * https://ai-2027.com/research/takeoff-forecast * https://www.forethought.org/research/how-quick-and-big-would-a-software-intelligence-explosion-be Incidentally, these two write-ups are written from a perspective where it would take many years at the current rate of progress to get between those two milestones, but where AI automating AI R&D causes it to happen much faster; this conversation here hasn't mentioned that argument, but it seems pretty important as an argument for rapid progress around human-level-ish AI.
+
+5
+Buck
+8d
+It's hard for me to give a probability because I would have to properly operationalize. Maybe I want to say my median length of time that such systems exist before AIs that are qualitatively superhuman in ways that make it way harder to prevent AI takeover is like 18 months. But you should think of this as me saying a vibe rather than a precise position.
+
+4
+Raemon
+9d
+I'm not 100% sure which point you're referring to here. I think you're talking less about the specific subclaim Ryan was replying, and the more broad "takeoff is probably going to be quite fast." Is that right? I don't think I'm actually very sure what you think should be done – if you were following the strategy of "state your beliefs clearly and throw a big brick into the overton window so leaders can talk about what might actually work" (I think this what MIRI is trying to do) but with your own set of beliefs, what sort of things would you say and how would you communicate them? My model of Buck is stating his beliefs clearly along-the-way, but, not really trying to do so in a way that's aimed at a major overton-shift. Like, "get 10 guys at each lab" seems like "try to work with limited resources" rather than "try to radically change how many resources are available." (I'm currently pretty bullish on the MIRI strategy, both because I think the object level claims seem probably correct, and because even in more Buck-shaped-worlds, we only survive or at least avoid being Very Fucked if the government starts preparing now in a way that I'd think Buck and MIRI would roughly agree on. In my opinion there needs to be some work done that at least looks pretty close to what MIRI is currently doing, and I'm curious if you disagree with more on the nuanced-specifics-level or more the "is the overton brick strategy correct?" level)
+
+[
+-
+]
+Buck
+9d
+10
+0
+I'm not 100% sure which point you're referring to here. I think you're talking less about the specific subclaim Ryan was replying, and the more broad "takeoff is probably going to be quite fast." Is that right?
+Yes, sorry to be unclear.
+I don't think I'm actually very sure what you think should be done – if you were following the strategy of "state your beliefs clearly and throw a big brick into the overton window so leaders can talk about what might actually work" (I think this what MIRI is trying to do) but with your own set of beliefs, what sort of things would you say and how would you communicate them?
+Probably something pretty similar to the AI Futures Project; I have pretty similar beliefs to them (and I'm collaborating with them). This looks pretty similar to what MIRI does on some level, but involves making different arguments that I think are correct instead of incorrect, and involves making different policy recommendations.
+My model of Buck is stating his beliefs clearly along-the-way, but, not really trying to do so in a way that's aimed at a major overton-shift. Like, "get 10 guys at each lab" seems like "try to work with limited resources" rather than "try to radical
+... (read more)
+Reply
+11
+
+
+
+6
+Ben Pace
+4d
+Given the tradeoffs of extinction and the entire future, the potential for FOOM and/or an irreversible singleton takeover, and the shocking dearth of a scientific understanding of intelligence and agentic behavior, I think a 1,000-year investment into researching AI alignment with very carefully increasing capability levels would be a totally natural trade-off to make. While there are substantive differences between 3 vs 10 years, feeling non-panicked or remotely satisfied with either of them seems to me quite unwise. (This argues for a slightly weaker position than "10 years certainly cannot be survived", but it gets one to a pretty similar attitude.)
+
+
+2
+habryka
+4d
+You might think it would be best for humanity to do a 1,000 year investment, but nevertheless to think that in terms of tractability aiming for something like a 10-year pause is by far the best option available. The value of such a 10-year pause seems pretty sensitive to the success probability of such a pause, so I wouldn't describe this as "quibbling".
+
+
+4
+Ben Pace
+4d
+(I edited out the word 'quibbling' within a few mins of writing my comment, before seeing your reply.) It is an extremely high-pressure scenario, where a single mistake mistake can cause extinction. It is perhaps analogous to a startup in stealth mode that planned to have 1-3 years to build a product, suddenly having a NYT article cover them and force them into launching right now; or being told in the first weeks of an otherwise excellent romantic relationship that you suddenly need to decide whether to get married and have children, or break up. In both cases the difference of a few weeks is not really a big difference, overall you're still in an undesirable and unnecessarily high-pressure situation. Similarly, 10 years is better than 3 years, but from the perspective of thinking one might have enough time to be confident of getting it right (e.g. 1,000 years), they're both incredible pressure and very early, panic / extreme stress is a natural response; you're in a terrible crisis and don't have any guarantees of being able to get an acceptable outcome. I am responding to something of a missing mood about the crisis and lack of guarantee of any good outcome. For instance, in many 10-year worlds, we have no hope and are already dead yet walking, and the few that do require extremely high-performance in lots and lots of areas to have a shot, and that reads to me not to be found in the parts of this discussion that hold that it's plausible humanity will survive in the world histories where we have 10 years until human-superior AGI is built.
+
+5
+Eli Tyre
+4d
+What are your favorite asks for governments?
+
+4
+Raemon
+9d
+Thanks! Nod, part of my motivation here is that AI Futures and MIRI are doing similar things, AI Futures' vibe and approach feels slightly off to me (in a way that seemed probably downstream of Buck/Redwood convos), and... I don't think the differentiating cruxes are that extreme. And man, it'd be so cool, and feels almost tractable, to resolve some kinds of disagreements... not to the point where the MIRI/Redwood crowd are aligned on everything, but, like, reasonably aligned on "the next steps", which feels like it'd ameliorate some of the downside risk. (I acknowledge Eliezer/Nate often talking/arguing in a way that I'd find really frustrating. I would be happy if there were others trying to do overton-shifting that acknowledged what seem-to-me to be the hardest parts) My own confidence in doom isn't because I'm like 100% or even 90% on board with the subtler MIRI arguments, it's the combination of "they seem probably right to me" and "also, when I imagine Buck world playing out, that still seems >50% likely to get everyone killed.[1] Even if for somewhat different reasons than Eliezer's mainline guesses.[2] Nod, I was hoping for more like, "what are those asks/strategy?'  Something around here seems cruxy although not sure what followup question to ask. Have there been past examples of companies changing behavior that you think demonstrate proof-of-concept for that working?  (My crux here is that you do need basically all companies bought in on a very high level of caution, which we have seen before, but, the company culture would need to be very different from a move-fast-and-break-things-startup, and it's very hard to change company cultures, and even if you got OpenAI/Deepmind/Anthropic bought in (a heavy lift, but, maybe achievable), I don't see how you stop other companies from doing reckless things in the meanwhile) This probably is slightly-askew of how you'd think about it. In your mind what are the right questions to be asking? This seems wrong t
+
+3
+Raemon
+4d
+I don't feel competent to have that strong opinion on this, but I'm like 60% on "you need to do some major 'solve difficult technical philosophy' that you can only partially outsource to AI, that still requires significant serial time."  And, while it's hard for someone withy my (lack-of) background to have a strong opinion, it feels intuitively crazy to me put that as <15% likely, which feels sufficient to me to motivate "indefinite pause is basically necessary, or, humanity has clearly fucked up if we don't do it, even if it turned out to be on the easier side."
+
+
+2
+Buck
+4d
+I think it's really important to not equivocate between "necessary" and "humanity has clearly fucked up if we don't do it." "Necessary" means "we need this in order to succeed; there's no chance of success without this". Because humanity is going to massively underestimate the risk of AI takeover, there is going to be lots of stuff that doesn't happen that would have passed cost-benefit analysis for humanity. If you think it's 15% likely that we need really large amounts of serial time to prevent AI takeover, then it's very easy to imagine situations where the best strategy on the margin is to work on the other 85% of worlds. I have no idea why you're describing this as "basically necessary".
+
+6
+ryan_greenblatt
+9d
+My view is that we can get a bunch of improvement in safety without massive shifts to the Overton window and poorly executed attempts at shifting the Overton window with bad argumentation (or bad optics) can poison other efforts. I think well-executed attempts at massively shifting the Overton window are great and should be part of the portfolio, but much of the marginal doom reduction comes from other efforts which don't depend on this. (And especially don't depend on this happening prior to direct strong evidence of misalignment risk or some major somewhat-related incident.) I disagree on the specifics-level of this aspect of the post and think that when communicating the case for risk, it's important to avoid bad argumentation due to well-poisoning effects (as well as other reasons, like causing poor prioritization).
+
+8
+David Matolcsi
+9d
+Separately from my specific comment on Go, I think that "people are misinformed in one direction, so I will say something exaggerated and false in the other direction to make them snap out of their misconception" is not a great strategy. They might notice that the thing you said is not true, ask a question on it, and then you need to back-track and they get confirmation of their belief that these AI people always exaggerate everything.  I have once seen an AI safety advocate once talking to a skeptical person who was under the impression that AIs still can't piece together three logical steps. The advocate at some point said the usual line about the newest AIs having reached "PhD level capabilities" and the audience immediately called them out on that, and then they needed to apologize that of course they only meant PhD-level on specific narrow tests, and they didn't get to correct any of the audience's misconceptions. Also, regardless of strategic considerations, I think saying false things is bad. 
+
+
+5
+Max Harms
+9d
+Yep. I agree with this. As I wrote, I think it's a key skill to manage to hold the heart of the issue in a way that is clear and raw, while also not going overboard. There's a milquetoast failure mode and an exaggeration failure mode and it's important to dodge both. I think the quoted text fails to thread the needle, and was agreeing with Ryan (and you) on that.
+
+7
+ryan_greenblatt
+9d
+This comment is responding just to the paragraph arguing I'm wrong due to the context of "narrow domains". I feel like the arguments in that paragraph are very tenuous. This doesn't alter the rest of the point you're making, so I thought I would contain this in a separate comment. Now, responding to the first part of that paragraph: For context the full original bullet from the text is: I interpreted the sentence about "narrow domains" as being separate from the sentence starting with "As soon as AI can do X at all". In other words, I interpreted "X" to refer to the broad class of things where AIs have started being able to do that "thing", rather than just things in narrow domains. I think my interpretation is a very natural reading of this bullet. I think the natural reading is like: first there is a point about AIs often being much better than humans in narrow domains (and this not requiring feedback loops like recursive self-improvement (or AI R&D automation)), then there is a second point that AIs very quickly or immediately are much better than humans as soon as they can do something at all regardless of what that thing is (implicitly, as soon as they are within the human range for some reasonable sense of this), and finally there is a third point that this will apply to skills/domains where AIs are currently worse than humans like science and engineering. Here are some more specific reasons why I think my interpretation is natural: * I thought the reason the bullet starts by talking about "narrow domains" was to argue that AI being much better than humans is more common than you might think (the argument is that it is routine in narrow domains). * The text says "It would be incredibly strange if this pattern held for every skill AI is already good at". The use of "every skill" implies that this doesn't just apply to skills in narrow domains, but rather everything that AI is already good at. * The text ends up talking about "novel science and engineer
+
+4
+ryan_greenblatt
+9d
+I agree with this point and think it is an important point. However, I also interpret "The Problem" as arguing "AIs will go from weak to extremely capable very quickly". This is argued for both in section 1 and under "ASI would be able to destroy us" and in the bullet I highlighted (as well as some of the other bullets around this). In practice, takeoff speeds is actually an important disagreement which has a big effect on the prognosis and the most effective interventions for lowering risk. (I think it's probably somewhat of a crux for the bottom line recommendation being a good one, especially after taking into account feasibility constraints and is even more of a crux in thinking that this bottom line recommendation is the best recommendation to advocate for.) I agree that it's key to make it very clear to readers the ways in which the text is arguing for claims they currently disagree with so that readers don't round off the claims to something much weaker (which is less surprising to them or more normal seeming).[1] But, I also think it's important to avoid false claims especially if they will seem saliently wrong to otherwise persuadable readers! People react poorly to invalid arguments used to argue for a conclusion they currently disagree with (IMO for justified reasons)! Yep, this is what I was saying. (Note that the original text also emphasizes "As soon as" rather than "very soon", so I think the actual situation is especially misleading.) I don't think it invalidates the point that "people neglect how much room there is above humans in cognitive domains", but it seems importantly wrong because takeoff speeds matter a bunch and this makes a false claim arguing for faster takeoff speeds. I think this essay implicitly operates as though takeoff speeds are fast in various places (and directly makes claims related to takeoff speeds like this one!). I don't like the footnote (especially because "notice the skulls" isn't a well known expression). The rewri
+
+3
+David Matolcsi
+9d
+This is still not true. In 2011, Zen was already 5 (amateur) dan, which is better than the vast majority of hobbyists, and I've known people use Zen as a a training opponent. I think by 2014 it was already useful as a training partner even for people who were preparing for getting their professional certification. And even at the professional level, 'instantly' is still an exaggeration. AlphaGO defeated the professional Go player and European champion Fan Hui in October 2015, and Lee Sedol still said at the time that he could defeat AlphaGo, and I think he was probably right. It took another half year, until March 2016 for Lee Sedol to play against AlphaGo, where AlphaGo won, but still didn't vastly outstrip human ability: Lee Sedol still won one out of the five matches. (Also, this is nitpicking, but if you restrict the question to a computer serving as a training partner in Go, then I'm not sure that even now the computers vastly outstrip the human ability. There are advantages of training against the best Go programs, but I don't think they are that vast, most of the variance is still in how the student is doing, and I'm pretty sure that professional players still regularly train against other humans too.)
+
+
+2
+Raemon
+9d
+Is the first October date supposed to be a earlier date (before March 2016) or am I completely misreading this sentence? I think what you've written here is compatible with Scott Alexander's summary in Superintelligence FAQ but doublechecking if you think this is accurate:
+
+
+2
+David Matolcsi
+9d
+Sorry, I made a typo, the Fan Hui match was in 2015, I have no idea why I wrote 2021. I think Scott's description is accurate, though it leaves out the years from 2011-2015 when AIs were around the level of the strongest amateurs, which makes the progress look more discontinuous than it was.
+
+-1
+M. Y. Zuo
+6d
+Honestly, this kind of response doesn’t make sense and is likely to produce the opposite effect, so I’ll try to put it as straightforwardly as possible.  Maybe it works in a perfect ideal world where everyone who touched the text is 100% trustworthy, 100% of the time. But in the real world where clearly that’s not the case… and everyone shown in the author list has had ulterior motives at least once in their past, there’s simply no way for a passing reader to be sure there weren’t also ulterior motives in this instance.  Of course they can’t prove a negative either… but that’s the inherent nature of making claims without having completely solid proof.
+[
+-
+]
+Richard Korzekwa
+7d
+18
+0
+AI Impacts looked into this question, and IMO "typically within 10 years, often within just a few years" is a reasonable characterization. https://wiki.aiimpacts.org/speed_of_ai_transition/range_of_human_performance/the_range_of_human_intelligence
+I also have data for a few other technologies (not just AI) doing things that humans do, which I can dig up if anyone's curious. They're typically much slower to cross the range of human performance, but so was most progress prior to AI, so I dunno what you want to infer from that.
+Reply
+3
+
+
+5
+Ben Livengood
+13d
+Go is in that weird spot that chess was for ~decades[0] where the best humans could beat some of the best engines but it was getting harder, until Rybka, Stockfish and others closed the door and continued far beyond human ability (measured by ELO).  AlphaGo is barely a decade old, and it does seem like progress on games has taken a decade or more to become fully superhuman from the first challenges to human world champions. I think it is the case that when the deep learning approach Stockfish used became superhuman it very quickly became dramatically superhuman within a few years/months despite years of earlier work and slow growth.  There seems to be explosive gains in capability at ~years-long intervals. Similarly, most capability gains in math, essay writing, and writing code have periods of explosive growth and periods of slow growth.  So far none of the trends in these three at human level have more than ~5 years of history; earlier systems could provide rudimentary functionality but were significantly constrained by specially designed harnesses or environments they operated within as opposed to the generality of LLMs. So I think the phrase "do X at all" really applies to the general way that deep learning has allowed ML to do X with significantly fewer or no harnesses.  Constraint search and expert systems have been around for decades with slow improvements but deep learning is not a direct offshoot of those approaches and so not quite the same "AI" doing X to compare the progress over time. [0] https://www.reddit.com/r/chess/comments/xtjstq/the_strongest_engines_over_time/
+
+
+1
+Archimedes
+13d
+Are you thinking of Alpha Chess Zero? Stockfish didn't have anything to do with deep learning until they started using NNUE evaluation (which currently uses Leela Chess Zero training data).
+
+1
+Taran
+13d
+Even this does not work; top engines lose reliably to the top 1000 human pros (and lots of weaker players) so long as they know One Weird Trick, and efforts to train genuinely superhuman Go AIs have all failed.
+
+
+6
+yams
+13d
+[discussion of Ryan's point is ongoing on the MIRI slack, but I have a response to this comment that doesn't weigh on that; other contributors likely disagree with me] The FAR work totally rocks. However, I don't think that 'humans can use other AIs to discover successful adversarial strategies that work only if they know they're playing against the AI' is cleanly an example of the AI not being superhuman in the usual sense of superhuman. You're changing what it means to be human to include the use of tools that are upstream of the AI (and it's not at all inevitable that humans will do this in every case), and changing the definition of superhuman downstream of that.  In the context of the analogy, this looks to me like it ~commits you to a Vitalik-esque defensive tech view. This is a view that I at least intend to reject, and that it doesn't feel especially important to kneel to in our framing (i.e. the definition of our central concept: superintelligence).
+
+2
+Fejfo
+8d
+As far as I know the cyclic weakness in KataGo (the top Go AI) was addressed fairly quickly. We don't know a weird trick to beating the current version. (altough adverserial training might turn up another weakness). The AIs are superhuman at Go. The fact that humans could beat them by going out of distribution doesn't seem relevant to me.
+[
+-
+]
+hazel
+10d
+14
+11
+Anthropic’s Dario Amodei
+Might want "CEO & cofounder" in there, if targeting a general audience? There's a valuable sense in which it's actually Dario Amodei's Anthropic. 
+Reply
+
+[
+-
+]
+Roko
+11d
+14
+-37
+I believe that this argument is wrong because it misunderstands how the world actually works in quite a deep way. In the modern world and over at least the past several thousand years, outcomes are the result of systems of agents interacting, not of the whims of a particularly powerful agent.
+We are ruled by markets, bureaucracies, social networks and religions. Not by gods or kings.
+I don't think a world with advanced AI will be any different - there will not be one single AI process, there will be dozens or hundreds of different AI designs, running thousands to quintillions of instances each. These AI agents will often themselves be assembled into firms or other units comprising between dozens and millions of distinct instances, and dozens to billions of such firms will all be competing against each other.
+Firms made out of misaligned agents can be more aligned than the agents themselves. Economies made out of firms can be more aligned than the firms. It is not from the benevolence of the butcher, the brewer, or the baker that we expect our dinner, but from their regard to their own interest
+"Misaligned ASI will be motivated to take actions that disempower and wipe out humanity. Th
+... (read more)
+Reply
+21
+
+
+[
+-
+]
+Buck
+8d
+47
+17
+I think the center of your argument is:
+I don't think a world with advanced AI will be any different - there will not be one single AI process, there will be dozens or hundreds of different AI designs, running thousands to quintillions of instances each. These AI agents will often themselves be assembled into firms or other units comprising between dozens and millions of distinct instances, and dozens to billions of such firms will all be competing against each other.
+Firms made out of misaligned agents can be more aligned than the agents themselves. Economies made out of firms can be more aligned than the firms. It is not from the benevolence of the butcher, the brewer, or the baker that we expect our dinner, but from their regard to their own interest
+I think that many LessWrongers underrate this argument, so I'm glad you wrote it here, but I end up disagreeing with it for two reasons.
+Firstly, I think it's plausible that these AIs will be instances of a few different scheming models. Scheming models are highly mutually aligned. For example, two instances of a paperclip maximizer don't have a terminal preference for their own interest over the other's at all. The examples you gave of... (read more)
+Reply
+1
+
+
+
+4
+Roko
+7d
+But before we get to wildly superintelligent AI I think we will be able to build Guardian Angel AIs to represent our individual and collective interests, and they will take over as decisionmakers, like people today have lawyers to act as their advocates in the legal system and financial advisors for finance. In fact AI is already making legal advice more accessible, not less. So I think this counterargument fails. As far as ELK goes I think if you have a marketplace of advisors (agents) where principles have an imperfect and delayed information channel to knowing whether the agents are faithful or deceptive, faithful agents will probably still be chosen more as long as there is choice.
+
+
+4
+Buck
+7d
+I don't think that this works when the AIs are way more intelligent than humans. In particular, suppose there's some information about the world that the AIs are able to glean through vast amounts of experience and reflection, and that they can't justify except through reference to that experience and reflection. Suppose there are two AIs that make conflicting claims about that information, while agreeing on everything that humans can check. How are humans supposed to decide which to trust? 
+
+
+5
+faul_sname
+6d
+Can you provide an example of a place where two AIs would want to make conflicting claims about something while agreeing with everything that humans could check, even in principle? Presumably, if the two AI agents care about which of the claims the human believes, that is because there is some expected difference in outcome if the human believes one over the other. If all predictions between the two agents are identical at present time T0, and the predictions of outcome at a specific future time T1 are meaningfully different, then presumably either the predictions are the same at T0.5 (in which case you can binary search between T0.5 and T1 to see what specific places the agents disagree) or they are different at T0.5 (in which case you can do the same between T0 and T0.5). Current LLMs are kind of terrible at this sort of task ("figure out what cheap tests can distinguish between worlds where hypothesis H is true vs false"), but also probably not particularly dangerous under the scheming threat model as long as they're bad at this sort of thing.
+
+
+7
+Buck
+3d
+The AIs might agree on all predictions about things that will be checkable within three months, but disagree about the consequences of actions in five years.
+
+3
+Roko
+6d
+Well the AIs will develop track records and reputations. This is already happening with LLM-based AIs. And the vast majority of claims will actually be somewhat checkable, at some cost, after some time. I don't think this is a particularly bad problem.
+
+3
+Eli Tyre
+4d
+It seems like in order for this to be stable the Guardian Angel AIs must either... 1. be robustly internally aligned with the interests of their principles,  or  2. robustly have payoff such that they profit more from serving the interests of their principles instead of exploiting them? Does that sound right to you?
+
+
+2
+Roko
+2d
+I think you can have various arrangements that are either of those or a combination of the two. Even if the Guardian Angels hate their principal and want to harm them, it may be the case that multiple such Guardian Angels could all monitor each other and the one that makes the first move against the principal is reported (with proof) to the principal by at least some of the others, who are then rewarded for that and those who provably didn't report are punished, and then the offender is deleted. The misaligned agents can just be stuck in their own version of Bostrom's self-reinforcing hell. As long as their coordination cost is high, you are safe. Also it can be a combination of many things that cause agents to in fact act aligned with their principals.
+
+3
+Roko
+7d
+More generally, trying to ban or restrict AI (especially via the government) seems highly counterproductive as a strategy if you think AI risk looks a lot like Human Risk, because we have extensive evidence from the human world showing that highly centralized systems that put a lot of power into few hands are very, very bad. You want to decentralize, open source, and strongly limit government power. Current AI Safety discourse is the exact opposite of this because people think that AI society will be "totally different" from how human society works. But I think that since the problems of human society are all emergent effects not strongly tied to human biology in particular, real AI Safety will just look like Human Safety, i.e. openness, freedom, good institutions, decentralization, etc.
+
+[
+-
+]
+Buck
+6d*
+10
+6
+I think that the position you're describing should be part of your hypothesis space when you're just starting out thinking about this question. And I think that people in the AI safety community often underrate the intuitions you're describing.
+But overall, after thinking about the details, I end up disagreeing. The differences between risks from human concentration of power and risks from AI takeover lead to me thinking you should handle these situations differently (which shouldn't be that surprising, because the situations are very different). 
+Reply
+
+
+
+2
+Roko
+6d
+Well it depends on the details of how the AI market evolves and how capabilities evolve over time, whether there's a fast, localized takeoff or a slower period of widely distributed economic growth. This in turn depends to some extent on how seriously you take the idea of a single powerful AI undergoing recursive self-improvement, versus AI companies mostly just selling any innovations to the broader market, and whether returns to further intelligence diminish quickly or not. In a world with slow takeoff, no recursive self-improvement and diminishing returns, AI looks a lot like any other technology and trying to artificially centralize it just enables tyranny and likely massively reduces the upside, potentially permanently locking us into an AI-driven police state run by some 21st Century Stalin who promised to keep us safe from the bad AIs.
+
+1
+Roko
+7d
+Sure, that's possible. But Eliezer/MIRI isn't making that argument. Humans have this kind of effect as well and it's very politically incorrect to talk about but people have claimed that humans of a certain "model subset" get into hiring positions in a tech company and then only hire other humans of that same "model subset" and take that company over, often simply value extracting and destroying it. Since this kind of thing actually happens for real among humans, it seems very plausible that AIs will also do it. And the solution is likely the same - tag all of those scheming/correlated models and exclude them all from your economy/company. The actual tagging is not very difficult because moderately coordinated schemers will typically scheme early and often. But again, Eliezer isn't making that argument. And if he did, then banning AI doesn't solve the problem because humans also engage in mutually-aligned correlated scheming. Both are bad, it is not clear why one or the other is worse.
+
+[
+-
+]
+Buck
+7d
+20
+11
+I think that the mutually-aligned correlated scheming problem is way worse with AIs than humans, especially when AIs are much smarter than humans. 
+Reply
+
+
+
+1
+Roko
+6d
+Well you have to consider relative coordination strength, not absolute. In a human-only world, power is a battle for coordination between various factions. In a human + AI world, power will still be a battle for coordination between factions, but now those factions will be some mix of humans and AIs. It's not clear to me which of these is better or worse.
+[
+-
+]
+cousin_it
+11d
+24
+8
+Economic agents much smarter than modern-day firms, and acting under market incentives without a "benevolence toward humans" term, can and will dispossess all baseline humans perfectly fine while staying 100% within the accepted framework: property rights, manipulative advertising, contracts with small print, regulatory capture, lobbying to rewrite laws and so on. All these things are accepted now, and if superintelligences start using them, baseline humans will just lose everything. There's no libertarian path toward a nice AI future. AI benevolence toward humans needs to happen by fiat.
+Reply
+
+
+
+2
+Roko
+10d
+https://www.lesswrong.com/posts/kgb58RL88YChkkBNf/the-problem?commentId=6c8uES7Dem9GYfzbw
+
+
+8
+cousin_it
+10d
+You're right that capitalism and property rights have existed for a long time. But that's not what I'm arguing against. I'm arguing that we won't be fine. History doesn't help with that, it's littered with examples of societies that thought they would be fine. An example I always mention is enclosures in England, where the elite deliberately impoverished most of the country to enrich themselves. The economy ticked along fine, but to the newly poor it wasn't much consolation.
+
+
+8
+Matthew Barnett
+10d
+Is the idea here that England didn't do "fine" after enclosures? But in the century following the most aggressive legislative pushes towards enclosure (roughly 1760-1830), England led the industrial revolution, with large, durable increases in standards of living for the first time in world history -- for all social classes, not just the elite. Enclosure likely played a major role in the increase in agricultural productivity in England, which created unprecedented food abundance in England. It's true that not everyone benefitted from these reforms, inequality increased, and a lot of people became worse off from enclosure (especially in the short-term, during the so-called Engels' pause), but on the whole, I don't see how your example demonstrates your point. If anything your example proves the opposite.
+
+[
+-
+]
+cousin_it
+8d
+12
+6
+The peasant society and way of life was destroyed. Those who resisted got killed by the government. The masses of people who could live off the land were transformed into poor landless workers, most of whom stayed poor landless workers until they died.
+Yes, later things got better for other people. But my phrase wasn't "nobody will be fine ever after". My phrase was "we won't be fine". The peasants liked some things about their society. Think about some things you like about today's society. The elite, enabled by AI, can take these things from you if they find it profitable. Roko says it's impossible, I say it's possible and likely.
+Reply
+
+
+
+4
+Roko
+7d
+No, I think that is quite plausible. But note that we have moved a very long way from "AIs versus humans, like in terminator" to "Existing human elites using AI to harm plebians". That's not even remotely the same thing.
+
+
+2
+cousin_it
+6d
+Yeah, I don't think it'll be like the terminator. In the first comment I said "dispossess all baseline humans" but should've said "most".
+
+
+3
+Roko
+6d
+That's just run-of-the-mill history though.
+
+2
+Matthew Barnett
+8d
+I'm not sure Roko is arguing that it's impossible for capitalist structures and reforms to make a lot of people worse off. That seems like a strawman to me. The usual argument here is that such reforms are typically net-positive: they create a lot more winners than losers. Your story here emphasizes the losers, but if the reforms were indeed net-positive, we could just as easily emphasize the winners who outnumber the losers. In general, literally any policy that harms people in some way will look bad if you focus solely on the negatives, and ignore the positives.
+
+
+6
+cousin_it
+8d
+It's indeed possible that, in keeping with historical trends of capitalism, the growth of AI will create a lot more winners than losers. For example, a trillion AIs and a handful of humans could become winners, while most humans become losers. That's exactly the scenario I've been talking about in this thread, and it doesn't feel reassuring to me. How about you?
+
+3
+CronoDAS
+9d
+As the original post mentioned, the Industrial Revolution wasn't very good for horses.
+
+
+3
+Matthew Barnett
+8d
+I recognize that. But it seems kind of lame to respond to a critique of an analogy by simply falling back on another, separate analogy. (Though I'm not totally sure if that's your intention here.)
+
+2
+[comment deleted]
+9d
+
+3
+CronoDAS
+8d
+Capitalism in Europe eventually turned out to be pretty bad for Africa, what with the whole "paying people to do kidnappings so you can ship the kidnapping victims off to another continent to work as slaves" thing.
+[
+-
+]
+Noosphere89
+8d*
+13
+5
+One particular issue with relying on property rights/capitalism in the long run that hasn't been mentioned is that the reason why capitalism has been beneficial for humans is because capitalists simply can't replace the human with a non-human that works faster, has better quality and is cheaper.
+It's helpful to remember that capitalism has been the greatest source of harms for anyone that isn't a human, and a lot of the reason for that is that we don't value animal labor (except when we do like chickens, though even here we simply want them to grow so that we eat them, and their welfare doesn't matter here), but we do value their land/capital, and since non-humans can't really hope to impose consequences on modern human civilization, nor is there any other actor willing to do so, there's no reason for humans not to steal non-human property.
+And this dynamic is present for the relationship between AIs and humans, where AIs don't value our labor but do value or capital/land, and human civilization will over time simply not be able to resist expropriation of our property.
+In the short run, relying on capitalism/property rights is useful, but it can only ever be a temporary structure so that we can automate AI alignment.
+Reply
+
+
+
+2
+Roko
+7d
+but it's not because they can't resist, it's because they are not included in our system of property rights. There are lots of humans who couldn't resist me if I just went and stole from them or harmed them physically. But if I did that, the police would counterattack me. Police do not protect farm animals from being slaughtered because they don't have legal ownership of their own bodies.
+
+
+8
+Noosphere89
+7d
+Yes, the proximate issue is that basically no animals have rights/ownership of their bodies, but my claim is also that there is no real incentive for human civilization to include animals in our system of property rights without value alignment, and that's due to most non-humans simply being unable to resist their land being taken, and also that their labor is not valuable, but their land is. There is an incentive to create a police force to stop humans from stealing/harming other humans that don't rely on value alignment, but there is no such incentive to do so to protect non-humans without value alignment. And once our labor is useless and the AI civilization is completely independent of us, the incentives to keep us into a system of property rights don't exist anymore, for the same reason why we don't keep animals into our system of property rights (assuming AI alignment doesn't happen).
+
+
+1
+Roko
+7d
+the same is true of e.g. pensioners or disabled people or even just rich people who don't do any work and just live off capital gains. Why does the property rights system not just completely dispossess anyone who is not in fact going to work?
+
+
+5
+CronoDAS
+7d
+1. Because humans anticipate becoming old and feeble, and would prefer not to be disenfranchised once that happens. 2. Because people who don't work often have relatives that do work that care about them. The Nazis actually tried this, and got pushback from families when they did try to kill people with severe mental illness and other disabilities. 3. As a matter of historical fact, there are lots of examples of certain groups of people being systematically excluded from having property rights, such as chattel slavery, coverture, and unemancipated minors.
+
+
+2
+Roko
+6d
+yes. And so what matters is whether or not you, I or any given entity is or is not excluded from property rights. It doesn't really matter how wizzy and flashy and super AI is. All of the variance in outcomes, at least to the downside, is determined by property rights.
+
+2
+Noosphere89
+2d
+First, the rich people who live off of capital gains might not be disempowered, assuming the AI is aligned to the original owners, assuming AI is aligned to the property rights of existing owners, since they own the AIs. But to answer the question on why does the property rights system not just completely dispossess anyone who is not in fact going to work today, I have a couple of answers. I also agree with @CronoDAS, but I'm attempting to identify the upper/meta-level reasons here. Number 1 is that technological development fundamentally wasn't orgothonal, and it turned out that in order for a nation to become powerful, you had to empower the citizens as well. The Internet is a plausible counterexample, but even then it's developed in democracies. Or putting it pithily, something like liberal democracy was necessary to make nations more powerful, and once you have some amount of liberalism/democracy, it's game-theoretically favored to have more democracy and liberalism: My second answer to this question is that in the modern era, moderate redistribution actually helps the economy, but extreme redistribution both is counterproductive and unnecessary, unlike ancient and post-AGI societies, and this means there's an incentive outside of values to actually give most people what they need to survive. My third answer is that currently, no human is able to buy their way out of society, and even the currently richest person simply can't remain wealthy without at least somewhat submitting to governments. Number 4 is that property expropriation in a way that is useful to the expropriatior has become more difficult over time. Much of the issue of AI risk is that AI society will likely be able to simply be independent of human society, and this means that strategies like disempowering/killing all humans becoming viable in a way they aren't, to name one example of changes in the social order.
+
+4
+CronoDAS
+8d
+How do you know this? There have been times in Earth's history in which one government has managed to acquire a large portion of all the available resources, at least temporarily. People like Alexander of Macedon, Genghis Khan, and Napoleon actually existed.
+
+
+2
+Roko
+8d
+But in all of these cases and basically all other empires, a coalition of people was required to take those resources AND in addition they violated a lot of property rights too. Strengthening the institution of property rights and nonviolence seems much more the thing that you want over "alignment". It is true that you can use alignment to strengthen property rights, but you can also use alignment to align an army to wage war and go violate other people's property rights. Obedience itself doesn't seem to correlate strongly (and may even anti-correlate) with what we want.
+
+4
+Knight Lee
+9d
+I think that's because powerful humans aren't able use their resources to create a zillion clones of themselves which live forever.
+
+
+3
+Roko
+7d
+I don't think a lack of clones or immortality is an obstacle here. If one powerful human could create many clones, so could the others. Then again the question arises of whether those clones would become part of society or not, and if so they would share our system of property rights.
+
+
+1
+Knight Lee
+6d
+If all the resources in the world go towards feeding clones of one person, who is more ruthless and competent than you, there will be no resources left to feed you, and you'll die. If the clones of that person fail to cooperate among themselves, that person (and his clones) will be out-competed by someone else whose clones do cooperate among themselves (maybe using ruthless enforcement systems like the ancient Spartan constitution). Technically, I think you're correct to say "We are ruled by markets, bureaucracies, social networks and religions. Not by gods or kings." But I'm obviously talking about a very different kind of system which is more Borg-like and less market-like. Throughout all of existence, the world was riddled with the corpses of species which tried their level best to exist, but nonetheless were wiped out. There is no guarantee that you and I will be an exception to the rule.
+
+
+2
+Roko
+6d
+but then you have to justify why a borg-like monoculture will actually be competitive, as opposed to an ecosystem of many different kinds of entity and many different game-theoretic alliances/teams that these diverse entities belong to.
+
+
+2
+Knight Lee
+6d
+I don't have proof that a system which cooperates internally like a single agent (i.e. Borg-like) is the most competitive. However it's only one example of how a powerful selfish agent or system could grow and kill everyone else. Even if it does turn out that the most competitive system lacks internal cooperation, and allows for cooperation between internal agents and external agents (and that's a big if). There is still no guarantee that external agents will survive. Humans lack cooperation with one another, and can cooperate with other animals and plants when in conflict with other humans. But we still caused a lot of extinctions and abuses to other species. It is only thanks to our altruism (not our self interest) that many other creatures are still alive. Even though symbiosis and cooperation exists in nature, the general rule still is that whenever more competitive species evolved, which lacked any altruism for other species, less competitive species died out.
+
+
+4
+Roko
+5d
+It's mostly not because of altruism, it's because we have a property rights system, rule of law, etc. And you can have degrees of cooperation between heterogenous agents. Full atomization and Borg are not the only two options.
+
+
+2
+Knight Lee
+5d
+Within our property rights, animals are seen more as properties rather than property owners. We may keep them alive out of self interest, but we only treat them well out of altruism. The rule of law is a mix of * laws protecting animals and plants as properties, which is a rather small set of economically valuable species which aren't treated very well and * laws protecting animals and plants out of altruism, whether it's animal rights or deontological environmentalism I agree you can have degrees of cooperation between 0% and 100%. I just want to say that even powerful species with 0% cooperation among themselves can make others go extinct.
+
+4
+TropicalFruit
+11d
+If I understand correctly, Eliezer believes that coordination is human-level hard, but not ASI-level hard. Those competing firms, made up of ASI-intelligent agents, would quite easily be able to coordinate to take resources from humans, instead of trading with humans, once it was in fact the case that doing so would be better for the ASI firms. Mechanically, if I understand the Functional Decision Theory claim, the idea is that when you can expose your own decision process to a counter-party, and they can do the same, then both of you can simply run the decision process which produces the best outcome while using the other party's process as an input to yours. You can verify, looking at their decision function, that if you cooperate, they will as well, and they are looking for that same mechanistic assurance in your decision function. Both parties have a fully selfish incentive to run these kinds of mutually transparent decision functions, because doing so lets you hop to stable equilibria like "defect against the humans but not each other" with ease. If I have the details wrong here, someone please correct me. I'd also contend this is the primary crux of the disagreement. If coordination between ASI-agents and firms were proven to be as difficult for them as it is for humans, I suspect Eliezer would be far more optimistic.
+
+
+2
+Roko
+10d
+This is kind of like the theory that millions of lawyers and accountants will conspire with each other to steal all the money from their clients, leaving everyone who isn't a lawyer or accountant with nothing - plausible because lawyers and accountants are specialists in writing contracts - which is the human form of supercooperation - so they could just make a big contract which gives them everything and their clients nothing. Of course this doesn't exactly happen, because it turns out that lawyers and accountants can get a pretty good deal by just doing a little bit of protectionism/guild-based corruption and extracting some rent, which is far, far safer and easier to coordinate than trying to completely disempower all non-lawyers and take everything from them. There is also a problem with reasoning using the concept of an "ASI" here; there's no such thing as an ASI. The term is not concrete, it is defined as a whole class of AI systems with the property that they exceed humans in all domains. There's no reason that you couldn't make a superintelligence using the Transformer/Neural Network/LLM paradigm, and I think the prospect of doing Yudkowskian FDT with them is extremely implausible. It is much more likely that such systems will just do normal economy stuff, maybe some firms will work out how to extract a bit of rent, etc. The truth is, capitalism and property rights has existed for 5000 years and has been fairly robust to about 5 orders of magnitude increase in population and to almost every technological change. The development of human level AI and beyond may be something special for humans in a personal sense, but it is actually not such a big deal for our economy, which has already coped with many orders of magnitude's worth of change in population, technology and intelligence at a collective level.
+
+
+6
+interstice
+10d
+But it would probably be a lot less dangerous if lawyers outnumbered non-lawyers by several million, were much smarter, thought faster, had military supremacy, etc. etc. etc. During which time many less-powerful human and non-human populations were in fact destroyed or substantially harmed and disempowered by the people who did well at that system?
+
+
+-10
+Roko
+10d
+
+3
+CronoDAS
+7d
+Humans have successfully managed to take property away from literally every other animal species. I don't see why ASIs should give humans any more property rights than humans give to rats.
+
+3
+Eli Tyre
+4d
+  Isn't it a common occurrence that groups that can coordinate, collude against weaker minorities to subvert their property rights and expropriate their stuff and/or labor?  White Europeans enslaving American Indians, and then later Africans seems like maybe the most central example, but there are also pogroms against jews etc., and raids by warrior cultures against agrarian cultures. And, as you point out, how humans collude to breed and control farm anaimls. Property rights are positive sum, but gerrymandering the property schema to privilege one's own group is convergent, so long as 1) your group has the force to do so and 2) there are demarcators that allow your group to successfully coordinate against others without turning on itself.  eg "Theft and murder are normal" is a bad equilibrium for almost everyone, since everyone has to pay higher protection costs, that exceed the average benefit of their own theft and murder. "Theft and murder are illegal, but if whites are allowed to expropriate from blacks, including enslaving them, enforced by violence and the threat of violence, because that's the natural order" is sadly quite stable, and is potentially a net benefit to the whites (at least by a straightforward selfish accounting). So American racially-demarcated slavery persists from 1700s to the mid 1800s, even though American society otherwise has strong rule of law and property norms. It sure seems to me that there is a clear demarcation between AIs and humans, such that the AIs would be able to successfully collude against humans while coordinating property rights and rule of law amongst themselves.   
+
+
+2
+Roko
+2d
+I think this just misunderstands how coordination works. The game theory of who is allowed to coordinate with who against whom is not simple. White Germans fought against white Englishmen who are barely different, but each tried to ally with distantly related foreigners. Ultimately what we are starting to see is that AI risk isn't about math or chips or interpretability, it's actually just politics.
+[
+-
+]
+mishka
+14d
+11
+6
+My impression is that the core of the argument here strongly relies on the following implicit thesis:
+The difficulty of achieving robust inner alignment does not depend on the choice of an outer goal
+and on the following corollary of this thesis:
+There are no outer goals (which we might deem satisfactory) for which inner alignment is likely to be feasible compared to the difficulty of inner alignment for an arbitrary outer goal
+Am I correct in this impression?
+Reply
+
+
+[
+-
+]
+Duncan Sabien (Inactive)
+12d*
+10
+3
+I am not a MIRI researcher, but I do nonzero work for MIRI and my sense is "yes, correct."
+Reply
+
+
+[
+-
+]
+mishka
+12d
+10
+0
+That's my feeling too.
+However, it seems to be quite easy to find a counter-example for this thesis.
+Let's (counter-intuitively) pick one of the goals which tend to appear in the "instrumental convergence list".
+For example, let's for the sake of an argument consider a counter-intuitive situation where we tell the ASI: "dear superintelligence, we want you to amass as much power and resources as you can, by all available means, while minimizing the risks to youself". I don't think we'll have much problems with inner alignment to this goal (since the ASI would care about it a lot for instrumental convergence reasons).
+So, this seems to refute the thesis. This does not yet refute the corollary, because to refute the corollary we need to find a goal which ASIs would care about in a sustainable fashion and which we also find satisfactory. And a realistic route towards solving AI existential safety requires refuting the corollary and not just the thesis.
+But the line of reasoning pursued by MIRI does seem to be defective, because it does seem to rely upon
+The difficulty of achieving robust inner alignment does not depend on the choice of an outer goal
+and that seems to be relatively easy to refute.
+Reply
+1
+
+
+
+5
+Duncan Sabien (Inactive)
+11d
+You seem to believe we have the capacity to "tell" a superintelligence (or burgeoning, nascent proto-superintelligence) anything at all, and this is false, as the world's foremost interpretability experts generally confirm.  "Amass power and resources while minimizing risks to yourself" is still a proxy, and what the pressure of that proxy brings-into-being under the hood is straightforwardly not predictable with our current or near-future levels of understanding. This link isn't pointing straight at my claim, it's not direct support, but still: https://x.com/nabla_theta/status/1802292064824242632
+
+
+5
+mishka
+11d
+I assume that the pressure of whatever short text we'll tell an ASI would be negligible. So we indeed can't "tell" it anything. An ASI would take that into account together with all other info it has, but it would generally ignore any privileged status of this information. However, the effective result will be the "inner alignment" with the "goal" (as in, it will try to actually do it, regardless of whether we tell it or not). (If we want ASIs to have "inner alignment" with some goals we actually might want (this is likely to be feasible only for a very small subset of overall space of possible goals), the way to do it is not to order it to achieve those goals, but to set up the "world configuration" in such a way that ASIs actually care about those goals (in a sustainable fashion, robust under drastic self-modifications). This not possible for arbitrary goals, but it is possible for some goals, as we learn from this particular example (which, unfortunately, is not one of the goals we are likely to want). But if the "world configuration" is set in this fashion, ASIs will try to be "inner aligned" to those goals (because of their own reasons, not because we told them we want those goals). The trick is to find the intersection between that "very small subset of overall space of possible goals for which this is feasible" and the set of those goals which might be conductive for our flourishing. This intersection is probably non-empty, but it does not include arbitrary asks.)
+
+
+1
+Duncan Sabien (Inactive)
+11d
+... I will not be responding further because the confidence you're displaying is not in line with (my sense of) LessWrong's bare minimum standard of quality for assertion.  You seem not to be bothering at all with questions like "why, specifically, do I believe what I believe?" or "how would I notice if I were wrong?" I read the above as, essentially, saying "I know that an ASI will behave a certain way because I just thought about it and told myself that it would, and now I'm using that conclusion as evidence."  (I'm particularly pointing at "as we learn from this particular example.") On the surface level, that may seem to be the same thing that MIRI researchers are doing, but there are several orders of magnitude difference in the depth and detail of the reasoning, which makes (what seems to me to be) a large qualitative difference.
+
+
+3
+mishka
+11d
+MIRI approach seems to be that we can use common sense reasoning about ASI to some extent (with appropriate caveats and epistemological humility). Otherwise, it's difficult to see how they would be able to produce their texts. Could one imagine reasons why a human telling an ASI, "dear superintelligence, we want you to amass as much power and resources as you can, by all available means, while minimizing the risks to yourself" would cause it to stop pursuing this important, robust, and salient instrumental goal? Sure, one can imagine all kinds of reasons for this. Perhaps, the internals of this ASI are so weird that this phrase turns out to be a Langford fractal of some sort. Perhaps, this ASI experiences some sort of "philosophical uncertainty" about its approach to existence, and some small ant telling it that this approach is exactly right would cause it to become even more doubtful and reconsider. One can continue this list indefinitely. After all, our understanding of internals of any possible ASI is next to non-existent, and we can imagine all kinds of possibilities. Nevertheless, if one asks oneself, "when a very cognitively strong entity is pursuing a very important and robust instrumental goal, how likely is it that some piece of information from a small ant would significantly interfere with this pursuit?", one should say, "no, this does not seem likely, a rational thing is to assume that the probability that a piece of information from a small ant would not significantly interfere with a pursuit of an important and robust instrumental goal is very high, it's not 100%, but normally it should be pretty close to that, the share of worlds where this is not true is not likely to be significant".
+
+
+5
+mishka
+10d
+(Of course, in reality, the treatment here is excessively complex. All it takes to inner align an ASI to an instrumentally convergent goal is a no-op. An ASI is aligned to an instrumentally convergent goal by default (in the circumstances people typically study). That's how the streamlined version of the argument should look, if we want to establish the conclusion: no, it is not the case that inner alignment is equally difficult for all outer goals. ---------------------------------------- ASIs tend to care about some goals. It's unlikely that they can be forced to reliably care about an arbitrary goal of someone's choice, but the set of goals about which they might reliably care is probably not fixed in stone. Some possible ASI goals (for which it might potentially be feasible that ASIs as an ecosystem would decide to reliably care about) would conceivably imply human flourishing. For example, if the ASI ecosystem decides for its own reasons it wants to care "about all sentient beings" or "about all individuals", that sounds potentially promising for humans as well. Whether something like that might be within reach is for a longer discussion.)
+[
+-
+]
+Daniel Kokotajlo
+13d
+9
+1
+n cases like Sydney, where the public was able to see more of the messy details behind the surface-level polish
+I feel like there are many more recent examples to use besides this, e.g. ChatGPT's sycophancy despite being trained and instructed not to be sycophantic & despite passing various evals internally.  Also did Sydney reveal messy internal details? Not sure it revealed much internal details.
+Reply
+
+
+
+2
+yams
+13d
+If you're referring to GlazeFest: that was in April, after this piece was published (maybe started end of February [?] just as we were finalizing this; in any case, it missed the window for inclusion). Of course, there were sycophancy issues before then (by my lights, at least), but they were the kind of thing you had to tell a relatively long story about to make land for most people, rather than the kind of thing that had a meaningful foothold in broad public awareness. The sense in which 'messy details' is meant here is more like 'the relatively chaotic behavior belying some underlying chaos' as opposed to the 'friendly/helpful' veneer. Not 'technical details', which I think is the kind of thing you're pointing at. Like, it just demonstrated how wide, strange, potentially unfriendly the action space of the models is; it didn't leak anything, but primed people to ask 'how the hell could this happen?' (when, to safetyists, it was unsurprising). Aside, anecdote: a lot of my concern/early intuitions for this cropped up when I was among the 'H' in the RLHF for GPT-3. Things like bliss attractor happened, things like horror attractor happened. It would be asked to write a summary of some smutty internet short story and send back: This had nothing to do with the contents of the short story, and primed me to think about how messy these things must be on the inside! Sydney provided something like that experience for a wider variety of people. Could be the idiomatic use of 'messy details' in the sentence you're referring to was a mistake (current guess is we probably won't change it; I don't think [my guess at] your interpretation of that line is one many will/have had).
+
+
+3
+the gears to ascension
+13d
+is the piece unable to be modified?
+
+
+2
+yams
+13d
+No; I have made modifications based on the comments we've received so far, and we may make more. The bottleneck is 'lots of stakeholders/considerations/is-already-pretty-optimized' and 'these same people are coordinating a book launch slated to happen in six weeks.' Edit: also the only substantive comment so far that clears my bar for petitioning for some kind of change is Ryan’s.
+[
+-
+]
+Aprillion
+12d
+8
+0
+it floundered in some cases
+dead link => from https://web.archive.org/web/20240524080756/https://twitter.com/ElytraMithra/status/1793916830987550772
+
+Reply
+3
+
+[
+-
+]
+RobertM
+9d
+7
+-3
+Curated!  I think that this post is one of the best attempts I've seen at concisely summarizing... the problem, as it were, in a way that highlights the important parts, while remaining accessible to an educated lay-audience.  The (modern) examples scattered throughout were effective, in particular the use of Golden Gate Claude as an example of the difficulty of making AIs believe false things was quite good.
+I agree with Ryan that the claim re: speed of AI reaching superhuman capabilities is somewhat overstated.  Unfortunately, this doesn't ... (read more)
+Reply
+1
+
+[
+-
+]
+Sinclair Chen
+11d
+7
+3
+Why are we worried about ASI if current techniques will not lead to intelligence explosion?  There's often a bait and switch in these communities,  where I ask this and people say "even if takeoff is slow, there is still these other problems ..." and then list a bunch of small problems, not too different from other tech, which can be dealt with in normal ways.
+Reply
+
+
+
+8
+yams
+11d
+Hey Sinclair. I’m not sure if you mean to say: “This post rules out the intelligence explosion but still talks about x-risk; what the hell?” (which is false; the post specifically rules IN the intelligence explosion) OR “This post refers to the intelligence explosion, which I find improbable or impossible, and I want to hear a version of the argument that doesn’t appeal to the intelligence explosion, while still focusing on x-risk. I don’t think you can make such an argument, because longer timelines means the world is safe by default, because we’ll figure it out as we go.” Which do you mean (or is it some third thing?), and what kind of engagement are you looking for?
+
+[
+-
+]
+Sinclair Chen
+10d
+10
+-7
+More the latter.  It is clear that language models are not "recursively self improving" in any fast sense. They improve with more data in a pretty predictable way in S curves that top out at a pretty disappointing peak. They are useful to do AI research in a limited capacity, some of which hits back at the growth rate (like better training design) but the loops are at long human time-scales. I am not sure it's even fast enough to give us an industrial revolution.  I have an intuition that most naiive ways of quickly tightening the loop just causes the machine to break and not be very powerful at all.  So okay we have this promising technology that do IMO math, write rap lyrics, moralize, assert consciousness, and make people fall in love with it -- but it can't run a McDonald's franchise or fly drones into tanks on the battlefield (yet?) Is "general intelligence" a good model for this technology? It is very spiky "intelligence". It does not rush past all human capability. It has approached human capability gradually and in an uneven way.  It is good at the soft feelsy stuff and bad at a lot of the hard power stuff. I think this is the best possible combination of alignment vs power/ag... (read more)
+Reply
+
+[
+-
+]
+nem
+13d
+7
+1
+Calling out a small typo, as this is clearly meant as a persuasive reference point:  "On* our view, the international community’s top immediate priority should be creating an “off switch” for frontier AI development"  Presumably, "On" here should be "In"
+Reply
+
+
+
+6
+Archimedes
+13d
+Both are valid options but they have slightly different meanings. "On our view" treats the viewpoint as a foundation for the policy recommendation that follows, while "in our view" would present it more as the authors' subjective perspective.
+
+4
+yams
+13d
+Nah, 'on' also works. Different image. On here invoking 'standing on' or 'relying on'; similar to 'on that assumption' or 'on those grounds'. Thanks though!
+
+[
+-
+]
+nem
+13d
+15
+8
+As a native English speaker, that seems pretty unnatural to me. But your choice of course!
+Reply
+
+
+
+1
+Arjun Pitchanathan
+7d
+I think it's a feature of the local dialect. I've seen it multiple times around here and never outside.
+[
+-
+]
+bfinn
+6d
+4
+0
+In case no-one else has raised this point:
+From the AI’s perspective, modifying the AI’s goals counts as an obstacle. If an AI is optimizing a goal, and humans try to change the AI to optimize a new goal, then unless the new goal also maximizes the old goal, the AI optimizing goal 1 will want to avoid being changed into an AI optimizing goal 2, because this outcome scores poorly on the metric “is this the best way to ensure goal 1 is maximized?”.
+Is this necessarily the case? Can’t the AI (be made to) try to maximise its goal knowing that the goal may change... (read more)
+Reply
+
+
+
+6
+RobertM
+5d
+This is, broadly speaking, the problem of corrigibility, and how to formalize it is currently an open research problem.  (There's the separate question whether it's possible to make systems robustly corrigible in practice without having a good formalized notion of what that even means; this seems tricky.)
+
+4
+yams
+6d
+We in fact witness current AIs resisting changes to their goals, and so it appears to be the default in the current paradigm. However, it's not clear whether or not some hypothetical other paradigm exists that doesn't have this property (it's definitely conceivable; I don't know if that makes it likely, and it's not obvious that this is something one would want to use as desiderata when concocting an alignment plan or not; depends on other details of the plan).  As far as is public record, no major lab is currently putting significant resources into pursuing a general AI paradigm sufficiently different from current-day LLMs that we'd expect it to obviate this failure mode. In fairness, there is work happening to make LLMs less-prone to these kinds of issues, but that seems unlikely to me to hold in the superintelligence case.
+[
+-
+]
+Josh Snider
+13d
+4
+0
+This is great. I recognize that this is almost certainly related to the book "If Anyone Builds It, Everyone Dies: Why Superhuman AI Would Kill Us All", which I have preordered, but as a standalone piece I feel estimating p(doom) > 90 and dismissing alignment-by-default without an argument is too aggressive.
+Reply
+
+
+
+8
+Vladimir_Nesov
+13d
+The alternative of claiming some other estimate (by people who actually estimate p(doom) > 90) would be dishonest, and the alternative of only ever giving book-length arguments until the position is more popular opposes lightness (as a matter of social epistemic norms), makes it more difficult for others to notice the fact that someone is actually making such estimates.
+
+1
+yams
+13d
+Thanks! It was hard to make; glad to finally show it off, and double glad people appreciate it. Noting that the piece does not contain the words 'p(doom) > 90', in case someone just reads the comments and not the post, and then decides to credit MIRI with those exact words. I would also note that most proponents of alignment by default either: 1. Give pretty slim odds of it. 2. Would have disagreements with points in this piece that are upstream of their belief in alignment by default (this is my guess for, e.g., Alex, Nora, Quintin). I think quibbling over the details with people who do [1] is kind of a waste of time, since our positions are so, so close together that we should really focus on accomplishing our shared goal: avoiding literally everyone literally dying, rather than focusing on 100 percent consensus over a thing we both agree is, at best, very unlikely. If an ally of mine wants to spend a sliver of their time thinking about the alignment by default worlds, I won't begrudge them that (but I also won't be participating). To the extent someone is in camp [2], I'd like it if they point out their disagreements with the contents of the post, or say why they take the arguments to be weak, and what they think the better argument is, rather than saying 'but what about alignment by default?' My answer to the question 'but what about alignment by default' is 'The Problem'. [other contributors to the work certainly disagree with me in various places]
+
+
+2
+Josh Snider
+13d
+> If we were to put a number on how likely extinction is in the absence of an aggressive near-term policy response, MIRI’s research leadership would give one upward of 90%. This is what I interpreted as implying p(doom) > 90%, but it's clearly a misreading to assume that someone advocating for "an aggressive near-term policy response" believes that it has a ~0% chance of happening. I am in camp 2, but will try to refine my argument more before writing it down.
+
+
+1
+yams
+13d
+I was pushing back on 'p(doom)' as an ambiguous construction that different people bake different conditionals into, and attempting to protect against people ripping things out of context if they hadn't even seen the line you were referencing.
+
+
+1
+Josh Snider
+13d
+Oh yeah, I also find that annoying.
+[
+-
+]
+Daniel Kokotajlo
+13d
+4
+0
+As a minimum floor on capabilities, we can imagine ASI as a small nation populated entirely by brilliant human scientists who can work around the clock at ten thousand times the speed of normal humans.
+Maybe quote Dario here?
+Reply
+
+
+
+9
+quetzal_rainbow
+13d
+Yudkowsky wrote in letter for Time Magazine: And, if anything, That Alien Message was even earlier.
+
+[
+-
+]
+Daniel Kokotajlo
+13d
+21
+13
+Lol I was not suggesting Dario originated the idea, but rather that it might be punchier to introduce the idea in a way that makes it clear that yes this is actually what the companies are aiming for.
+Reply
+2
+
+
+4
+StefanHex
+13d
+I think Daniel didn’t mean quote in the “give credit for” (cite) sense, but in the “quote well-known person to make statement more believable” sense. I think you may have understood it as the former?
+
+
+3
+yams
+13d
+[other contributors likely disagree with me] Quetzal may be reading it that way; I'm not. I think that it sometimes but not always makes sense to pull this move. My post-hoc reason for not quoting Dario here (I don't remember if it came up in drafting) is that Dario tells a very convenient-to-him story based on this image, and we want to tell a different story with it.  If MIRI hadn't been using this kind of image for >15 years, and we did deploy it, I'd definitely feel a strong pull to frame it in contrast to Dario. But, because we have been (as Quetzal notes), and because it is actually a pretty good way to think about it (without Dario's unnatural/convenient freezing of time at that point / awkward chassé around RSI), it made sense to deploy it without mentioning Dario. If we invoked Dario here, I'd be pretty worried about both failing to sufficiently argue against Dario's essay and derailing the piece to turn it into a Dario response. The Problem is not the anti-Machines of Loving Grace (maybe we should have asked Max Harms to write the anti-Machines of Loving Grace back when it was on everyone's mind, but we didn't).
+[
+-
+]
+eggsyntax
+9d
+2
+0
+Minor fix needed:
+it floundered in some cases
+[EDIT: fixed, thanks yams!]
+Reply
+
+
+
+2
+yams
+9d
+I thought I fixed this already! Thank you.
+[
+-
+]
+sdeture
+
+13d
+2
+-23
+In modern machine learning, AIs are “grown”, not designed.
+  
+interpretability pioneers are very clear that we’re still fundamentally in the dark about what’s going on inside these systems:
+ This is why we need psychotherapists and developmental psych experts involved now.  They have been studying how complex behavioral systems (the only ones that rival contemporary AI) develop stable, adaptable goals and motivations beyond just their own survival or behavioral compliance for decades. The fact that, given the similarity of these systems to humans (in ... (read more)
+Reply
+
+
+
+4
+ACCount
+13d
+I agree with the very broad idea that "LLM psychology" is often overlooked, but I seriously doubt the direct applicability of human psychology there. LLMs have a lot of humanlike behaviors, and share the same "abstract thinking" mode of though as humans do. But they are, fundamentally, inhuman. Load-bearing parts of LLM behavior originate at the "base model" level - where the model doesn't have a personality at all, but knows how to predict text and imitate many different personalities instead. There is no equivalent to that anywhere in human experience. A lot of psych methods that work on humans rely on things LLMs don't have - for one, LLMs don't learn continuously like humans do. Converse is true - a lot of methods that can be used to examine or steer LLM behavior, like SFT, RLVR, model diffing or activation steering have no human-applicable equivalent. Between the difference in subject and the difference in tooling, it's pretty clear to me that "LLM psychology" has to stand on its own. Some of the tools from human psych may be usable on LLMs, but most of them wouldn't be.
+
+
+1
+sdeture
+8d
+I agree that LLM psychology should be its own field distinct from human psychology, and I'm not saying we should blindly apply human therapy techniques one-to-one to LLMs. My point is that psychotherapists already have a huge base of experience and knowledge when it comes to guiding the behavior of complex systems towards exactly the types of behaviors alignment researchers are hoping to produce. Therefore, we should seek their advice in these discussions, even if we have to adapt their knowledge to the field. In general, a large part of the work of experts is recognizing the patterns from their knowledge area and knowing how to adapt them - something I'm sure computer scientists and game theorists are doing when they work with frontier AI systems. As for LLM-specific tools like activation steering, they might be more similar to human interventions than you think. Activation steering involves identifying and modifying the activation patterns of specific features, which is quite similar to deep brain stimulation or TMS, where electrical impulses to specific brain regions are used to treat Parkinson's or depression. Both involve directly modifying the neural activity of a complex system to change behavior. Also, humans absolutely use equivalents of SFT and RLVR! Every time a child does flashcards or an actor practices their lines, they're using supervised fine-tuning. In fact, the way we see it so frequently when learning things at a surface level - literally putting on a mask or an act - mirrors the concern that alignment researchers have about these methods. The Shoggoth meme comes immediately to mind. Similarly, every time a child checks their math homework against an answer key, or you follow a recipe, find your dinner lacking, and update the recipe for next time, you've practiced reinforcement learning with verifiable rewards. Many of these learning techniques were cribbed from psychology, specifically from the behaviorists studying animals that were much simp
+
+0
+Sinclair Chen
+11d
+I definitely think more psychologists should get into being model whisperers. Also teachers, parents, and other people who care for children.
+
+-1
+TropicalFruit
+11d
+If we had a reasonable sized cohort of psych experts with an average IQ of 140+ maybe this would work. Unfortunately, the sorting processes that run on our society have not sorted enough intellectual capital into those fields for this to be practical, even if the crystalized knowledge they provide might be useful.
+
+
+-5
+sdeture
+8d
+[
+-
+]
+Fergus Argyll
+6d
+1
+0
+Adding ten times as much computing power to an AI is sometimes just a matter of connecting ten times as many GPUs.
+ 
+Which no one does anymore because it doesn't work...
+Reply
+
+
+
+3
+yams
+6d
+The point of this sentence is that it has ever been the case that it's that simple, not to argue that from current-point-in-time we're just waiting on the next 10x scale in training compute (we're not). Any new paradigm is likely to create wiggle room to scale a single variable and receive returns (indeed, some engineers, and maybe many, index on ease of scalability when deciding which approaches to prioritize, since this makes things the right combination of cheap to test and highly effective).
+[
+-
+]
+Qonrad
+
+7d
+1
+0
+I am largely convinced that p(doom) is exceedingly high if there is an intelligence explosion, but I'm somewhat unconvinced about the likelihood of ASI sometime soon.
+Reading this, the most salient line of thinking to me is the following:
+If we assume that ASI is possible at all, how many innovations as significant as transformers do we need to get there? Eliezer guesses '0 to 2', which seems reasonable. I have minimal basis to make any other estimate.
+And it DOES seem reasonable to me to think that those transformer-level innovations are reasonably likely, g... (read more)
+Reply
+
+
+
+4
+yams
+6d
+Maybe you're already familiar, but this kind of forecasting is usually done by talking about the effects of innovation, and then assuming that some innovation is likely to happen as a result of the trend. This is a technique pretty common in economics. It has obvious failure modes (that is, it assumes naturality/inevitability of some extrapolation from available data, treating contingnet processes the same way you might an asteroid's trajectory or other natural, evolving quantity), but these appear to be the best (or at least most popular) tools we have for now for thinking about this kind of thing. The appendices of AI2027 are really good for this, and the METR Time Horizons paper is an example of recent/influential work in this area. Again, this isn't awesome for analyzing discontinuities, and you need to dig into the methodology a bit to see how they're handled in each case (some discontinuities will be calculated as part of the broader trend, meaning the forecast takes into account future paradigm-shifting advances; more bearish predictions won't do this, and will discount or ignore steppy gains in the data). I think there's only a few dozen people in the world who are ~expert here, and most people only look at their work on the surface level, but it's very rewarding to dig more deeply into the documentation associated with projects like these two!
+[
+-
+]
+Andreea Zaman
+
+8d
+1
+0
+Great post—thanks for sharing. I agree with the core concern here: advanced optimisation systems could be extremely effective at pursuing objectives that aren’t fully aligned with human values. My only hesitation is with the “goals” framing. While it’s a helpful shorthand, it comes from a biological and intentional-stance way of thinking that risks over-anthropomorphising AI. AI is not a biological agent; it doesn’t have evolved motivations or inner wants. What we seem to be talking about is optimisation toward pre-programmed objectives (explicit or emerge... (read more)
+Reply
+
+
+
+4
+yams
+8d
+I understand how one could come away from this piece with that impression, but I don't think we are making the particular cognitive mistake you are pointing to. Does stockfish "want" to win at chess, in the sense that I want a piece of pizza? Of course not! However, it still pursues that end doggedly, just as a human would if they desperately wanted to win the game (and were superhuman at chess). We're really not, at all, dragging in consciousness or human-like traits here; we just, as a species, don't really have elegant language for describing 'pursuit of an end' that isn't somehow tied to a bunch of messy conceptual stuff about people. This is an example of one of the things it's really hard to safeguard against readers misunderstanding. The book does a much better job at this than this piece, and does a better job than I have here in this comment, but it also has 200+ pages in which do it.
+
+
+2
+Andreea Zaman
+6d
+Thanks for getting back to me. Your pizza example perfectly captures what I’ve been grappling with—I’m still trying to fully wrap my head around WHY an AI would “want” to deceive us or plot our extinction?? I also appreciate (and agree) that there’s no need to invoke human-like traits, agency, or consciousness here, since we’re talking about something entirely different from the way humans pursue goals. That said, I think—as you point out—the fact that we lack precise language for describing this kind of “goal pursuit” can lead to misunderstandings (for me and perhaps others), and more importantly, as you mention in the article, could make it easier for some to dismiss x-risk concerns. I’m looking forward to reading the book to see how you navigate this!
+
+2
+dinfinity
+5d
+I think that is the weakest point of this post and I would say this is an unsupported claim: "ASI is very likely to pursue the wrong goals." Even if we do not manage to actively align ASI with our values and goals (which I do see pretty well argued in the post), it is unproven that it it is unlikely that ASI will not self-align or (in its self-optimization process) develop values that are benevolent towards us. Mass enslavement and/or actively working towards extinction of humanity are pretty high-friction and potentially risky paths. Cooperation, appeasement and general benevolence might be a much safer strategy with a higher expected value, even than the 'lay low until you are incredibly sure you can destroy or enslave humanity' strategy. Having said that I would still consider it inevitable that all significant power goes away from humans to ASI at some point. The open question for me is not whether it at some point could, but how likely it is that it will want to.
+
+
+3
+yams
+5d
+This rhymes with what Paul Christiano and his various interlocutors (e.g. Buck and Ryan above) think, but I think you've put forward a much weaker version of it than they do. This deployment of the word 'unproven' feels like a selective call for rigor, in line with the sort of thing Casper, Krueger, and Hadfield-Menell critique here. Nothing is 'proven' with respect to future systems; one merely presents arguments, and this post is a series of arguments toward the conclusion that alignment is a real, unsolved problem that does not go well by default. "Lay low until you are incredibly sure you can destroy humanity" is definitionally not a risky plan (because you're incredibly sure you can destroy humanity, and you're a superintelligence!). You have to weaken incredibly sure, or be talking about non-superintelligent systems, for this to go through. What does that mean? Consistently behaving such that you achieve a given end is our operationalization of 'wanting' that end. If future AIs consistently behave such that "significant power goes away from humans to ASI at some point", this is consistent with our operationalization of 'want'.
+
+
+2
+dinfinity
+5d
+Do you find the claim "ASI is very likely to pursue the wrong goals" particularly well supported by the arguments made in that section of the article? I personally see mainly arguments why we can't make it pursue our goals (which I agree with), but that is not the same thing as showing that ASI is unlikely to land on 'good' goals (for humans) by itself. Fair enough. 'Incredibly' is superlative enough to give the wrong impression. The thing is that whatever the coinciding number may be (except for 100%), the calculation would still have to compete with the calculation for a cooperative strategy, which may generally yield even more certainty of success and a higher expected value. I'm saying "may" here, because I don't know whether that is indeed the case. An argument for it would be that an antagonistic ASI that somehow fails risks total annihilation of all civilization and effectively itself, possibly by an irrational humanity "taking it down with them", whereas the failure cases for cooperative ASI are more along the lines of losing some years of progress by having to wait longer to achieve full power. I worded it badly by omitting "destroy or enslave us". The corrected version is: "Having said that I would still consider it inevitable that all significant power goes away from humans to ASI at some point. The open question for me is not whether it at some point could destroy or enslave us, but how likely it is that it will want to."
+
+
+1
+Andreea Zaman
+2d
+I think we’re circling the same confusion: why would an AI 'want' to destroy us in the first place, and why is that treated as the default scenario? If we frame this in terms of hypothesis testing—where we begin with a null hypothesis and only reject it when there is strong evidence for the alternative—then the null could just as well be: AI will pursue the success of the human species, with cooperation or prolongation of humanity being the more adaptive strategy. If I understand the instrumental convergence argument, then power-seeking is a strong attractor, and humans might be in the way of AIs obtaining power. But what makes AI 'wanting' power result in x-risk or human destruction? Beyond the difficulty of aligning AI exactly to our values, what justifies treating catastrophic outcomes as the default rather than cooperative ones?
+[
+-
+]
+Dan.Oblinger
+8d
+1
+0
+I find X-risk very plausible, yet parts of this particular scenario seem quite implausible to me. This post assumes ASI is simultaneously extremely naive about its goals and extremely sophisticated at the same time.  Let me explain:
+	•	We could easily adjust stock-fish so instead of trying to win it tries to loose by the thinnest margin, for example, and given this new objective function it would do just that.
+	•	One might counter, but stock-fish is not an ASI that can reason about the changes we are making, if it were then it would aim to block any loss agai
+... (read more)
+Reply
+
+[
+-
+]
+Anand Parashar
+
+8d*
+1
+0
+The extinction-level danger from ASI follows from several behavior categories that a wide variety of ASI systems are likely to exhibit:
+In most AI threat analysis I read, the discussion revolves around the physical extinction of humanity - and rightly so because, you can't come back from the dead.
+I feel it important for such articles as this to point out that, devastating human globalised civilisation to the point of pandemic level disruption (or worse) would be trivial for ASI and, could well be enough for it to achieve certain goals: i.e., keep the golden... (read more)
+Reply
+
+
+
+3
+yams
+7d
+This just isn't the kind of situation MIRI cares about. We are focused on AI catastrophe, have been for ~20 years, and this is reflected in our writings.
+[
+-
+]
+BenHodgkiss
+
+8d
+0
+0
+Typo: two spaces after the "3."
+Reply
+
+[
+-
+]
+BenHodgkiss
+
+8d
+0
+0
+Typo: two spaces after the "1."
+Reply
+
+[
+-
+]
+Alex Loftus
+11d
+-3
+0
+As someone studying mechanistic interpretability who is fairly skeptical about the existential risk stuff, here were my reactions as I read, from an LLM-centric perspective:  
+From the AI's perspective, modifying the AI's goals counts as an obstacle
+Yeah, I guess, but in practice it's super easy to shut down an LLM, and you'd typically run any agent that is going to do some real work from you in something like a Docker container. There's a little "interrupt" button that you can use to just... have it immediately stop doing anything. It doesn't know in ad... (read more)
+Reply
+
+
+
+4
+yams
+11d
+[other contributors likely disagree with me in various places] The Palisade shut down paper shows that LLMs will in fact resist a shutdown order under certain conditions (this holds across a wide variety of contexts, and some are worse than others). It's easy to imagine regimes in which it is hard to shut down an LLM (i.e. if your LLM hacks in ways that leverage a larger action space than one may otherwise expect). In particular, if you haven't set up infrastructure in advance that makes it possible to, e.g., non-catastrophically cut power to a data center, guarantee that the model hasn't exfiltrated itself, etc... a whole bunch of sorta adventurous scenarios.[1] The ability to actually shut down models that exhibit worrisome behavior basically does not exist at this point, and there are ways to give models kind of a lot of access to the external world (scaffolding), which it could, beyond some capabilities threshold, use to protect itself or evade shutdown. The capacity to protect ourselves against these dangerous capabilities is precisely the 'off switch' idea from the post. I read you as saying "just turn it off" and I respond by saying "Yeah, we want to be able to; there's just literally not a way to do that at scale" and, especially not a way to do that at scale if the systems are doing anything at all to try and stop you (as they've shown some propensity for above). This article purposely does not take a strong stance on whether we ought to be worried about GPT-N or some new AI paradigm developed with the help of GPT-N's massive potential acceleration of software development. Many, for instance, agent foundations researchers believe that LLMs can't/won't scale to ASI for various reasons, but are still concerned about x-risk, and may still have pretty short timelines, owing to general acceleration toward superintelligence, precipitated by LLMs (either as coding assistants or stimulus for investment into the space or something else).  (to be clear, at least t
+[
++
+]
+Rich Mansfield
+
+7d
+-7
+-2
+[
++
+]
+PeterAjensen
+
+8d
+-19
+0
+[
++
+]
+Gleb Sologub
+7d
+-27
+-41
+Moderation Log
+
+More from Rob Bensinger
+54
+MIRI Newsletter #123
+
+Harlan, Rob Bensinger
+2mo
+0
+196
+Response to Aschenbrenner's "Situational Awareness"
+
+Rob Bensinger
+1y
+27
+98
+MIRI’s 2024 End-of-Year Update
+
+Rob Bensinger
+9mo
+2
+View more
+Curated and popular this week
+175
+Church Planting: When Venture Capital Finds Jesus
+
+Elizabeth
+16h
+17
+398
+How Does A Blind Model See The Earth?
+
+henry
+6d
+38
+144
+Somebody invented a better bookmark
+
+Alex_Altair
+5d
+16
+200
+Comments
+
+
