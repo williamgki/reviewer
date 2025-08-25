@@ -28,7 +28,8 @@
       "topk": 200,
       "weight_semantic": 0.65,
       "weight_bm25": 0.35,
-      "normalize_embeddings": true
+      "normalize_embeddings": true,
+      "batch_size": 128
     },
     "parquet": {
       "max_files": 200,

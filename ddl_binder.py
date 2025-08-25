@@ -858,7 +858,7 @@ class DDLEvidenceBinder:
             
             # Encode texts in batches with progress tracking
             normalize_embeddings = self.semantic_cfg.get("normalize_embeddings", True)
-            batch_size = 128  # Reasonable batch size for BGE-M3
+            batch_size = self.semantic_cfg.get("batch_size", 128)
             total_batches = (len(texts) + batch_size - 1) // batch_size
             
             embeddings_list = []
