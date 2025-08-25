@@ -770,8 +770,11 @@ class DDLEvidenceBinder:
                 metadata = json.load(f)
                 
             if metadata.get('fingerprint') != fingerprint:
-                logger.warning("Index fingerprint mismatch, rebuilding")
-                return False
+                if os.environ.get('FAISS_FORCE_CACHE_REUSE'):
+                    logger.warning("Index fingerprint mismatch, using cached index due to FAISS_FORCE_CACHE_REUSE")
+                else:
+                    logger.warning("Index fingerprint mismatch, rebuilding")
+                    return False
                 
             # Load FAISS index
             import faiss
@@ -840,11 +843,20 @@ class DDLEvidenceBinder:
         """Build FAISS index for semantic similarity search with persistence and full corpus support."""
         if not self.embedding_model or self.corpus_df.empty:
             return
-            
+
         try:
+            # Optional fast path: reuse any existing index when forced
+            if os.environ.get('FAISS_FORCE_CACHE_REUSE'):
+                cache_dir = Path(self.semantic_cfg.get("index_cache_dir", "./.binder_index"))
+                if cache_dir.exists():
+                    for index_file in cache_dir.glob("faiss_index_*.index"):
+                        fp = index_file.stem.split("_")[-1]
+                        if self._load_cached_index(fp):
+                            return
+
             # Compute corpus fingerprint for cache validation
             fingerprint = self._compute_corpus_fingerprint()
-            
+
             # Try to load from cache first
             if self._load_cached_index(fingerprint):
                 return  # Successfully loaded from cache
