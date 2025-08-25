@@ -44,7 +44,7 @@ class SemanticDDLPipeline:
                 index_dir=dirs_cfg.get('index'),
                 corpus_dir=dirs_cfg.get('corpus'),
             )
-        except RuntimeError as e:
+        except (RuntimeError, FileNotFoundError) as e:
             raise RuntimeError(
                 "Failed to initialize semantic corpus sampler. "
                 "Please verify retrieval dependencies and class name."
