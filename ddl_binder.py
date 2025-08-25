@@ -736,7 +736,7 @@ class DDLEvidenceBinder:
     def _get_index_cache_path(self, fingerprint: str) -> tuple[Path, Path, Path]:
         """Get paths for cached index files."""
         cache_dir = Path(self.semantic_cfg.get("index_cache_dir", "./.binder_index"))
-        cache_dir.mkdir(exist_ok=True)
+        cache_dir.mkdir(parents=True, exist_ok=True)
         
         index_path = cache_dir / f"faiss_index_{fingerprint[:16]}.index"
         doc_ids_path = cache_dir / f"doc_ids_{fingerprint[:16]}.npy"
