@@ -9,9 +9,12 @@ from pathlib import Path
 
 try:
     from hybrid_retrieval_system import HybridRetrievalSystem
-except ImportError:
-    print("Warning: Could not import HybridRetrievalSystem - using fallback")
-    HybridRetrievalSystem = None
+except ImportError as e:
+    # Capture the original ImportError so missing module information is visible
+    print(f"Warning: Could not import HybridRetrievalSystem: {e}")
+    raise ImportError(
+        "HybridRetrievalSystem is required but could not be imported."
+    ) from e
 
 class SemanticCorpusConceptSampler:
     """
