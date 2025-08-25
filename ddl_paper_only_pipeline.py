@@ -60,6 +60,7 @@ def check_acceptance_criteria(accept_by: str, rows_min: int = 2000000, docs_min:
 
 # ---- top-level worker for spawn pickling (required for 'spawn' start) ----
 def _binding_worker_with_queue(queue, config: dict, accepted_daydreams: list, paper_text: str, run_id: str = None, run_dir: str = None, paper_id: str = None):
+    os.environ.setdefault('FAISS_FORCE_CACHE_REUSE', '1')
     from ddl_binder import DDLEvidenceBinder
     # Use binding_llm config for evidence binding (faster Qwen 30B on Ollama)
     binding_config = config.get('binding_llm', config)
