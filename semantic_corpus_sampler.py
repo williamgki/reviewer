@@ -22,8 +22,20 @@ class SemanticCorpusConceptSampler:
     for paper concepts, rather than extracting concepts from raw text.
     """
     
-    def __init__(self, config: dict = None):
+    def __init__(self, config: dict = None, index_dir: Optional[str] = None,
+                 corpus_dir: Optional[str] = None):
         self.config = config or {}
+
+        # Allow custom directories for retrieval indexes and corpus chunks
+        self.index_dir = Path(index_dir) if index_dir else Path(__file__).parent.parent / "retrieval_indexes"
+        self.corpus_dir = Path(corpus_dir) if corpus_dir else Path(__file__).parent.parent / "chunked_corpus"
+
+        # Validate supplied directories if explicitly provided
+        if index_dir and not self.index_dir.exists():
+            raise FileNotFoundError(f"Index directory not found: {self.index_dir}")
+        if corpus_dir and not self.corpus_dir.exists():
+            raise FileNotFoundError(f"Corpus directory not found: {self.corpus_dir}")
+
         self.retrieval_system = None
         self.initialize_retrieval()
         if self.retrieval_system is None:
@@ -39,18 +51,18 @@ class SemanticCorpusConceptSampler:
             return
             
         try:
-            # Use the existing retrieval indexes
-            index_dir = Path(__file__).parent.parent / "retrieval_indexes"
-            corpus_dir = Path(__file__).parent.parent / "chunked_corpus"
-            
+            # Use configured retrieval indexes
+            index_dir = self.index_dir
+            corpus_dir = self.corpus_dir
+
             if not index_dir.exists():
                 print(f"❌ Index directory not found: {index_dir}")
                 return
-                
+
             if not corpus_dir.exists():
                 print(f"❌ Corpus directory not found: {corpus_dir}")
                 return
-                
+
             self.retrieval_system = HybridRetrievalSystem(
                 index_dir=str(index_dir),
                 chunks_path=str(corpus_dir / "contextual_chunks_complete.parquet"),
