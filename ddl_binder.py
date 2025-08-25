@@ -85,6 +85,7 @@ except ImportError:
 try:
     # Semantic retrieval dependencies
     from sentence_transformers import SentenceTransformer
+    import torch
     import faiss
     from rank_bm25 import BM25Okapi
     _HAVE_ST = True
@@ -167,9 +168,20 @@ class DDLEvidenceBinder:
         if self.semantic_cfg.get("enabled", True) and _HAVE_ST:
             try:
                 model_name = self.semantic_cfg.get("model_name", "BAAI/bge-m3")
-                self.embedding_model = SentenceTransformer(model_name)
+
+                if torch.backends.mps.is_available():
+                    device = "mps"
+                elif torch.cuda.is_available():
+                    device = "cuda"
+                else:
+                    device = "cpu"
+                self.device = device
+
+                torch.set_grad_enabled(False)
+
+                self.embedding_model = SentenceTransformer(model_name, device=device)
                 self.embedding_model.max_seq_length = 512
-                logger.info(f"Semantic retrieval enabled with {model_name}")
+                logger.info(f"Semantic retrieval enabled with {model_name} on {device}")
             except Exception as e:
                 logger.warning(f"Failed to load embedding model: {e}")
                 logger.warning("Falling back to lexical-only retrieval")
