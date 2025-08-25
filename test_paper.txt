@@ -1,0 +1,24 @@
+Abstract
+
+We investigate the alignment problem in large language models through the lens of mechanistic interpretability. Our work focuses on understanding how safety-relevant behaviors emerge in transformer architectures, particularly examining steering vectors in residual streams and their role in value learning. We propose a novel approach using sparse autoencoders (SAEs) to identify polysemantic neurons that contribute to safety-critical decision making.
+
+Introduction
+
+The rapid development of large language models has highlighted the urgent need for robust alignment techniques. While existing approaches like reinforcement learning from human feedback (RLHF) have shown promise, they often lack mechanistic understanding of the underlying value learning processes. This paper bridges the gap between alignment research and interpretability by examining the neural circuits responsible for safety-relevant behaviors.
+
+Our key contributions are:
+1. Identification of steering vectors in transformer residual streams that correlate with value-aligned outputs
+2. Development of SAE-based techniques for isolating polysemantic neurons involved in safety decisions  
+3. Analysis of how indirect prompt injection can exploit these mechanisms for tool-use escalation
+
+Methodology
+
+We analyze transformer models using a combination of activation patching and sparse autoencoder decomposition. Our approach focuses on identifying circuits that represent values and preferences in the model's internal representations.
+
+Results
+
+Our experiments reveal that safety-relevant behaviors are encoded through distributed representations across multiple layers. We identify specific steering vectors that, when modified, can significantly alter the model's alignment properties without affecting general capabilities.
+
+Conclusion  
+
+This work provides new insights into the mechanistic basis of AI alignment, offering potential pathways for more robust and interpretable safety techniques in large language models.
