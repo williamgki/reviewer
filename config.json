@@ -115,9 +115,10 @@
   
   "directories": {
     "input": "pipeline/input",
-    "output": "pipeline/output", 
+    "output": "pipeline/output",
     "working": "pipeline/working",
     "corpus": "/Users/willkirby/scrape 2/LW_scrape/chunked_corpus",
+    "index": "retrieval_indexes",
     "stage2": "stage2"
   },
   

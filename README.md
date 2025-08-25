@@ -102,6 +102,18 @@ The hybrid setup is defined in `config.json`:
 }
 ```
 
+The `directories` section of `config.json` can override where retrieval
+resources live:
+
+```json
+"directories": {
+  "corpus": "/path/to/chunked_corpus",
+  "index": "retrieval_indexes"
+}
+```
+If omitted, the sampler falls back to the repository's `chunked_corpus` and
+`retrieval_indexes` directories.
+
 ## Core Components
 
 ### Pipeline Scripts

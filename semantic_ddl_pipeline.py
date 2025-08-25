@@ -37,7 +37,12 @@ class SemanticDDLPipeline:
         )
         
         # Initialize semantic corpus sampler with config
-        self.corpus_sampler = SemanticCorpusConceptSampler(config=config)
+        dirs_cfg = config.get('directories', {})
+        self.corpus_sampler = SemanticCorpusConceptSampler(
+            config=config,
+            index_dir=dirs_cfg.get('index'),
+            corpus_dir=dirs_cfg.get('corpus'),
+        )
     
     def generate_concept_pairs(self, paper_text: str, target_pairs: int = 10) -> List[Dict[str, Any]]:
         """

@@ -18,9 +18,36 @@ class SemanticCorpusConceptSampler:
     Use the existing vector database to find semantically relevant corpus concepts
     for paper concepts, rather than extracting concepts from raw text.
     """
-    
-    def __init__(self, config: dict = None):
+
+    def __init__(
+        self,
+        config: dict = None,
+        index_dir: Optional[str] = None,
+        corpus_dir: Optional[str] = None,
+    ):
+        """Initialize sampler with optional directory overrides."""
         self.config = config or {}
+
+        # Allow directories to be set via constructor or config
+        dirs_cfg = self.config.get("directories", {})
+        retrieval_cfg = self.config.get("retrieval", {})
+
+        default_index = Path(__file__).parent.parent / "retrieval_indexes"
+        default_corpus = Path(__file__).parent.parent / "chunked_corpus"
+
+        self.index_dir = Path(
+            index_dir
+            or dirs_cfg.get("index")
+            or retrieval_cfg.get("index_dir")
+            or default_index
+        )
+        self.corpus_dir = Path(
+            corpus_dir
+            or dirs_cfg.get("corpus")
+            or retrieval_cfg.get("corpus_dir")
+            or default_corpus
+        )
+
         self.retrieval_system = None
         self.initialize_retrieval()
     
@@ -31,21 +58,18 @@ class SemanticCorpusConceptSampler:
             return
             
         try:
-            # Use the existing retrieval indexes
-            index_dir = Path(__file__).parent.parent / "retrieval_indexes"
-            corpus_dir = Path(__file__).parent.parent / "chunked_corpus"
-            
-            if not index_dir.exists():
-                print(f"❌ Index directory not found: {index_dir}")
+            # Use configured retrieval indexes
+            if not self.index_dir.exists():
+                print(f"❌ Index directory not found: {self.index_dir}")
                 return
-                
-            if not corpus_dir.exists():
-                print(f"❌ Corpus directory not found: {corpus_dir}")
+
+            if not self.corpus_dir.exists():
+                print(f"❌ Corpus directory not found: {self.corpus_dir}")
                 return
-                
+
             self.retrieval_system = HybridRetrievalSystem(
-                index_dir=str(index_dir),
-                chunks_path=str(corpus_dir / "contextual_chunks_complete.parquet"),
+                index_dir=str(self.index_dir),
+                chunks_path=str(self.corpus_dir / "contextual_chunks_complete.parquet"),
                 config=self.config
             )
             
@@ -379,16 +403,21 @@ class SemanticCorpusConceptSampler:
 # Integration function
 def enhance_ddl_sampler_with_semantic_search(sampler_instance, config=None):
     """Enhance existing DDL sampler with semantic corpus concept discovery."""
-    
-    semantic_sampler = SemanticCorpusConceptSampler(config=config)
+
+    dirs_cfg = (config or {}).get("directories", {})
+    semantic_sampler = SemanticCorpusConceptSampler(
+        config=config,
+        index_dir=dirs_cfg.get("index"),
+        corpus_dir=dirs_cfg.get("corpus"),
+    )
     
     # Add method to sampler instance
     def load_semantic_corpus_concepts(paper_concepts, target_concepts=1000):
         concepts = semantic_sampler.find_relevant_corpus_concepts(
-            paper_concepts, 
+            paper_concepts,
             concepts_per_paper_concept=min(target_concepts // len(paper_concepts), 100)
         )
         return concepts[:target_concepts]
-    
+
     sampler_instance.load_semantic_corpus_concepts = load_semantic_corpus_concepts
     return sampler_instance
