@@ -1,7 +1,12 @@
 #!/usr/bin/env python3
 """
 Hybrid Retrieval System for LessWrong Contextual Chunks
-Combines BGE-M3 dense embeddings + BM25 lexical search + reciprocal rank fusion
+Combines BGE-M3 dense embeddings + BM25 lexical search + reciprocal rank fusion.
+
+The module attempts to download required NLTK resources (``punkt`` and
+``stopwords``) at import time. In offline environments where these resources
+cannot be downloaded, it logs a warning and falls back to a minimal whitespace
+tokenizer without stopword removal to avoid blocking execution.
 """
 
 import os
@@ -15,6 +20,10 @@ import pickle
 import logging
 from dataclasses import dataclass, asdict
 
+# Setup logging
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
+
 # ML/IR libraries
 import faiss
 from sentence_transformers import SentenceTransformer
@@ -23,20 +32,33 @@ import nltk
 from nltk.tokenize import word_tokenize
 from nltk.corpus import stopwords
 
-# Download NLTK data
-try:
-    nltk.data.find('tokenizers/punkt')
-except LookupError:
-    nltk.download('punkt')
-    
-try:
-    nltk.data.find('corpora/stopwords')
-except LookupError:
-    nltk.download('stopwords')
 
-# Setup logging
-logging.basicConfig(level=logging.INFO)
-logger = logging.getLogger(__name__)
+def _ensure_nltk_resource(resource: str, path: str) -> bool:
+    """Ensure an NLTK resource is available, downloading quietly if possible."""
+    try:
+        nltk.data.find(path)
+        return True
+    except LookupError:
+        nltk.download(resource, quiet=True, raise_on_error=False)
+        try:
+            nltk.data.find(path)
+            return True
+        except LookupError:
+            return False
+
+
+PUNKT_AVAILABLE = _ensure_nltk_resource('punkt', 'tokenizers/punkt')
+STOPWORDS_AVAILABLE = _ensure_nltk_resource('stopwords', 'corpora/stopwords')
+
+if not PUNKT_AVAILABLE:
+    logger.warning("NLTK 'punkt' tokenizer not available; falling back to basic split tokenization.")
+if not STOPWORDS_AVAILABLE:
+    logger.warning("NLTK 'stopwords' corpus not available; stopword filtering disabled.")
+
+
+def tokenize(text: str) -> List[str]:
+    """Tokenize text using NLTK if available, else a simple split."""
+    return word_tokenize(text) if PUNKT_AVAILABLE else text.split()
 
 @dataclass
 class SearchResult:
@@ -91,7 +113,7 @@ class HybridRetrievalSystem:
         self.bm25_index = None
         self.chunks_df = None
         self.chunk_texts = None
-        self.stop_words = set(stopwords.words('english'))
+        self.stop_words = set(stopwords.words('english')) if STOPWORDS_AVAILABLE else set()
         self.building_index = False  # Track when building indexes to use CPU
         
         logger.info(f"🔍 Initializing Hybrid Retrieval System")
@@ -205,7 +227,7 @@ class HybridRetrievalSystem:
         tokenized_texts = []
         for text in self.chunk_texts:
             # Simple tokenization and stopword removal
-            tokens = word_tokenize(text.lower())
+            tokens = tokenize(text.lower())
             tokens = [token for token in tokens if token.isalnum() and token not in self.stop_words]
             tokenized_texts.append(tokens)
             
@@ -264,7 +286,7 @@ class HybridRetrievalSystem:
             raise ValueError("BM25 index not built. Call build_indexes() first.")
             
         # Tokenize query
-        query_tokens = word_tokenize(query.lower())
+        query_tokens = tokenize(query.lower())
         query_tokens = [token for token in query_tokens if token.isalnum() and token not in self.stop_words]
         
         # Get BM25 scores for all documents
