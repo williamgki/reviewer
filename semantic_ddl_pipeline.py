@@ -37,7 +37,13 @@ class SemanticDDLPipeline:
         )
         
         # Initialize semantic corpus sampler with config
-        self.corpus_sampler = SemanticCorpusConceptSampler(config=config)
+        try:
+            self.corpus_sampler = SemanticCorpusConceptSampler(config=config)
+        except RuntimeError as e:
+            raise RuntimeError(
+                "Failed to initialize semantic corpus sampler. "
+                "Please verify retrieval dependencies and class name."
+            ) from e
     
     def generate_concept_pairs(self, paper_text: str, target_pairs: int = 10) -> List[Dict[str, Any]]:
         """

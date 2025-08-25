@@ -26,6 +26,11 @@ class SemanticCorpusConceptSampler:
         self.config = config or {}
         self.retrieval_system = None
         self.initialize_retrieval()
+        if self.retrieval_system is None:
+            raise RuntimeError(
+                "Failed to initialize retrieval system. "
+                "Please verify retrieval dependencies are installed and the retrieval class name is correct."
+            )
     
     def initialize_retrieval(self):
         """Initialize the hybrid retrieval system with existing indexes."""
