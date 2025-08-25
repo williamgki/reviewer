@@ -21,7 +21,7 @@
   
   "binder": {
     "semantic": {
-      "enabled": false,
+      "enabled": true,
       "model_name": "BAAI/bge-m3",
       "index_cache_dir": "./.binder_index",
       "max_docs": 10000000,
