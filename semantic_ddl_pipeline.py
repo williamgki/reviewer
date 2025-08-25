@@ -37,8 +37,13 @@ class SemanticDDLPipeline:
         )
         
         # Initialize semantic corpus sampler with config
+        dirs_cfg = config.get('directories', {})
         try:
-            self.corpus_sampler = SemanticCorpusConceptSampler(config=config)
+            self.corpus_sampler = SemanticCorpusConceptSampler(
+                config=config,
+                index_dir=dirs_cfg.get('index'),
+                corpus_dir=dirs_cfg.get('corpus'),
+            )
         except RuntimeError as e:
             raise RuntimeError(
                 "Failed to initialize semantic corpus sampler. "
