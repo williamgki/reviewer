@@ -91,7 +91,8 @@ The hybrid setup is defined in `config.json`:
       "max_docs": 20000,
       "topk": 200,
       "weight_semantic": 0.65,
-      "weight_bm25": 0.35
+      "weight_bm25": 0.35,
+      "batch_size": 128
     },
     "parquet": {
       "max_files": 200,
