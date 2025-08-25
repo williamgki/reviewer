@@ -784,37 +784,45 @@ class DDLEvidenceBinder:
         if not self.faiss_index or self.faiss_ids is None:
             return
             
+        index_path, doc_ids_path, metadata_path = self._get_index_cache_path(fingerprint)
+
+        # Save FAISS index
+        import faiss
         try:
-            index_path, doc_ids_path, metadata_path = self._get_index_cache_path(fingerprint)
-            
-            # Save FAISS index
-            import faiss
             faiss.write_index(self.faiss_index, str(index_path))
-            
-            # Save doc_ids
+        except Exception as e:
+            logger.error(f"Failed to write FAISS index to {index_path}: {e}")
+            raise
+
+        # Save doc_ids
+        try:
             np.save(doc_ids_path, self.faiss_ids)
-            
-            # Save metadata
-            metadata = {
-                'fingerprint': fingerprint,
-                'timestamp': time.time(),
-                'indexed_docs': len(self.faiss_ids),
-                'vector_dim': self.faiss_index.d,
-                'model_name': self.semantic_cfg.get('model_name'),
-                'created_by': 'DDLEvidenceBinder'
-            }
-            
+        except Exception as e:
+            logger.error(f"Failed to write doc_ids to {doc_ids_path}: {e}")
+            raise
+
+        # Save metadata
+        metadata = {
+            'fingerprint': fingerprint,
+            'timestamp': time.time(),
+            'indexed_docs': len(self.faiss_ids),
+            'vector_dim': self.faiss_index.d,
+            'model_name': self.semantic_cfg.get('model_name'),
+            'created_by': 'DDLEvidenceBinder'
+        }
+
+        try:
             with open(metadata_path, 'w') as f:
                 json.dump(metadata, f, indent=2)
-                
-            logger.info(f"Saved semantic index to cache: fingerprint {fingerprint[:16]}")
-            self._log("info", "Semantic index saved to cache", 
-                     stage="semantic_indexing", event="cache_saved",
-                     fingerprint=fingerprint[:16],
-                     cache_path=str(index_path))
-                     
         except Exception as e:
-            logger.warning(f"Failed to save index to cache: {e}")
+            logger.error(f"Failed to write metadata to {metadata_path}: {e}")
+            raise
+
+        logger.info(f"Saved semantic index to cache: fingerprint {fingerprint[:16]}")
+        self._log("info", "Semantic index saved to cache",
+                 stage="semantic_indexing", event="cache_saved",
+                 fingerprint=fingerprint[:16],
+                 cache_path=str(index_path))
     
     def _build_semantic_index(self):
         """Build FAISS index for semantic similarity search with persistence and full corpus support."""
