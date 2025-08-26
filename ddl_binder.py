@@ -1413,15 +1413,30 @@ class DDLEvidenceBinder:
                     "score": float(score),
                 })
 
-        elapsed = time.time() - start_time
+elapsed = time.time() - start_time
         if processed == 0:
             raise RuntimeError(
                 f"BM25 scoring made no progress after {elapsed:.2f}s; "
                 "corpus may be empty or scan_cap is 0."
             )
 
+        # Truncate or sample if too many candidates are found
+        max_candidates = 10000
+        candidates_found = len(matches)
+        if candidates_found > max_candidates:
+            self._log(
+                "warning",
+                f"Truncating BM25 matches from {candidates_found} to {max_candidates}",
+                stage="bm25_scoring",
+                event="candidate_truncation",
+            )
+            matches = sorted(
+                matches, key=lambda m: float(m.get("score", 0.0)), reverse=True
+            )[:max_candidates]
+            candidates_found = len(matches)
+
         # Update BM25 candidates metric
-        self.metrics["bm25_candidates_considered"] += len(matches)
+        self.metrics["bm25_candidates_considered"] += candidates_found
         
         # Apply hybrid ranking if semantic indexing is enabled
         if self.faiss_index is not None and matches:
