@@ -84,7 +84,7 @@ except ImportError:
 
 try:
     # Semantic retrieval dependencies
-    from sentence_transformers import SentenceTransformer
+    import sentence_transformers
     import torch
     import faiss
     from rank_bm25 import BM25Okapi
@@ -179,13 +179,47 @@ class DDLEvidenceBinder:
 
                 torch.set_grad_enabled(False)
 
-                self.embedding_model = SentenceTransformer(model_name, device=device)
-                self.embedding_model.max_seq_length = 512
-                logger.info(f"Semantic retrieval enabled with {model_name} on {device}")
+                ST = sentence_transformers.SentenceTransformer
+                loaded_model = None
+                self.using_dummy_model = False
+                try:
+                    self.embedding_model = ST(model_name, device=device)
+                    loaded_model = model_name
+                except Exception:
+                    fallback_model = "sentence-transformers/all-MiniLM-L6-v2"
+                    logger.warning(
+                        f"Failed to load {model_name}; trying fallback {fallback_model}")
+                    try:
+                        self.embedding_model = ST(fallback_model, device=device)
+                        loaded_model = fallback_model
+                    except Exception as e2:
+                        logger.warning(f"Failed to load fallback model: {e2}")
+                        err_msg = str(e2).lower()
+                        network_err = any(k in err_msg for k in ["http", "proxy", "connect", "timed out"])
+                        if network_err:
+                            class _DummyEmbeddingModel:
+                                def __init__(self, dim: int = 384):
+                                    self.dim = dim
+                                    self.max_seq_length = 512
+                                def encode(self, texts, **kwargs):
+                                    if isinstance(texts, list):
+                                        return np.zeros((len(texts), self.dim))
+                                    return np.zeros(self.dim)
+                            self.embedding_model = _DummyEmbeddingModel()
+                            loaded_model = "dummy"
+                            self.using_dummy_model = True
+                        else:
+                            self.embedding_model = None
+                            loaded_model = None
+                if self.embedding_model is not None:
+                    self.embedding_model.max_seq_length = 512
+                    logger.info(
+                        f"Semantic retrieval enabled with {loaded_model} on {device}")
             except Exception as e:
                 logger.warning(f"Failed to load embedding model: {e}")
                 logger.warning("Falling back to lexical-only retrieval")
         else:
+            self.using_dummy_model = False
             logger.info("Semantic retrieval disabled (config or dependencies)")
 
         # Initialize metrics tracking
@@ -267,6 +301,18 @@ class DDLEvidenceBinder:
                 df["doc_id"] = df["source_id"].astype(str)
             else:
                 df["doc_id"] = "unknown_" + df.index.astype(str)
+
+        # chunk_idx - ensure sequential index per doc for neighbor lookup
+        if "chunk_idx" not in df.columns:
+            if "chunk_id" in df.columns:
+                try:
+                    df["chunk_idx"] = (
+                        df["chunk_id"].astype(str).str.extract(r"(\d+)$").fillna(-1).astype(int)
+                    )
+                except Exception:
+                    df["chunk_idx"] = -1
+            if "chunk_idx" not in df.columns or (df["chunk_idx"] < 0).any():
+                df["chunk_idx"] = df.groupby("doc_id").cumcount()
 
         # author
         if "author" not in df.columns:
@@ -411,6 +457,7 @@ class DDLEvidenceBinder:
                 try:
                     df = pd.read_parquet(self.corpus_path)
                     df = self._normalize_df(df, self.corpus_path)
+                    df["chunk_idx"] = df.groupby("doc_id").cumcount()
                     self.files_loaded = 1
                     print(f"Loaded corpus with {len(df)} chunks after normalization")
                     self._log("info", f"Single corpus file loaded successfully", 
@@ -463,6 +510,7 @@ class DDLEvidenceBinder:
             self.files_loaded = loaded
             if dfs:
                 df = pd.concat(dfs, ignore_index=True)
+                df["chunk_idx"] = df.groupby("doc_id").cumcount()
                 print(f"Loaded corpus with {len(df)} total chunks (files_loaded={self.files_loaded})")
                 self._log("info", f"Multi-file corpus loading completed", 
                          stage="corpus_loading", event="multi_file_completed", 
@@ -841,7 +889,9 @@ class DDLEvidenceBinder:
     
     def _build_semantic_index(self):
         """Build FAISS index for semantic similarity search with persistence and full corpus support."""
-        if not self.embedding_model or self.corpus_df.empty:
+        if (not self.embedding_model or
+                getattr(self, "using_dummy_model", False) or
+                self.corpus_df.empty):
             return
 
         try:
@@ -1148,6 +1198,7 @@ class DDLEvidenceBinder:
                         'author': chunk.get('author', 'Unknown'),
                         'year': chunk.get('year', 'Unknown'),
                         'doc_id': chunk.get('doc_id', 'Unknown'),
+                        'chunk_idx': chunk.get('chunk_idx', idx),
                         'retrieval_tier': 'A-semantic'
                     })
             
@@ -1349,6 +1400,7 @@ class DDLEvidenceBinder:
                     "year": row.get("year", 2020),
                     "title": row.get("title", "Untitled"),
                     "doc_id": row.get("doc_id", f"row_{idx}"),
+                    "chunk_idx": row.get("chunk_idx", idx),
                     "score": float(score),
                 })
 
@@ -1429,6 +1481,34 @@ class DDLEvidenceBinder:
             uniq.append(c)
         return uniq
 
+    def _try_fetch_chunk(self, doc_id: str, chunk_idx: int) -> Optional[str]:
+        """Safely fetch a chunk's text by doc_id and chunk_idx."""
+        try:
+            rows = self.corpus_df[
+                (self.corpus_df["doc_id"] == doc_id) &
+                (self.corpus_df["chunk_idx"] == chunk_idx)
+            ]
+            if not rows.empty:
+                return str(rows.iloc[0].get("text", ""))
+        except Exception:
+            return None
+        return None
+
+    def _build_window(self, candidate: Dict[str, Any]) -> str:
+        """Concatenate neighboring chunks (±1) to build a window."""
+        doc_id = candidate.get("doc_id")
+        idx = candidate.get("chunk_idx")
+        if doc_id is None or idx is None:
+            return candidate.get("text", "")
+
+        texts = []
+        for offset in (-1, 0, 1):
+            t = self._try_fetch_chunk(doc_id, idx + offset)
+            if t:
+                texts.append(t)
+        window = " ".join(texts) if texts else candidate.get("text", "")
+        return self._truncate_words(window, 120)
+
     # ----------- NLI labeling -----------
 
     def _nli_batch_label_with_budget(self,
@@ -1440,14 +1520,14 @@ class DDLEvidenceBinder:
         used_calls = 0
 
         for c in candidates:
-            label = self._nli_label_with_fallback(hypothesis, c["text"], timeout_s)
-            nli_method = "nli"  # we don't expose whether fallback used inside; see _lexical_fallback_label
+            window_text = self._build_window(c)
+            label = self._nli_label_with_fallback(hypothesis, window_text, timeout_s)
 
             # Update NLI metrics
             self.metrics["nli_pairs_evaluated"] += 1
 
-            # minimal quote extraction
-            q = self._extract_quote(c["text"])
+            # minimal quote extraction from expanded window
+            q = self._extract_quote(window_text)
             labeled.append({
                 "source": "corpus",
                 "label": label,
