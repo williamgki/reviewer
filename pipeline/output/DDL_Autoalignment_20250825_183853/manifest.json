@@ -1,0 +1,80 @@
+{
+  "pipeline": "ddl_paper_only",
+  "version": "1.0",
+  "paper_title": "Autoalignment",
+  "paper_file": "pipeline/input/Autoalignment.txt",
+  "started_at": "2025-08-25T17:38:53.658109+00:00",
+  "completed_at": "2025-08-25T18:31:05.706490+00:00",
+  "total_time_minutes": 52.200806367397306,
+  "config": {
+    "ddl_minutes": 60,
+    "pairs_candidate_pool": 15000,
+    "pairs_to_generate": 3,
+    "ddl_keep_top": 100,
+    "evidence_quotes_per_daydream": 3,
+    "themes_max": 5,
+    "evidence_budget_total": 30,
+    "max_concepts": 30,
+    "api_base": "http://localhost:1234/v1",
+    "api_key": "lm-studio",
+    "model": "gpt-oss-120b",
+    "corpus_path": "/Users/willkirby/scrape 2/LW_scrape/chunked_corpus/contextual_chunks_complete.parquet",
+    "accept_by": "rows",
+    "rows_min": 2000000,
+    "docs_min": 50000,
+    "files_min": 600
+  },
+  "stage_timings": {
+    "concept_extraction": 28.1568021774292,
+    "daydream_loop": 541.748123884201,
+    "evidence_binding": 2562.1422350406647,
+    "composition": 0.0007688999176025391
+  },
+  "results": {
+    "concepts_extracted": 10,
+    "pairs_sampled": 3,
+    "daydreams_generated": 3,
+    "daydreams_accepted": 3,
+    "daydreams_bound": 0,
+    "binding_statistics": {
+      "bound_daydreams": 0,
+      "paper_only_daydreams": 0,
+      "unbound_daydreams": 3,
+      "supports": 0,
+      "contradicts": 0,
+      "neutral": 0,
+      "nli_fallback": 0,
+      "parquet_files_loaded": 1
+    },
+    "review_statistics": {
+      "word_count": 2473,
+      "quote_count": 0,
+      "theme_count": 3,
+      "unique_authors": 0
+    },
+    "review_path": "pipeline/output/DDL_Autoalignment_20250825_183853/ddl/editorial_freeflow.md"
+  },
+  "binder_metrics": {
+    "run_id": "f35089f8-42ff-4d52-9ae6-ca6a67113df5",
+    "parquet_files_loaded": 1,
+    "rows_scanned": 66716,
+    "unique_docs_scanned": 11549,
+    "bm25_candidates_considered": 868047,
+    "semantic_enabled": true,
+    "semantic_topk": 200,
+    "nli_pairs_evaluated": 569,
+    "nli_timeouts": 0,
+    "bound_quotes": 0,
+    "timestamp": "2025-08-25T19:31:04.846258"
+  },
+  "files": {
+    "concepts": "ddl/concepts.jsonl",
+    "sampled_pairs": "ddl/pairs.sampled.jsonl",
+    "generated_daydreams": "ddl/daydreams.generated.jsonl",
+    "accepted_daydreams": "ddl/daydreams.accepted.jsonl",
+    "bound_daydreams": "ddl/daydreams.bound.jsonl",
+    "paper_only_daydreams": "ddl/daydreams.paper_only.jsonl",
+    "unbound_daydreams": "ddl/daydreams.unbound.jsonl",
+    "final_review": "ddl/editorial_freeflow.md"
+  }
+}

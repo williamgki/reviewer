@@ -1,0 +1,8 @@
+{
+  "fingerprint": "3553b56b5ed82da5d787bfec616d84ccb6e663cd0acfef49f0dc2463e78de938",
+  "timestamp": 1756137345.7691789,
+  "indexed_docs": 66716,
+  "vector_dim": 1024,
+  "model_name": "BAAI/bge-m3",
+  "created_by": "DDLEvidenceBinder"
+}

@@ -1,0 +1,13 @@
+{
+  "run_id": "f35089f8-42ff-4d52-9ae6-ca6a67113df5",
+  "parquet_files_loaded": 1,
+  "rows_scanned": 66716,
+  "unique_docs_scanned": 11549,
+  "bm25_candidates_considered": 868047,
+  "semantic_enabled": true,
+  "semantic_topk": 200,
+  "nli_pairs_evaluated": 569,
+  "nli_timeouts": 0,
+  "bound_quotes": 0,
+  "timestamp": "2025-08-25T19:31:04.846258"
+}

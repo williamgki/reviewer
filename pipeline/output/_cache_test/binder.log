@@ -1,0 +1,2 @@
+{"timestamp": "2025-08-25T16:07:53.948934Z", "level": "INFO", "logger": "ddl_binder.cache-test", "run_id": "cache-test", "paper_id": "unknown", "message": "Single corpus file loaded successfully", "stage": "corpus_loading", "event": "single_file_loaded"}
+{"timestamp": "2025-08-25T16:07:54.012660Z", "level": "INFO", "logger": "ddl_binder.cache-test", "run_id": "cache-test", "paper_id": "unknown", "message": "Cached semantic index loaded successfully", "stage": "semantic_indexing", "event": "cache_loaded"}
