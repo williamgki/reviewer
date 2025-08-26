@@ -72,7 +72,7 @@ class PaperConceptExtractor:
             max_concepts: Maximum number of concepts to extract
             
         Returns:
-            List of concept dictionaries with name, source, backpack, and embedding
+            List of concept dictionaries with name, source, multi-scale backpacks, and embedding
         """
         if self.use_llm_extraction and self.llm_extractor:
             print("Using LLM-based semantic concept extraction for better domain relevance")
@@ -183,7 +183,7 @@ class PaperConceptExtractor:
         
         return scored_concepts
     
-    def _generate_context_backpack(self, concept: str, paper_text: str, 
+    def _generate_context_backpack(self, concept: str, paper_text: str,
                                  target_tokens: int = 150) -> str:
         """Generate a context backpack snippet for a concept."""
         sentences = re.split(r'[.!?]+', paper_text)
@@ -220,6 +220,58 @@ class PaperConceptExtractor:
                 break
         
         return backpack
+
+    def _split_sections(self, paper_text: str) -> List[Tuple[str, str]]:
+        """Split paper into sections based on simple heading patterns."""
+        sections = []
+        lines = paper_text.splitlines()
+        if not lines:
+            return sections
+
+        current_title = lines[0].strip()
+        current_lines = []
+        heading_pattern = re.compile(r'^\s*(?:#{1,3}\s+|[A-Z][A-Za-z0-9 \-]{0,60}$)')
+
+        for line in lines[1:]:
+            if heading_pattern.match(line.strip()):
+                if current_lines:
+                    sections.append((current_title, "\n".join(current_lines).strip()))
+                    current_lines = []
+                current_title = line.strip().strip('# ').strip()
+            else:
+                current_lines.append(line)
+
+        if current_lines:
+            sections.append((current_title, "\n".join(current_lines).strip()))
+
+        return sections or [(current_title, paper_text)]
+
+    def _generate_multi_scale_backpacks(self, concept: str, paper_text: str) -> Dict[str, str]:
+        """Generate small/medium/large backpacks and section title for a concept."""
+        sections = self._split_sections(paper_text)
+        concept_lower = concept.lower()
+        section_title = ''
+        section_text = ''
+
+        for title, text in sections:
+            if concept_lower in text.lower():
+                section_title = title
+                section_text = text
+                break
+
+        if not section_text:
+            section_text = paper_text
+            if sections:
+                section_title = sections[0][0]
+
+        backpacks = {
+            'backpack_s': self._generate_context_backpack(concept, section_text, target_tokens=40),
+            'backpack_m': self._generate_context_backpack(concept, section_text, target_tokens=100),
+            'backpack_l': self._generate_context_backpack(concept, paper_text, target_tokens=200),
+            'section_title': section_title
+        }
+
+        return backpacks
     
     def _extract_concepts_fallback(self, paper_text: str, max_concepts: int) -> List[Dict[str, Any]]:
         """Enhanced n-gram concept extraction with domain awareness and anchor bundling."""
@@ -376,22 +428,21 @@ class PaperConceptExtractor:
             if head in seen_heads:
                 continue
                 
-            # Generate context backpack and anchor bundle
-            backpack = self._generate_context_backpack(phrase, paper_text)
-            if not backpack:
+            # Generate multi-scale backpacks and anchor bundle
+            backpacks = self._generate_multi_scale_backpacks(phrase, paper_text)
+            if not any(backpacks.get(k) for k in ['backpack_m', 'backpack_l', 'backpack_s']):
                 continue
-                
-            # Create anchor bundle for binding compatibility
+
             anchor_exact = phrase if phrase in paper_text.lower() else phrase
             anchor_alias = normalize(phrase)
-            
+            embed_ctx = backpacks.get('backpack_m') or backpacks.get('backpack_l') or backpacks.get('backpack_s') or ''
+
             concept_dict = {
                 'concept': phrase,
-                'source': 'paper', 
-                'backpack': backpack,
-                'embedding': self.embedding_model.encode(phrase + " " + backpack).tolist(),
+                'source': 'paper',
+                **backpacks,
+                'embedding': self.embedding_model.encode(phrase + " " + embed_ctx).tolist(),
                 'score': score,
-                # Add anchor information for binding compatibility
                 'anchor_exact': anchor_exact,
                 'anchor_alias': anchor_alias
             }
@@ -425,23 +476,24 @@ class PaperConceptExtractor:
                 if any(c['concept'] == phrase for c in concepts):
                     continue
                     
-                backpack = self._generate_context_backpack(phrase, paper_text)
-                if not backpack:
+                backpacks = self._generate_multi_scale_backpacks(phrase, paper_text)
+                if not any(backpacks.get(k) for k in ['backpack_m', 'backpack_l', 'backpack_s']):
                     continue
-                    
+
                 anchor_exact = phrase if phrase in paper_text.lower() else phrase
                 anchor_alias = normalize(phrase)
-                
+                embed_ctx = backpacks.get('backpack_m') or backpacks.get('backpack_l') or backpacks.get('backpack_s') or ''
+
                 concept_dict = {
                     'concept': phrase,
-                    'source': 'paper', 
-                    'backpack': backpack,
-                    'embedding': self.embedding_model.encode(phrase + " " + backpack).tolist(),
+                    'source': 'paper',
+                    **backpacks,
+                    'embedding': self.embedding_model.encode(phrase + " " + embed_ctx).tolist(),
                     'score': score,
                     'anchor_exact': anchor_exact,
                     'anchor_alias': anchor_alias
                 }
-                
+
                 concepts.append(concept_dict)
                 seen_heads.add(head)
                 multiword_count += 1
@@ -478,34 +530,32 @@ class PaperConceptExtractor:
             
             # Convert to expected format with embeddings and backpacks
             result_concepts = []
-            
+
             for concept_data in llm_concepts:
                 concept_name = concept_data['name']
-                
-                # Create embedding
+
                 try:
-                    embedding = self.embedding_model.encode(concept_name).tolist()  # Convert to list for JSON serialization
+                    embedding = self.embedding_model.encode(concept_name).tolist()
                 except Exception as e:
                     print(f"Warning: Could not create embedding for '{concept_name}': {e}")
-                    embedding = np.zeros(384).tolist()  # Default dimension for all-MiniLM-L6-v2
-                
-                # Enhanced backpack from context + paper excerpts
-                backpack = concept_data.get('backpack', '')
-                enhanced_backpack = self._enhance_concept_backpack(concept_name, paper_text, backpack)
-                
+                    embedding = np.zeros(384).tolist()
+
+                backpacks = self._generate_multi_scale_backpacks(concept_name, paper_text)
+                if concept_data.get('backpack'):
+                    backpacks['backpack_m'] = concept_data['backpack']
+
                 result_concept = {
                     'concept': concept_name,
                     'source': f"llm_{concept_data.get('section', 'extracted')}",
-                    'backpack': enhanced_backpack,
+                    **backpacks,
                     'embedding': embedding,
                     'importance': concept_data.get('importance', 5.0),
                     'category': concept_data.get('category', 'general'),
                     'extraction_method': concept_data.get('extraction_method', 'llm_semantic'),
-                    # Add anchor information for binding compatibility
                     'anchor_exact': concept_name,
                     'anchor_alias': concept_name
                 }
-                
+
                 result_concepts.append(result_concept)
             
             print(f"LLM extraction produced {len(result_concepts)} concepts")
@@ -516,20 +566,6 @@ class PaperConceptExtractor:
             print("Falling back to enhanced n-gram extraction")
             return self._extract_concepts_fallback(paper_text, max_concepts)
     
-    def _enhance_concept_backpack(self, concept: str, paper_text: str, base_context: str) -> str:
-        """Enhance LLM-provided context with paper excerpts."""
-        # Use existing backpack generation logic
-        paper_backpack = self._generate_context_backpack(concept, paper_text, target_tokens=60)
-        
-        # Combine LLM context with paper excerpts
-        if base_context and paper_backpack:
-            return f"{base_context}. Context from paper: {paper_backpack}"
-        elif paper_backpack:
-            return paper_backpack
-        else:
-            return base_context or f"Key concept: {concept}"
-
-
 if __name__ == "__main__":
     # Test the concept extractor
     extractor = PaperConceptExtractor()
@@ -549,5 +585,6 @@ if __name__ == "__main__":
     print(f"Extracted {len(concepts)} concepts:")
     for concept in concepts:
         print(f"- {concept['concept']}")
-        print(f"  Context: {concept['backpack'][:100]}...")
+        ctx = concept.get('backpack_m') or concept.get('backpack_l') or concept.get('backpack_s', '')
+        print(f"  Context: {ctx[:100]}...")
         print()
