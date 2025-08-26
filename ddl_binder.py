@@ -1230,20 +1230,23 @@ class DDLEvidenceBinder:
             for ca in corpus_aliases[:2]:  # Top 2 corpus aliases
                 queries.append(f"{pa} {ca}")
         queries = list(dict.fromkeys(queries))  # Deduplicate
-        
         # Must contain at least one alias from each concept
         must_paper = [t.lower() for t in paper_aliases]
         must_corpus = [t.lower() for t in corpus_aliases]
+
+        # Pre-compute document frequencies for all queries
+        doc_freq_cache = self._precompute_doc_freqs(queries)
 
         for q in queries:
             if not q.strip():
                 continue
             part = self._retrieve_chunks_with_filters(
-                q, 
+                q,
                 top_k=max(1, k // len(queries)),
                 must_contain_paper=must_paper,
                 must_contain_corpus=must_corpus,
-                phrase_boost=True
+                phrase_boost=True,
+                doc_freq_cache=doc_freq_cache,
             )
             candidates.extend(part)
         result = self._deduplicate_candidates(candidates)[:k]
@@ -1262,13 +1265,19 @@ class DDLEvidenceBinder:
         hyp_head = hypothesis[:100]
         queries = list(dict.fromkeys([f"{paper_concept} {corpus_concept}", paper_concept, corpus_concept, hyp_head]))
         any_terms = [t.lower() for t in [paper_concept, corpus_concept] if t]
+        # Pre-compute document frequencies for all queries
+        doc_freq_cache = self._precompute_doc_freqs(queries)
 
         for q in queries:
             if not q.strip():
                 continue
-            part = self._retrieve_chunks_with_filters(q, top_k=max(1, k // len(queries)),
-                                                      must_contain_any=any_terms,
-                                                      phrase_boost=False)
+            part = self._retrieve_chunks_with_filters(
+                q,
+                top_k=max(1, k // len(queries)),
+                must_contain_any=any_terms,
+                phrase_boost=False,
+                doc_freq_cache=doc_freq_cache,
+            )
             candidates.extend(part)
         return self._deduplicate_candidates(candidates)[:k]
 
@@ -1276,14 +1285,45 @@ class DDLEvidenceBinder:
         # No lexical filters; lexical overlap scoring only
         candidates: List[Dict[str, Any]] = []
         queries = list(dict.fromkeys([hypothesis, f"{paper_concept} {corpus_concept}", paper_concept, corpus_concept]))
+
+        # Pre-compute document frequencies for all queries
+        doc_freq_cache = self._precompute_doc_freqs(queries)
+
         for q in queries:
             if not q.strip():
                 continue
-            part = self._retrieve_chunks(q, top_k=max(1, k // len(queries)))
+            part = self._retrieve_chunks(q, top_k=max(1, k // len(queries)), doc_freq_cache=doc_freq_cache)
             candidates.extend(part)
         return self._deduplicate_candidates(candidates)[:k]
 
     # ----------- retrieval helpers -----------
+
+    def _precompute_doc_freqs(self, queries: List[str]) -> Dict[str, Dict[str, int]]:
+        """Compute document frequencies for all queries in a single corpus scan."""
+        if self.corpus_df.empty:
+            return {}
+
+        scan_cap = min(len(self.corpus_df), self.scan_cap)
+        qtokens_map: Dict[str, List[str]] = {
+            q: [t for t in re.findall(r"\w+", q.lower()) if len(t) >= 3]
+            for q in queries if q.strip()
+        }
+        doc_freq_cache: Dict[str, Dict[str, int]] = {
+            q: {t: 0 for t in tokens} for q, tokens in qtokens_map.items()
+        }
+
+        for i, (idx, row) in enumerate(self.corpus_df.iloc[:scan_cap].iterrows()):
+            # Progress heartbeat during document frequency calculation
+            self._progress_heartbeat("bm25_docfreq", i + 1, scan_cap,
+                                     {"query": "batch", "scan_limit": scan_cap})
+
+            tokens = set(t for t in re.findall(r"\w+", str(row["text"]).lower()) if len(t) >= 3)
+            for q, qtokens in qtokens_map.items():
+                for term in qtokens:
+                    if term in tokens:
+                        doc_freq_cache[q][term] += 1
+
+        return doc_freq_cache
 
     def _retrieve_chunks_with_filters(self,
                                       query: str,
@@ -1292,11 +1332,12 @@ class DDLEvidenceBinder:
                                       must_contain_any: Optional[List[str]] = None,
                                       must_contain_paper: Optional[List[str]] = None,
                                       must_contain_corpus: Optional[List[str]] = None,
-                                      phrase_boost: bool = False) -> List[Dict[str, Any]]:
+                                      phrase_boost: bool = False,
+                                      doc_freq_cache: Optional[Dict[str, Dict[str, int]]] = None) -> List[Dict[str, Any]]:
         if self.corpus_df.empty:
             return []
 
-        base = self._retrieve_chunks(query, top_k=top_k * 3)
+        base = self._retrieve_chunks(query, top_k=top_k * 3, doc_freq_cache=doc_freq_cache)
         filtered: List[Dict[str, Any]] = []
         must = [t for t in (must_contain or []) if t]
         any_terms = [t for t in (must_contain_any or []) if t]
@@ -1343,11 +1384,12 @@ class DDLEvidenceBinder:
         filtered.sort(key=lambda x: float(x.get("score", 0.0)), reverse=True)
         return filtered[:top_k]
 
-    def _retrieve_chunks(self, query: str, top_k: int = 20) -> List[Dict[str, Any]]:
+    def _retrieve_chunks(self, query: str, top_k: int = 20,
+                          doc_freq_cache: Optional[Dict[str, Dict[str, int]]] = None) -> List[Dict[str, Any]]:
         """BM25-lite retrieval with TF-IDF scoring for better relevance."""
         if self.corpus_df.empty:
             return []
-        
+
         import math
         qtokens = [t for t in re.findall(r"\w+", query.lower()) if len(t) >= 3]
         if not qtokens:
@@ -1355,25 +1397,29 @@ class DDLEvidenceBinder:
 
         matches: List[Dict[str, Any]] = []
         scan_cap = min(len(self.corpus_df), self.scan_cap)
-        
+
         # Pre-compute document frequency for IDF calculation
-        doc_freq = {}
+        if doc_freq_cache is not None and query in doc_freq_cache:
+            doc_freq = doc_freq_cache[query]
+        else:
+            doc_freq = {}
+            for i, (idx, row) in enumerate(self.corpus_df.iloc[:scan_cap].iterrows()):
+                # Progress heartbeat during document frequency calculation
+                self._progress_heartbeat("bm25_docfreq", i + 1, scan_cap,
+                                       {"query": query[:50], "scan_limit": scan_cap})
+
+                text = str(row["text"]).lower()
+                tokens = [t for t in re.findall(r"\w+", text) if len(t) >= 3]
+                seen_terms = set()
+                for term in qtokens:
+                    if term in tokens and term not in seen_terms:
+                        doc_freq[term] = doc_freq.get(term, 0) + 1
+                        seen_terms.add(term)
+            if doc_freq_cache is not None:
+                doc_freq_cache[query] = doc_freq
+
         N = scan_cap  # Total number of documents
-        
-        # First pass: calculate document frequencies
-        for i, (idx, row) in enumerate(self.corpus_df.iloc[:scan_cap].iterrows()):
-            # Progress heartbeat during document frequency calculation
-            self._progress_heartbeat("bm25_docfreq", i + 1, scan_cap, 
-                                   {"query": query[:50], "scan_limit": scan_cap})
-            
-            text = str(row["text"]).lower()
-            tokens = [t for t in re.findall(r"\w+", text) if len(t) >= 3]
-            seen_terms = set()
-            for term in qtokens:
-                if term in tokens and term not in seen_terms:
-                    doc_freq[term] = doc_freq.get(term, 0) + 1
-                    seen_terms.add(term)
-        
+
         # Second pass: calculate BM25-lite scores
         start_time = time.time()
         processed = 0
@@ -1382,26 +1428,26 @@ class DDLEvidenceBinder:
             # Progress heartbeat during BM25 scoring
             self._progress_heartbeat("bm25_scoring", processed, scan_cap,
                                    {"candidates_found": len(matches)})
-            
+
             text = str(row["text"]).lower()
             tokens = [t for t in re.findall(r"\w+", text) if len(t) >= 3]
-            
+
             score = 0.0
             for term in qtokens:
                 if doc_freq.get(term, 0) == 0:
                     continue
-                    
+
                 # Term frequency in document
                 tf = sum(1 for t in tokens if t == term)
                 if tf == 0:
                     continue
-                
+
                 # Inverse document frequency
                 idf = math.log((N - doc_freq[term] + 0.5) / (doc_freq[term] + 0.5) + 1)
-                
+
                 # BM25-lite score (simplified, no document length normalization)
                 score += tf * idf
-            
+
             if score > 0:
                 matches.append({
                     "text": row["text"],
@@ -1413,7 +1459,7 @@ class DDLEvidenceBinder:
                     "score": float(score),
                 })
 
-elapsed = time.time() - start_time
+        elapsed = time.time() - start_time
         if processed == 0:
             raise RuntimeError(
                 f"BM25 scoring made no progress after {elapsed:.2f}s; "
