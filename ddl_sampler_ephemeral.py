@@ -374,7 +374,7 @@ class EphemeralDDLSampler:
                 serializable_pair = {
                     'paper_concept': pair['paper_name'],
                     'corpus_concept': pair['corpus_name'],
-                    'paper_backpack': pair['paper_concept']['backpack'],
+                    'paper_backpack': pair['paper_concept'].get('backpack_m') or pair['paper_concept'].get('backpack'),
                     'paper_section_title': pair['paper_concept'].get('section_title'),
                     'corpus_snippet': pair['corpus_concept']['snippet'],
                     'author': pair['author'],
@@ -400,12 +400,12 @@ if __name__ == "__main__":
     paper_concepts = [
         {
             'concept': 'sparse autoencoder',
-            'backpack': 'Sparse autoencoders learn compressed representations...',
+            'backpack_m': 'Sparse autoencoders learn compressed representations...',
             'embedding': [0.1, 0.2, 0.3]  # Mock embedding
         },
         {
             'concept': 'steering vector',
-            'backpack': 'Steering vectors control model behavior...',
+            'backpack_m': 'Steering vectors control model behavior...',
             'embedding': [0.2, 0.3, 0.1]
         }
     ]

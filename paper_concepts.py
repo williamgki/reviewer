@@ -218,9 +218,18 @@ class PaperConceptExtractor:
                 backpack = (backpack + " " + sent).strip()
             else:
                 break
-        
+
         return backpack
-    
+
+    def _generate_multi_scale_backpacks(self, concept: str, paper_text: str) -> Dict[str, Any]:
+        """Generate small, medium, and large context backpacks plus section title."""
+        return {
+            'backpack_s': self._generate_context_backpack(concept, paper_text, target_tokens=50),
+            'backpack_m': self._generate_context_backpack(concept, paper_text, target_tokens=150),
+            'backpack_l': self._generate_context_backpack(concept, paper_text, target_tokens=300),
+            'section_title': None,
+        }
+
     def _extract_concepts_fallback(self, paper_text: str, max_concepts: int) -> List[Dict[str, Any]]:
         """Enhanced n-gram concept extraction with domain awareness and anchor bundling."""
         print("Using enhanced n-gram concept extraction (fallback mode)")
@@ -475,29 +484,35 @@ class PaperConceptExtractor:
         try:
             # Get concepts from LLM
             llm_concepts = self.llm_extractor.extract_concepts_llm(paper_text, max_concepts)
-            
+
             # Convert to expected format with embeddings and backpacks
             result_concepts = []
-            
+
             for concept_data in llm_concepts:
                 concept_name = concept_data['name']
-                
+
                 # Create embedding
                 try:
                     embedding = self.embedding_model.encode(concept_name).tolist()  # Convert to list for JSON serialization
                 except Exception as e:
                     print(f"Warning: Could not create embedding for '{concept_name}': {e}")
                     embedding = np.zeros(384).tolist()  # Default dimension for all-MiniLM-L6-v2
-                
-                # Enhanced backpack from context + paper excerpts
-                backpack = concept_data.get('backpack', '')
-                enhanced_backpack = self._enhance_concept_backpack(concept_name, paper_text, backpack)
+                # Generate multi-scale backpacks from paper context
+                backpacks = self._generate_multi_scale_backpacks(concept_name, paper_text)
+
+                llm_backpack = concept_data.get('backpack')
+                if llm_backpack:
+                    backpacks['backpack_m'] = self._enhance_concept_backpack(
+                        concept_name, paper_text, llm_backpack
+                    )
+
+                if concept_data.get('section'):
+                    backpacks['section_title'] = concept_data['section']
 
                 result_concept = {
                     'concept': concept_name,
                     'source': f"llm_{concept_data.get('section', 'extracted')}",
-                    'section_title': concept_data.get('section'),
-                    'backpack': enhanced_backpack,
+                    **backpacks,
                     'embedding': embedding,
                     'importance': concept_data.get('importance', 5.0),
                     'category': concept_data.get('category', 'general'),
@@ -506,7 +521,7 @@ class PaperConceptExtractor:
                     'anchor_exact': concept_name,
                     'anchor_alias': concept_name
                 }
-                
+
                 result_concepts.append(result_concept)
             
             print(f"LLM extraction produced {len(result_concepts)} concepts")
@@ -550,5 +565,5 @@ if __name__ == "__main__":
     print(f"Extracted {len(concepts)} concepts:")
     for concept in concepts:
         print(f"- {concept['concept']}")
-        print(f"  Context: {concept['backpack'][:100]}...")
+        print(f"  Context: {concept.get('backpack_m', concept.get('backpack', ''))[:100]}...")
         print()

@@ -105,7 +105,7 @@ class SemanticCorpusConceptSampler:
         
         for i, paper_concept in enumerate(paper_concepts):
             concept_name = paper_concept.get('concept', paper_concept.get('name', ''))
-            concept_backpack = paper_concept.get('backpack', '')
+            concept_backpack = paper_concept.get('backpack_m') or paper_concept.get('backpack', '')
             
             print(f"  {i+1}/{len(paper_concepts)}: '{concept_name}'")
             
