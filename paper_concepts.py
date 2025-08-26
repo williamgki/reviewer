@@ -218,7 +218,7 @@ class PaperConceptExtractor:
                 backpack = (backpack + " " + sent).strip()
             else:
                 break
-        
+
         return backpack
 
     def _split_sections(self, paper_text: str) -> List[Tuple[str, str]]:
@@ -527,22 +527,33 @@ class PaperConceptExtractor:
         try:
             # Get concepts from LLM
             llm_concepts = self.llm_extractor.extract_concepts_llm(paper_text, max_concepts)
-            
+
             # Convert to expected format with embeddings and backpacks
             result_concepts = []
 
             for concept_data in llm_concepts:
                 concept_name = concept_data['name']
 
+                # Create embedding
                 try:
                     embedding = self.embedding_model.encode(concept_name).tolist()
                 except Exception as e:
                     print(f"Warning: Could not create embedding for '{concept_name}': {e}")
-                    embedding = np.zeros(384).tolist()
+                    embedding = np.zeros(384).tolist()  # Default dimension for all-MiniLM-L6-v2
 
+                # Generate multi-scale backpacks from paper context
                 backpacks = self._generate_multi_scale_backpacks(concept_name, paper_text)
-                if concept_data.get('backpack'):
-                    backpacks['backpack_m'] = concept_data['backpack']
+
+                # Enhance with LLM backpack if available
+                llm_backpack = concept_data.get('backpack')
+                if llm_backpack:
+                    backpacks['backpack_m'] = self._enhance_concept_backpack(
+                        concept_name, paper_text, llm_backpack
+                    )
+
+                # Override section title if provided by LLM
+                if concept_data.get('section'):
+                    backpacks['section_title'] = concept_data['section']
 
                 result_concept = {
                     'concept': concept_name,
@@ -566,6 +577,20 @@ class PaperConceptExtractor:
             print("Falling back to enhanced n-gram extraction")
             return self._extract_concepts_fallback(paper_text, max_concepts)
     
+    def _enhance_concept_backpack(self, concept: str, paper_text: str, base_context: str) -> str:
+        """Enhance LLM-provided context with paper excerpts."""
+        # Use existing backpack generation logic
+        paper_backpack = self._generate_context_backpack(concept, paper_text, target_tokens=300)
+        
+        # Combine LLM context with paper excerpts
+        if base_context and paper_backpack:
+            return f"{base_context}. Context from paper: {paper_backpack}"
+        elif paper_backpack:
+            return paper_backpack
+        else:
+            return base_context or f"Key concept: {concept}"
+
+
 if __name__ == "__main__":
     # Test the concept extractor
     extractor = PaperConceptExtractor()
