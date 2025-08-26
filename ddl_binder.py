@@ -1421,9 +1421,12 @@ class DDLEvidenceBinder:
         N = scan_cap  # Total number of documents
 
         # Second pass: calculate BM25-lite scores
+        start_time = time.time()
+        processed = 0
         for i, (idx, row) in enumerate(self.corpus_df.iloc[:scan_cap].iterrows()):
+            processed = i + 1
             # Progress heartbeat during BM25 scoring
-            self._progress_heartbeat("bm25_scoring", i + 1, scan_cap,
+            self._progress_heartbeat("bm25_scoring", processed, scan_cap,
                                    {"candidates_found": len(matches)})
 
             text = str(row["text"]).lower()
@@ -1456,8 +1459,30 @@ class DDLEvidenceBinder:
                     "score": float(score),
                 })
 
+        elapsed = time.time() - start_time
+        if processed == 0:
+            raise RuntimeError(
+                f"BM25 scoring made no progress after {elapsed:.2f}s; "
+                "corpus may be empty or scan_cap is 0."
+            )
+
+        # Truncate or sample if too many candidates are found
+        max_candidates = 10000
+        candidates_found = len(matches)
+        if candidates_found > max_candidates:
+            self._log(
+                "warning",
+                f"Truncating BM25 matches from {candidates_found} to {max_candidates}",
+                stage="bm25_scoring",
+                event="candidate_truncation",
+            )
+            matches = sorted(
+                matches, key=lambda m: float(m.get("score", 0.0)), reverse=True
+            )[:max_candidates]
+            candidates_found = len(matches)
+
         # Update BM25 candidates metric
-        self.metrics["bm25_candidates_considered"] += len(matches)
+        self.metrics["bm25_candidates_considered"] += candidates_found
         
         # Apply hybrid ranking if semantic indexing is enabled
         if self.faiss_index is not None and matches:
