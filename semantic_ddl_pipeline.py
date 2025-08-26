@@ -211,9 +211,9 @@ class SemanticDDLPipeline:
         for key_term, enhancement in domain_enhancements.items():
             if key_term in concept_name:
                 # Add enhanced backpack context
-                original_backpack = concept.get('backpack', '')
+                original_backpack = (concept.get('backpack_m') or concept.get('backpack_l') or concept.get('backpack_s') or '')
                 if not original_backpack or len(original_backpack) < 50:
-                    concept['backpack'] = f"{original_backpack} {enhancement}".strip()
+                    concept['backpack_m'] = f"{original_backpack} {enhancement}".strip()
                 break
         
         return concept
@@ -254,7 +254,8 @@ class SemanticDDLPipeline:
             'paper_name': paper_concept['concept'],  # Compatibility with sampler
             'paper_anchor_exact': paper_concept.get('anchor_exact', paper_concept['concept']),
             'paper_anchor_alias': paper_concept.get('anchor_alias', paper_concept['concept']),
-            'paper_backpack': paper_concept.get('backpack', ''),
+            'paper_backpack': paper_concept.get('backpack_m') or paper_concept.get('backpack_l') or paper_concept.get('backpack_s') or '',
+            'paper_section_title': paper_concept.get('section_title', ''),
             
             # Corpus side - complete metadata for binder/critic stages 
             'corpus_concept': {
