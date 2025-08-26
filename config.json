@@ -78,7 +78,8 @@
     "rank_based_top_n": 5,
     "per_doc_cap": 2,
     "force_rebuild": false,
-    "note": "Enhanced retrieval: k=20, top_N=5, per_doc_cap=2 for variety"
+    "note": "Enhanced retrieval: k=20, top_N=5, per_doc_cap=2 for variety",
+    "neighbor_chunk_join": 1
   },
   
   "evidence_tiers": {
