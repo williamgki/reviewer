@@ -7,7 +7,8 @@ from typing import Dict, List, Any, Tuple, Optional, Set
 from collections import defaultdict, Counter
 import numpy as np
 from sklearn.cluster import KMeans
-from sklearn.metrics.pairwise import cosine_similarity
+from sklearn.metrics import silhouette_score
+from sklearn.feature_extraction.text import TfidfVectorizer
 from sentence_transformers import SentenceTransformer
 
 
@@ -102,54 +103,113 @@ class WeaveComposerFreeflow:
         return review
     
     def _cluster_daydreams_into_themes(self, bound_daydreams: List[Dict[str, Any]]) -> Dict[str, List[Dict[str, Any]]]:
-        """Cluster daydreams into thematic groups."""
+        """Cluster daydreams into thematic groups using embeddings and TF-IDF naming."""
         if len(bound_daydreams) <= self.min_themes:
-            # If few daydreams, create one theme per daydream
             themes = {}
             for i, daydream in enumerate(bound_daydreams):
                 theme_name = daydream.get('theme_hint', f'Theme {i+1}')
                 themes[theme_name] = [daydream]
             return themes
-        
-        # Use theme hints and concept similarity for clustering
-        theme_hints = [d.get('theme_hint', 'General') for d in bound_daydreams]
-        
-        # Simple clustering based on theme hints
-        theme_groups = defaultdict(list)
-        for daydream, hint in zip(bound_daydreams, theme_hints):
-            theme_groups[hint].append(daydream)
-        
-        # Merge small themes and split large ones
-        final_themes = {}
-        small_themes = []
-        
-        for theme_name, daydreams in theme_groups.items():
-            if len(daydreams) >= self.min_findings_per_theme:
-                if len(daydreams) > self.max_findings_per_theme:
-                    # Split large theme
-                    final_themes[f"{theme_name} (Part 1)"] = daydreams[:self.max_findings_per_theme//2]
-                    final_themes[f"{theme_name} (Part 2)"] = daydreams[self.max_findings_per_theme//2:]
-                else:
-                    final_themes[theme_name] = daydreams
-            else:
-                small_themes.extend(daydreams)
-        
-        # Group small themes together
-        if small_themes:
-            final_themes["Cross-Cutting Insights"] = small_themes[:self.max_findings_per_theme]
-        
-        # Ensure we don't exceed max themes
-        if len(final_themes) > self.max_themes:
-            # Keep top themes by total critic scores
-            theme_scores = {}
-            for theme_name, daydreams in final_themes.items():
-                avg_score = np.mean([d['critic']['overall_score'] for d in daydreams])
-                theme_scores[theme_name] = avg_score
-            
-            top_themes = sorted(theme_scores.items(), key=lambda x: x[1], reverse=True)[:self.max_themes]
-            final_themes = {name: final_themes[name] for name, _ in top_themes}
-        
-        return final_themes
+
+        try:
+            # Build embedding texts
+            texts = []
+            for d in bound_daydreams:
+                pieces = [
+                    d.get('hypothesis', ''),
+                    d.get('paper_concept', ''),
+                    d.get('corpus_concept', ''),
+                    d.get('theme_hint', ''),
+                    d.get('paper_anchor', ''),
+                ]
+                for ev in d.get('evidence', []):
+                    pieces.append(ev.get('quote', ''))
+                    pieces.append(ev.get('section_title', ''))
+                texts.append(" ".join([p for p in pieces if p]))
+
+            embeddings = self.embedding_model.encode(texts)
+
+            possible_k = range(self.min_themes, min(self.max_themes, len(bound_daydreams)) + 1)
+            best_score, best_labels = -1, None
+            for k in possible_k:
+                if k <= 1 or k >= len(bound_daydreams):
+                    continue
+                kmeans = KMeans(n_clusters=k, random_state=42, n_init='auto')
+                labels = kmeans.fit_predict(embeddings)
+                score = silhouette_score(embeddings, labels)
+                if score > best_score:
+                    best_score, best_labels = score, labels
+
+            if best_labels is None:
+                raise ValueError("Clustering failed")
+
+            clusters = defaultdict(list)
+            for label, daydream in zip(best_labels, bound_daydreams):
+                clusters[label].append(daydream)
+        except Exception:
+            # Fallback to theme hints if clustering fails
+            clusters = defaultdict(list)
+            for d in bound_daydreams:
+                clusters[d.get('theme_hint', 'General')].append(d)
+
+        themes = {}
+        for idx, daydreams in clusters.items():
+            # Create cluster name using TF-IDF
+            corpus = []
+            for d in daydreams:
+                corpus.append(d.get('hypothesis', ''))
+                corpus.append(d.get('paper_concept', ''))
+                corpus.append(d.get('corpus_concept', ''))
+                corpus.append(d.get('theme_hint', ''))
+                corpus.append(d.get('paper_anchor', ''))
+                for ev in d.get('evidence', []):
+                    corpus.append(ev.get('quote', ''))
+                    corpus.append(ev.get('section_title', ''))
+            try:
+                vectorizer = TfidfVectorizer(stop_words='english')
+                tfidf = vectorizer.fit_transform(corpus)
+                mean_scores = np.asarray(tfidf.mean(axis=0)).ravel()
+                feature_names = vectorizer.get_feature_names_out()
+                top_indices = mean_scores.argsort()[::-1][:3]
+                top_terms = [feature_names[i] for i in top_indices if mean_scores[i] > 0]
+                theme_name = " ".join(top_terms).title() if top_terms else f"Theme {idx+1}"
+            except Exception:
+                theme_name = f"Theme {idx+1}"
+
+            # Rank daydreams inside theme by critic score and cap findings
+            ranked_daydreams = sorted(
+                daydreams,
+                key=lambda d: d.get('critic', {}).get('overall_score', 0),
+                reverse=True
+            )[: self.max_findings_per_theme]
+
+            themes[theme_name] = ranked_daydreams
+
+        def theme_metrics(daydreams: List[Dict[str, Any]]) -> Tuple[float, float, float]:
+            sources: Set[str] = set()
+            scores, novelties = [], []
+            for d in daydreams:
+                scores.append(d.get('critic', {}).get('overall_score', 0))
+                novelties.append(d.get('critic', {}).get('novelty', 0))
+                for ev in d.get('evidence', []):
+                    src = ev.get('citation') or ev.get('source')
+                    if src:
+                        sources.add(src)
+            breadth = len(sources)
+            return (
+                breadth,
+                float(np.mean(scores)) if scores else 0.0,
+                float(np.mean(novelties)) if novelties else 0.0,
+            )
+
+        # Rank themes by source breadth, critic score, novelty
+        ordered = sorted(
+            themes.items(),
+            key=lambda item: theme_metrics(item[1]),
+            reverse=True,
+        )[: self.max_themes]
+
+        return {name: daydreams for name, daydreams in ordered}
     
     def _generate_lead_section(self, paper_title: str, paper_text: str, 
                               themes: Dict[str, List[Dict[str, Any]]]) -> str:

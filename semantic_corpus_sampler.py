@@ -97,15 +97,16 @@ class SemanticCorpusConceptSampler:
         """
         if not self.retrieval_system:
             print("❌ No retrieval system available")
-            return []
-        
-        print(f"🔍 Finding relevant corpus concepts for {len(paper_concepts)} paper concepts...")
+            return []        print(f"🔍 Finding relevant corpus concepts for {len(paper_concepts)} paper concepts...")
         
         all_corpus_concepts = []
         
         for i, paper_concept in enumerate(paper_concepts):
             concept_name = paper_concept.get('concept', paper_concept.get('name', ''))
-            concept_backpack = paper_concept.get('backpack_m') or paper_concept.get('backpack', '')
+            concept_backpack = (paper_concept.get('backpack_m') or
+                                paper_concept.get('backpack_l') or
+                                paper_concept.get('backpack_s') or
+                                paper_concept.get('backpack', ''))
             
             print(f"  {i+1}/{len(paper_concepts)}: '{concept_name}'")
             

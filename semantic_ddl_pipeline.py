@@ -211,7 +211,10 @@ class SemanticDDLPipeline:
         for key_term, enhancement in domain_enhancements.items():
             if key_term in concept_name:
                 # Add enhanced backpack context
-                original_backpack = concept.get('backpack_m') or concept.get('backpack', '')
+                original_backpack = (concept.get('backpack_m') or 
+                                   concept.get('backpack_l') or 
+                                   concept.get('backpack_s') or 
+                                   concept.get('backpack', ''))
                 if not original_backpack or len(original_backpack) < 50:
                     concept['backpack_m'] = f"{original_backpack} {enhancement}".strip()
                 break
@@ -248,15 +251,17 @@ class SemanticDDLPipeline:
         meta = corpus_concept.get('metadata', {}) or {}
         snippet = corpus_concept.get('snippet', '')[:200]
         
-        return {
+return {
             # Paper side - preserve full structure for sampler compatibility
             'paper_concept': paper_concept,  # Keep as dict - sampler expects this structure
             'paper_name': paper_concept['concept'],  # Compatibility with sampler
             'paper_anchor_exact': paper_concept.get('anchor_exact', paper_concept['concept']),
             'paper_anchor_alias': paper_concept.get('anchor_alias', paper_concept['concept']),
-            'paper_backpack': paper_concept.get('backpack_m') or paper_concept.get('backpack', ''),
-            'paper_section_title': paper_concept.get('section_title'),
-            
+            'paper_backpack': (paper_concept.get('backpack_m') or 
+                             paper_concept.get('backpack_l') or 
+                             paper_concept.get('backpack_s') or 
+                             paper_concept.get('backpack', '')),
+            'paper_section_title': paper_concept.get('section_title', ''),
             # Corpus side - complete metadata for binder/critic stages 
             'corpus_concept': {
                 'concept': corpus_concept.get('concept') or snippet[:64] or 'Unknown',

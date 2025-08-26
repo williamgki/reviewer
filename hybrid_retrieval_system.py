@@ -124,10 +124,17 @@ class HybridRetrievalSystem:
     def load_chunks(self) -> pd.DataFrame:
         """Load contextual chunks from parquet"""
         logger.info(f"📚 Loading chunks from {self.chunks_path}")
-        
+
         self.chunks_df = pd.read_parquet(self.chunks_path)
+
+        # Ensure doc_id and chunk_idx are present for downstream alignment
+        if "doc_id" not in self.chunks_df.columns:
+            self.chunks_df["doc_id"] = self.chunks_df.get("chunk_id", np.arange(len(self.chunks_df))).astype(str)
+        if "chunk_idx" not in self.chunks_df.columns:
+            self.chunks_df["chunk_idx"] = self.chunks_df.groupby("doc_id").cumcount()
+
         logger.info(f"✅ Loaded {len(self.chunks_df)} contextual chunks")
-        
+
         # Create searchable text (content + section_path + summary)
         self.chunk_texts = []
         for _, row in self.chunks_df.iterrows():
