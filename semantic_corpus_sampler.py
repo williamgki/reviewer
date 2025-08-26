@@ -97,8 +97,9 @@ class SemanticCorpusConceptSampler:
         """
         if not self.retrieval_system:
             print("❌ No retrieval system available")
-            return []        print(f"🔍 Finding relevant corpus concepts for {len(paper_concepts)} paper concepts...")
-        
+            print(f"🔍 Finding relevant corpus concepts for {len(paper_concepts)} paper concepts...")
+            return []
+
         all_corpus_concepts = []
         
         for i, paper_concept in enumerate(paper_concepts):
