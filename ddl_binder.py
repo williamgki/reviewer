@@ -1375,9 +1375,12 @@ class DDLEvidenceBinder:
                     seen_terms.add(term)
         
         # Second pass: calculate BM25-lite scores
+        start_time = time.time()
+        processed = 0
         for i, (idx, row) in enumerate(self.corpus_df.iloc[:scan_cap].iterrows()):
+            processed = i + 1
             # Progress heartbeat during BM25 scoring
-            self._progress_heartbeat("bm25_scoring", i + 1, scan_cap, 
+            self._progress_heartbeat("bm25_scoring", processed, scan_cap,
                                    {"candidates_found": len(matches)})
             
             text = str(row["text"]).lower()
@@ -1409,6 +1412,13 @@ class DDLEvidenceBinder:
                     "chunk_idx": row.get("chunk_idx", idx),
                     "score": float(score),
                 })
+
+        elapsed = time.time() - start_time
+        if processed == 0:
+            raise RuntimeError(
+                f"BM25 scoring made no progress after {elapsed:.2f}s; "
+                "corpus may be empty or scan_cap is 0."
+            )
 
         # Update BM25 candidates metric
         self.metrics["bm25_candidates_considered"] += len(matches)
