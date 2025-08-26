@@ -250,19 +250,19 @@ class SemanticDDLPipeline:
         # Extract metadata (corpus_concept comes from search results)
         meta = corpus_concept.get('metadata', {}) or {}
         snippet = corpus_concept.get('snippet', '')[:200]
-        
-return {
+
+        return {
             # Paper side - preserve full structure for sampler compatibility
             'paper_concept': paper_concept,  # Keep as dict - sampler expects this structure
             'paper_name': paper_concept['concept'],  # Compatibility with sampler
             'paper_anchor_exact': paper_concept.get('anchor_exact', paper_concept['concept']),
             'paper_anchor_alias': paper_concept.get('anchor_alias', paper_concept['concept']),
-            'paper_backpack': (paper_concept.get('backpack_m') or 
-                             paper_concept.get('backpack_l') or 
-                             paper_concept.get('backpack_s') or 
-                             paper_concept.get('backpack', '')),
+            'paper_backpack': (paper_concept.get('backpack_m') or
+                              paper_concept.get('backpack_l') or
+                              paper_concept.get('backpack_s') or
+                              paper_concept.get('backpack', '')),
             'paper_section_title': paper_concept.get('section_title', ''),
-            # Corpus side - complete metadata for binder/critic stages 
+            # Corpus side - complete metadata for binder/critic stages
             'corpus_concept': {
                 'concept': corpus_concept.get('concept') or snippet[:64] or 'Unknown',
                 'snippet': snippet,
@@ -277,7 +277,7 @@ return {
             'author': corpus_concept.get('author') or meta.get('author', 'Unknown'),  # For backward compatibility
             'year': corpus_concept.get('year') or meta.get('year', 2020),
             'url': meta.get('url', ''),
-            
+
             # Evidence structure for binder - windowed snippets
             'evidence': {
                 'snippet': self._create_windowed_snippet(snippet, paper_concept['concept']),
@@ -289,14 +289,14 @@ return {
                 'doc_id': corpus_concept.get('doc_id', 'unknown'),  # Ensure doc_id for distinct doc requirement
                 'evidence_quality': 'windowed'  # Mark as high-quality evidence
             },
-            
+
             # Relevance scores
             'semantic_score': corpus_concept.get('dense_score', 0.0),
             'lexical_score': corpus_concept.get('bm25_score', 0.0),
             'combined_score': corpus_concept.get('combined_score', 0.0),
             'score': corpus_concept.get('combined_score', 0.0),  # Main score for sorting
             'paper_concept_importance': paper_concept.get('importance', 5.0),
-            
+
             # Quality metrics
             'novelty': self._calculate_novelty(paper_concept, corpus_concept),
             'plausibility': self._calculate_plausibility(paper_concept, corpus_concept),
