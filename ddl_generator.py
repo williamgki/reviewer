@@ -27,7 +27,7 @@ class DDLGenerator:
     Uses best-of-3 generation at different temperatures for quality.
     """
     
-    def __init__(self, api_base: str = "http://localhost:1234/v1", 
+    def __init__(self, api_base: str = "http://localhost:1234/v1",
                  api_key: str = "lm-studio", model: str = "gpt-oss-120b"):
         self.client = openai.OpenAI(
             base_url=api_base,
@@ -43,33 +43,42 @@ class DDLGenerator:
         }
         
         self.valid_directions = {'increase', 'decrease', 'no_change'}
+        self.theme_taxonomy = {
+            'alignment', 'interpretability', 'robustness', 'efficiency',
+            'safety', 'capabilities', 'governance', 'ethics'
+        }
     
     def generate_daydream(self, paper_concept: str, paper_backpack: str,
                          corpus_concept: str, corpus_snippet: str,
                          paper_anchor_exact: Optional[str] = None,
-                         paper_anchor_alias: Optional[str] = None) -> Optional[Dict[str, Any]]:
+                         paper_anchor_alias: Optional[str] = None,
+                         paper_section_title: Optional[str] = None) -> Optional[Dict[str, Any]]:
         """
         Generate a single daydream hypothesis using best-of-3 approach.
         
         Args:
             paper_concept: Name of concept from the paper
-            paper_backpack: Context snippet from paper (100-250 tokens)
+            paper_backpack: Context snippet from paper (micro: ~100-250 words; macro mode triggers if >250 words)
             corpus_concept: Name of concept from corpus
             corpus_snippet: Context snippet from corpus (30-80 tokens)
             paper_anchor_exact: Preferred exact anchor phrase from paper
             paper_anchor_alias: Normalized fallback anchor phrase
+            paper_section_title: Title of the paper section where concept appears
             
         Returns:
-            Best hypothesis dict or None if all attempts fail
+            Best hypothesis dict with 'macro_mode' flag or None if all attempts fail
         """
+        macro_mode = self._word_count(paper_backpack) > 250
         candidates = []
-        
+
         # Generate candidates at different temperatures
         for temp in self.temperatures:
             try:
                 hypothesis = self._generate_single_hypothesis(
                     paper_concept, paper_backpack, corpus_concept, corpus_snippet, temp,
-                    paper_anchor_exact, paper_anchor_alias
+                    paper_anchor_exact, paper_anchor_alias,
+                    macro_mode=macro_mode,
+                    paper_section_title=paper_section_title
                 )
                 if hypothesis:
                     # Apply autocorrect before validation
@@ -86,32 +95,81 @@ class DDLGenerator:
         # Return the candidate from the lowest temperature that succeeded
         # (generally more reliable/coherent)
         candidates.sort(key=lambda x: x[1])
-        return candidates[0][0]
+        result = candidates[0][0]
+        result['macro_mode'] = macro_mode
+        return result
     
     def _generate_single_hypothesis(self, paper_concept: str, paper_backpack: str,
-                                  corpus_concept: str, corpus_snippet: str, 
+                                  corpus_concept: str, corpus_snippet: str,
                                   temperature: float,
                                   paper_anchor_exact: Optional[str] = None,
-                                  paper_anchor_alias: Optional[str] = None) -> Optional[Dict[str, Any]]:
+                                  paper_anchor_alias: Optional[str] = None,
+                                  macro_mode: bool = False,
+                                  paper_section_title: Optional[str] = None) -> Optional[Dict[str, Any]]:
         """Generate a single hypothesis at given temperature."""
-        
-        # Choose the best available anchor and make it explicit
-        target_anchor = paper_anchor_exact or paper_anchor_alias or paper_concept
-        
-        # Explicit anchor requirement for deterministic inclusion
-        anchor_requirement = f'You MUST include the exact phrase "{target_anchor}" verbatim as a quoted substring in your hypothesis. Do not paraphrase, alter spacing, case, or punctuation of this anchor phrase.'
-        
-        system_prompt = f"""You are generating a single, falsifiable hypothesis that bridges a paper claim and an external source.
+
+        if macro_mode:
+            target_anchor = paper_anchor_alias or paper_section_title or paper_concept
+            theme_options = "|".join(sorted(self.theme_taxonomy))
+            system_prompt = f"""You are generating a broad, falsifiable hypothesis that links a paper claim and an external source.
+
+RULES:
+- You MUST include the paper concept \"{paper_concept}\" verbatim in the hypothesis text
+- The hypothesis must be one paragraph (120-180 words) with this structure:
+  CLAIM: <clear claim>
+  MECHANISM: <why this could be true>
+  TEST: <how to check quickly>
+  SIGNALS: <what observations would support or refute>
+- Return only JSON between <json> and </json>
+
+Schema:
+{{
+  "hypothesis": "120-180 words including paper concept",
+  "paper_anchor": "short alias or section title describing where claim appears",
+  "theme_hint": "{theme_options}",
+  "test": {{
+    "type": "ablation_control|negative_control|holdout_generalization|counterfactual_rewrite|adversarial_probe",
+    "dataset_or_component": "specific dataset or model component to test",
+    "manipulation": "what you would change/test",
+    "metric": "how you would measure the result",
+    "expected_direction": "increase|decrease|no_change",
+    "success_threshold": 0.0-1.0,
+    "timeframe_days": 1-90
+  }}
+}}"""
+
+            user_prompt = f"""PAPER CONCEPT: {paper_concept}
+PAPER CONTEXT (extended excerpt): {paper_backpack}
+
+CORPUS CONCEPT: {corpus_concept}
+CORPUS CONTEXT (1–2 sentences): {corpus_snippet}
+
+SECTION TITLE OR ALIAS: {paper_section_title or target_anchor}
+
+Generate your hypothesis now. Requirements:
+1. Include \"{paper_concept}\" verbatim in the hypothesis
+2. Set paper_anchor to a short alias or section title (no need to copy verbatim)
+3. Set theme_hint to one of: {", ".join(sorted(self.theme_taxonomy))}
+
+Return only the JSON."""
+
+        else:
+            # Micro mode with strict anchor requirement
+            target_anchor = paper_anchor_exact or paper_anchor_alias or paper_concept
+            theme_options = "|".join(sorted(self.theme_taxonomy))
+            anchor_requirement = f'You MUST include the exact phrase "{target_anchor}" verbatim as a quoted substring in your hypothesis. Do not paraphrase, alter spacing, case, or punctuation of this anchor phrase.'
+
+            system_prompt = f"""You are generating a single, falsifiable hypothesis that bridges a paper claim and an external source.
 
 CRITICAL ANCHOR REQUIREMENT:
 {anchor_requirement}
 
 RULES:
-- You MUST include the paper concept "{paper_concept}" verbatim in the hypothesis text
-- You MUST include the anchor phrase "{target_anchor}" exactly once as written above
+- You MUST include the paper concept \"{paper_concept}\" verbatim in the hypothesis text
+- You MUST include the anchor phrase \"{target_anchor}\" exactly once as written above
 - The hypothesis must be one paragraph (120-180 words) with this structure:
   CLAIM: <clear claim>
-  MECHANISM: <why this could be true> 
+  MECHANISM: <why this could be true>
   TEST: <how to check quickly>
   SIGNALS: <what observations would support or refute>
 - Return only JSON between <json> and </json>
@@ -120,11 +178,12 @@ Schema:
 {{
   "hypothesis": "120-180 words including paper concept AND anchor phrase \"{target_anchor}\" verbatim",
   "paper_anchor": "{target_anchor}",
+  "theme_hint": "{theme_options}",
   "test": {{
     "type": "ablation_control|negative_control|holdout_generalization|counterfactual_rewrite|adversarial_probe",
     "dataset_or_component": "specific dataset or model component to test",
     "manipulation": "what you would change/test",
-    "metric": "how you would measure the result", 
+    "metric": "how you would measure the result",
     "expected_direction": "increase|decrease|no_change",
     "success_threshold": 0.0-1.0,
     "timeframe_days": 1-90
@@ -132,22 +191,23 @@ Schema:
 }}
 
 IMPORTANT: Your hypothesis MUST contain the exact phrase \"{target_anchor}\" and your paper_anchor field MUST be exactly \"{target_anchor}\"."""
-        
-        user_prompt = f"""PAPER CONCEPT: {paper_concept}
+
+            user_prompt = f"""PAPER CONCEPT: {paper_concept}
 PAPER CONTEXT (excerpt 100–250 tokens): {paper_backpack}
 
 CORPUS CONCEPT: {corpus_concept}
 CORPUS CONTEXT (1–2 sentences): {corpus_snippet}
 
-REQUIRED ANCHOR TO COPY: "{target_anchor}"
+REQUIRED ANCHOR TO COPY: \"{target_anchor}\"
 
 Generate your hypothesis now. CRITICAL REQUIREMENTS:
-1. Include "{paper_concept}" verbatim in the hypothesis
-2. Include the exact phrase "{target_anchor}" verbatim in your hypothesis (copy it exactly as shown above)
-3. Set paper_anchor field to exactly "{target_anchor}"
+1. Include \"{paper_concept}\" verbatim in the hypothesis
+2. Include the exact phrase \"{target_anchor}\" verbatim in your hypothesis (copy it exactly as shown above)
+3. Set paper_anchor field to exactly \"{target_anchor}\"
+4. Set theme_hint to one of: {", ".join(sorted(self.theme_taxonomy))}
 
 Return only the JSON."""
-        
+
         try:
             response = self.client.chat.completions.create(
                 model=self.model,
@@ -160,13 +220,15 @@ Return only the JSON."""
                 max_tokens=2000,
                 timeout=45
             )
-            
+
             content = (response.choices[0].message.content or "").strip()
-            
+
             # Use robust JSON repair
             hypothesis_data = self._json_repair(content)
             if hypothesis_data:
-                # Post-generation anchor verification
+                if macro_mode:
+                    return hypothesis_data
+                # Post-generation anchor verification for micro mode
                 if self._verify_anchor_inclusion(hypothesis_data):
                     return hypothesis_data
                 else:
@@ -177,7 +239,7 @@ Return only the JSON."""
                 print(f"JSON repair failed for temp {temperature}")
                 print(f"Raw content: {content}")
                 return None
-            
+
         except Exception as e:
             print(f"API call failed: {e}")
             return None
@@ -215,6 +277,7 @@ Return only the JSON."""
         # Even more explicit for retry
         anchor_requirement = f'CRITICAL: You MUST copy the exact phrase "{target_anchor}" verbatim into your hypothesis. Your previous attempt failed because this phrase was missing.'
         
+        theme_options = "|".join(sorted(self.theme_taxonomy))
         system_prompt = f"""CRITICAL: Your previous attempt failed because the anchor phrase did not appear in the hypothesis text.
 
 You are generating a hypothesis that bridges a paper claim and external source.
@@ -225,12 +288,14 @@ RULES:
 - Include "{paper_concept}" verbatim in the hypothesis
 - Include the exact phrase "{target_anchor}" verbatim in your hypothesis (copy it exactly)
 - Set paper_anchor field to exactly "{target_anchor}"
+- Set theme_hint to one of: {theme_options}
 - 120-180 words total
 
 Schema:
 {{
   "hypothesis": "Must contain \"{target_anchor}\" verbatim",
   "paper_anchor": "{target_anchor}",
+  "theme_hint": "{theme_options}",
   "test": {{
     "type": "ablation_control|negative_control|holdout_generalization|counterfactual_rewrite|adversarial_probe",
     "dataset_or_component": "specific dataset or model component",
@@ -243,7 +308,7 @@ Schema:
 }}
 
 Return only JSON between <json> and </json>."""
-        
+
         user_prompt = f"""PAPER CONCEPT: {paper_concept}
 PAPER CONTEXT: {paper_backpack}
 
@@ -253,6 +318,7 @@ CORPUS CONTEXT: {corpus_snippet}
 REQUIRED ANCHOR TO COPY: "{target_anchor}"
 
 FIX THE ERROR: Include the exact phrase "{target_anchor}" verbatim in your hypothesis AND set paper_anchor to exactly "{target_anchor}".
+Also set theme_hint to one of: {", ".join(sorted(self.theme_taxonomy))}.
 
 Return only the JSON."""
         
@@ -405,7 +471,7 @@ Return only the JSON."""
     
     def _validate_hypothesis_structure(self, hypothesis: Dict[str, Any]) -> bool:
         """Validate that hypothesis has required structure and valid values."""
-        required_keys = {'hypothesis', 'paper_anchor', 'test'}
+        required_keys = {'hypothesis', 'paper_anchor', 'test', 'theme_hint'}
         if not all(key in hypothesis for key in required_keys):
             return False
         
@@ -416,8 +482,10 @@ Return only the JSON."""
             print(f"Word count {wc} outside range 80-200")
             return False
         
-        # Validate paper_anchor
+        # Validate paper_anchor and theme_hint
         if not isinstance(hypothesis.get('paper_anchor'), str):
+            return False
+        if hypothesis.get('theme_hint') not in self.theme_taxonomy:
             return False
         
         # Validate test structure
@@ -487,10 +555,11 @@ Return only the JSON."""
                 daydream = self.generate_daydream(
                     paper_concept=pair['paper_concept'],
                     paper_backpack=pair['paper_backpack'],
-                    corpus_concept=pair['corpus_concept'], 
+                    corpus_concept=pair['corpus_concept'],
                     corpus_snippet=pair['corpus_snippet'],
                     paper_anchor_exact=pair.get('paper_anchor_exact'),
-                    paper_anchor_alias=pair.get('paper_anchor_alias')
+                    paper_anchor_alias=pair.get('paper_anchor_alias'),
+                    paper_section_title=pair.get('paper_section_title')
                 )
                 
                 if daydream:
@@ -539,10 +608,11 @@ Return only the JSON."""
                 daydream = self.generate_daydream(
                     paper_concept=pair['paper_concept'],
                     paper_backpack=pair['paper_backpack'],
-                    corpus_concept=pair['corpus_concept'], 
+                    corpus_concept=pair['corpus_concept'],
                     corpus_snippet=pair['corpus_snippet'],
                     paper_anchor_exact=pair.get('paper_anchor_exact'),
-                    paper_anchor_alias=pair.get('paper_anchor_alias')
+                    paper_anchor_alias=pair.get('paper_anchor_alias'),
+                    paper_section_title=pair.get('paper_section_title')
                 )
                 
                 if daydream:

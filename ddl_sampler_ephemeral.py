@@ -375,6 +375,7 @@ class EphemeralDDLSampler:
                     'paper_concept': pair['paper_name'],
                     'corpus_concept': pair['corpus_name'],
                     'paper_backpack': pair['paper_concept']['backpack'],
+                    'paper_section_title': pair['paper_concept'].get('section_title'),
                     'corpus_snippet': pair['corpus_concept']['snippet'],
                     'author': pair['author'],
                     'year': pair['year'],

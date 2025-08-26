@@ -492,10 +492,11 @@ class PaperConceptExtractor:
                 # Enhanced backpack from context + paper excerpts
                 backpack = concept_data.get('backpack', '')
                 enhanced_backpack = self._enhance_concept_backpack(concept_name, paper_text, backpack)
-                
+
                 result_concept = {
                     'concept': concept_name,
                     'source': f"llm_{concept_data.get('section', 'extracted')}",
+                    'section_title': concept_data.get('section'),
                     'backpack': enhanced_backpack,
                     'embedding': embedding,
                     'importance': concept_data.get('importance', 5.0),
@@ -519,7 +520,7 @@ class PaperConceptExtractor:
     def _enhance_concept_backpack(self, concept: str, paper_text: str, base_context: str) -> str:
         """Enhance LLM-provided context with paper excerpts."""
         # Use existing backpack generation logic
-        paper_backpack = self._generate_context_backpack(concept, paper_text, target_tokens=60)
+        paper_backpack = self._generate_context_backpack(concept, paper_text, target_tokens=300)
         
         # Combine LLM context with paper excerpts
         if base_context and paper_backpack:

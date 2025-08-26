@@ -255,6 +255,7 @@ class SemanticDDLPipeline:
             'paper_anchor_exact': paper_concept.get('anchor_exact', paper_concept['concept']),
             'paper_anchor_alias': paper_concept.get('anchor_alias', paper_concept['concept']),
             'paper_backpack': paper_concept.get('backpack', ''),
+            'paper_section_title': paper_concept.get('section_title'),
             
             # Corpus side - complete metadata for binder/critic stages 
             'corpus_concept': {
