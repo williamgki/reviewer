@@ -123,7 +123,8 @@ class DDLEvidenceBinder:
                  scan_cap: int = 50000,
                  config: Dict[str, Any] = None,
                  run_id: str = None,
-                 run_dir: str = None):
+                 run_dir: str = None,
+                 force_cache_reuse: Optional[bool] = None):
 
         self.corpus_path = os.path.abspath(corpus_path)
         self.client = openai.OpenAI(base_url=api_base, api_key=api_key)
@@ -136,6 +137,11 @@ class DDLEvidenceBinder:
         self.run_dir = run_dir or os.getcwd()  # Default to CWD if not provided
         self.semantic_cfg = self.config.get("binder", {}).get("semantic", {})
         self.parq_cfg = self.config.get("binder", {}).get("parquet", {})
+        self.force_cache_reuse = (
+            self.semantic_cfg.get("force_cache_reuse", False)
+            if force_cache_reuse is None
+            else force_cache_reuse
+        )
         
         # Ensure run directory exists
         if self.run_dir != os.getcwd():
@@ -818,8 +824,8 @@ class DDLEvidenceBinder:
                 metadata = json.load(f)
                 
             if metadata.get('fingerprint') != fingerprint:
-                if os.environ.get('FAISS_FORCE_CACHE_REUSE'):
-                    logger.warning("Index fingerprint mismatch, using cached index due to FAISS_FORCE_CACHE_REUSE")
+                if self.force_cache_reuse:
+                    logger.warning("Index fingerprint mismatch, using cached index due to force_cache_reuse")
                 else:
                     logger.warning("Index fingerprint mismatch, rebuilding")
                     return False
@@ -896,7 +902,7 @@ class DDLEvidenceBinder:
 
         try:
             # Optional fast path: reuse any existing index when forced
-            if os.environ.get('FAISS_FORCE_CACHE_REUSE'):
+            if self.force_cache_reuse:
                 cache_dir = Path(self.semantic_cfg.get("index_cache_dir", "./.binder_index"))
                 if cache_dir.exists():
                     for index_file in cache_dir.glob("faiss_index_*.index"):

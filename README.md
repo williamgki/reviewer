@@ -92,7 +92,8 @@ The hybrid setup is defined in `config.json`:
       "topk": 200,
       "weight_semantic": 0.65,
       "weight_bm25": 0.35,
-      "batch_size": 128
+      "batch_size": 128,
+      "force_cache_reuse": false
     },
     "parquet": {
       "max_files": 200,
@@ -101,6 +102,10 @@ The hybrid setup is defined in `config.json`:
   }
 }
 ```
+
+Enable `force_cache_reuse` to reuse a previously built FAISS index even when
+the corpus fingerprint changes. The flag defaults to `false` so callers must
+opt in explicitly if they want to skip rebuilding the semantic index.
 
 ## Core Components
 

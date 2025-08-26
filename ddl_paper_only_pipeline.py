@@ -60,8 +60,9 @@ def check_acceptance_criteria(accept_by: str, rows_min: int = 2000000, docs_min:
 
 # ---- top-level worker for spawn pickling (required for 'spawn' start) ----
 def _binding_worker_with_queue(queue, config: dict, accepted_daydreams: list, paper_text: str, run_id: str = None, run_dir: str = None, paper_id: str = None):
-    os.environ.setdefault('FAISS_FORCE_CACHE_REUSE', '1')
     from ddl_binder import DDLEvidenceBinder
+    # Explicit cache reuse opt-in via config
+    force_cache_reuse = config.get('binder', {}).get('semantic', {}).get('force_cache_reuse', False)
     # Use binding_llm config for evidence binding (faster Qwen 30B on Ollama)
     binding_config = config.get('binding_llm', config)
     binder = DDLEvidenceBinder(
@@ -71,7 +72,8 @@ def _binding_worker_with_queue(queue, config: dict, accepted_daydreams: list, pa
         model=binding_config['model'],
         config=config,
         run_id=run_id,
-        run_dir=run_dir
+        run_dir=run_dir,
+        force_cache_reuse=force_cache_reuse
     )
     
     # Set paper_id if provided
