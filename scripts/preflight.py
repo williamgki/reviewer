@@ -9,6 +9,7 @@ Returns 0 on success, non-zero on failure with actionable error messages.
 import sys
 import subprocess
 import json
+import os
 from pathlib import Path
 
 def check_parquet_engine():
@@ -176,7 +177,7 @@ def check_corpus_path():
         with open("config.json") as f:
             config = json.load(f)
         
-        corpus_path = Path(config['corpus_path'])
+        corpus_path = Path(os.path.expanduser(os.path.expandvars(config['corpus_path'])))
         
         if corpus_path.is_file() and corpus_path.suffix == '.parquet':
             print(f"✅ Corpus file: {corpus_path}")

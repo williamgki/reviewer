@@ -29,6 +29,10 @@ from datetime import datetime, timezone
 # Configure logger
 logger = logging.getLogger(__name__)
 
+
+def _path(p: str) -> str:
+    return os.path.expanduser(os.path.expandvars(p))
+
 # ---- utility functions ----
 def check_acceptance_criteria(accept_by: str, rows_min: int = 2000000, docs_min: int = 50000, files_min: int = 600, metrics_file: str = "binder_metrics.json") -> bool:
     """Check if binder metrics meet acceptance criteria.
@@ -66,7 +70,7 @@ def _binding_worker_with_queue(queue, config: dict, accepted_daydreams: list, pa
     # Use binding_llm config for evidence binding (faster Qwen 30B on Ollama)
     binding_config = config.get('binding_llm', config)
     binder = DDLEvidenceBinder(
-        corpus_path=os.path.abspath(config['corpus_path']),
+        corpus_path=_path(config['corpus_path']),
         api_base=binding_config['api_base'],
         api_key=binding_config.get('api_key', 'ollama'),
         model=binding_config['model'],
@@ -128,12 +132,10 @@ class DDLPaperOnlyPipeline:
             'api_base': 'http://localhost:1234/v1',
             'api_key': 'lm-studio',
             'model': 'gpt-oss-120b',
-            'corpus_path': '/Users/willkirby/scrape 2/LW_scrape/chunked_corpus/contextual_chunks_complete.parquet'
+            'corpus_path': 'chunked_corpus/contextual_chunks_complete.parquet'
         }
         if config:
             self.config.update(config)
-        # corpus_path is now absolute in config - no conversion needed
-        # (prevents multiprocessing working directory issues)
         
         # Generate or use provided RUN_ID for traceability
         self.run_id = run_id or str(uuid.uuid4())
@@ -662,7 +664,7 @@ The work appears to address emerging challenges in AI development. Further inves
                 print("    Falling back to original sampling...")
                 
                 # Fallback to original method
-                corpus_concepts = self.sampler.load_corpus_concepts(self.config['corpus_path'])
+                corpus_concepts = self.sampler.load_corpus_concepts(_path(self.config['corpus_path']))
                 self.pipeline_stats['parquet_files_loaded'] = getattr(self.sampler, 'files_loaded', 0)
 
                 sampled_pairs = self.sampler.sample_pairs(

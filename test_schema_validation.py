@@ -18,7 +18,6 @@ def test_missing_quotes_fails():
                 "evidence": {
                     "paper_quotes": [],
                     "corpus_quotes": [],
-                    "coverage_score": 0.0,
                 },
                 "risks": [],
             }

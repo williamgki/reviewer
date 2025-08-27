@@ -43,7 +43,7 @@
   "critic_drop_threshold": 0.4,
   "modes": ["quick", "deep", "skeptic"],
 
-  "corpus_path": "/Users/willkirby/scrape 2/LW_scrape/chunked_corpus/contextual_chunks_complete.parquet",
+  "corpus_path": "chunked_corpus/contextual_chunks_complete.parquet",
   
   "processing": {
     "modes": {
@@ -64,7 +64,7 @@
   },
   
   "retrieval": {
-    "corpus_file": "/Users/willkirby/scrape 2/LW_scrape/chunked_corpus/contextual_chunks_complete.parquet",
+    "corpus_file": "chunked_corpus/contextual_chunks_complete.parquet",
     "max_candidates": 320,
     "nli_batch_size": 20,
     "stop_early_threshold": {
@@ -124,7 +124,7 @@
     "input": "pipeline/input",
     "output": "pipeline/output", 
     "working": "pipeline/working",
-    "corpus": "/Users/willkirby/scrape 2/LW_scrape/chunked_corpus",
+    "corpus": "chunked_corpus",
     "stage2": "stage2"
   },
   

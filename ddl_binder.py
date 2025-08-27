@@ -28,6 +28,10 @@ import pandas as pd
 # Configure structured logging
 logger = logging.getLogger(__name__)
 
+
+def _path(p: str) -> str:
+    return os.path.expanduser(os.path.expandvars(p))
+
 class StructuredFormatter(logging.Formatter):
     """JSON formatter for structured logging with DDL-specific fields."""
     
@@ -126,7 +130,7 @@ class DDLEvidenceBinder:
                  run_dir: str = None,
                  force_cache_reuse: Optional[bool] = None):
 
-        self.corpus_path = os.path.abspath(corpus_path)
+        self.corpus_path = _path(corpus_path)
         self.client = openai.OpenAI(base_url=api_base, api_key=api_key)
         self.model = model
         
