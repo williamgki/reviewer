@@ -49,10 +49,10 @@ def _ensure_nltk_resource(resource: str, path: str) -> bool:
             return False
 
 
-PUNKT_AVAILABLE = _ensure_nltk_resource('punkt', 'tokenizers/punkt')
+TOKENIZER_AVAILABLE = _ensure_nltk_resource('punkt', 'tokenizers/punkt')
 STOPWORDS_AVAILABLE = _ensure_nltk_resource('stopwords', 'corpora/stopwords')
 
-if not PUNKT_AVAILABLE:
+if not TOKENIZER_AVAILABLE:
     logger.warning("NLTK 'punkt' tokenizer not available; falling back to basic split tokenization.")
 if not STOPWORDS_AVAILABLE:
     logger.warning("NLTK 'stopwords' corpus not available; stopword filtering disabled.")
@@ -60,7 +60,7 @@ if not STOPWORDS_AVAILABLE:
 
 def tokenize(text: str) -> List[str]:
     """Tokenize text using NLTK if available, else a simple split."""
-    return word_tokenize(text) if PUNKT_AVAILABLE else text.split()
+    return word_tokenize(text) if TOKENIZER_AVAILABLE else text.split()
 
 @dataclass
 class SearchResult:
@@ -363,13 +363,15 @@ class HybridRetrievalSystem:
             search_results = []
             for rank, (doc_idx, rrf_score) in enumerate(sorted_results):
                 row = self.chunks_df.iloc[doc_idx]
-                
+
                 # Get original scores
                 dense_score = next((score for idx, score in dense_results if idx == doc_idx), 0.0)
                 bm25_score = next((score for idx, score in bm25_results if idx == doc_idx), 0.0)
-                
+
+                chunk_id = row['chunk_id'] if 'chunk_id' in row else f"{row['doc_id']}#{row.get('chunk_idx', 0)}"
+
                 result = SearchResult(
-                    chunk_id=row['chunk_id'],
+                    chunk_id=chunk_id,
                     doc_id=row['doc_id'],
                     content=row['content'][:500] + "..." if len(row['content']) > 500 else row['content'],
                     section_path=row.get('section_path', ''),
@@ -420,9 +422,11 @@ class HybridRetrievalSystem:
             search_results = []
             for rank, (doc_idx, combined_score) in enumerate(sorted_results):
                 row = self.chunks_df.iloc[doc_idx]
-                
+
+                chunk_id = row['chunk_id'] if 'chunk_id' in row else f"{row['doc_id']}#{row.get('chunk_idx', 0)}"
+
                 result = SearchResult(
-                    chunk_id=row['chunk_id'],
+                    chunk_id=chunk_id,
                     doc_id=row['doc_id'],
                     content=row['content'][:500] + "..." if len(row['content']) > 500 else row['content'],
                     section_path=row.get('section_path', ''),
@@ -437,12 +441,12 @@ class HybridRetrievalSystem:
         
         logger.info(f"✅ Found {len(search_results)} results")
         if self.reranker and search_results:
-            pairs = [(r.doc_id, r.content) for r in search_results][:50]
+            pairs = [(r.chunk_id, r.content) for r in search_results][:50]
             scores = self.reranker.rerank(query, pairs)
-            score_map = {doc: score for doc, score in scores}
+            score_map = {chunk_id: score for chunk_id, score in scores}
             for r in search_results:
-                if r.doc_id in score_map:
-                    r.combined_score = score_map[r.doc_id]
+                if r.chunk_id in score_map:
+                    r.combined_score = score_map[r.chunk_id]
             search_results = sorted(search_results, key=lambda r: r.combined_score, reverse=True)[:k]
         return search_results
 

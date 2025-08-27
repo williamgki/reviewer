@@ -10,7 +10,6 @@ class Quote(BaseModel):
 class Evidence(BaseModel):
     paper_quotes: List[Quote] = Field(default_factory=list)
     corpus_quotes: List[Quote] = Field(default_factory=list)
-    coverage_score: float
 
 class Claim(BaseModel):
     id: str
@@ -38,3 +37,12 @@ class ReviewCard(BaseModel):
     related_work_gaps: List[str] = Field(default_factory=list)
     open_questions: List[str] = Field(default_factory=list)
     confidence_calibration: str
+    metrics: Optional["ReviewMetrics"] = None
+
+
+class ReviewMetrics(BaseModel):
+    anchor_coverage: float
+    seed_variance: Optional[float] = None
+
+
+ReviewCard.update_forward_refs()

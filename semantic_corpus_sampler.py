@@ -29,6 +29,16 @@ TOPIC_KEYWORDS = {
 }
 
 
+def _domain_of(doc_id: str) -> str:
+    if "://" in doc_id:
+        return urlparse(doc_id).netloc
+    if doc_id.startswith("arXiv:") or "arxiv.org" in doc_id:
+        return "arxiv.org"
+    if doc_id.startswith("doi:") or ("/" in doc_id and " " not in doc_id):
+        return "doi"
+    return ""
+
+
 def filter_candidates(results, config, paper_text):
     """Apply domain, score and entity filters to search results."""
     min_score = config.get("min_pairing_score", 0.0)
@@ -40,7 +50,7 @@ def filter_candidates(results, config, paper_text):
     for r in results:
         if getattr(r, "combined_score", 0.0) < min_score:
             continue
-        domain = urlparse(getattr(r, "doc_id", "")).netloc
+        domain = _domain_of(getattr(r, "doc_id", ""))
         if whitelist and not any(d in domain for d in whitelist):
             continue
         if require_entity:

@@ -1,12 +1,18 @@
 from review_schema import ReviewCard
 
 
-def render_review_card(card: ReviewCard) -> str:
+def _escape_md(s: str) -> str:
+    return s.replace("|", "∣").replace("\n", " ").strip()
+
+
+def render_review_card(card: ReviewCard, mode: str = "deep") -> str:
     lines = []
     lines.append(f"**{card.paper_id} — Review Card**")
     lines.append(f"**TL;DR:** {card.tl_dr}")
     lines.append("")
     lines.append(f"**Verdict:** {card.verdict}")
+    if getattr(card, "metrics", None) and card.metrics.anchor_coverage is not None:
+        lines.append(f"*Anchor coverage:* {card.metrics.anchor_coverage:.2f}")
     lines.append("")
     if card.strengths:
         lines.append("**Strengths**")
@@ -22,12 +28,22 @@ def render_review_card(card: ReviewCard) -> str:
         lines.append("**Key Claims**")
         lines.append("| ID | Claim | Conf. | Paper Anchor | Corpus Anchor |")
         lines.append("| -- | ----- | ----: | ------------ | ------------- |")
-        for cl in card.key_claims:
+
+        def _sort_key(cl):
+            imp = {"high": 2, "med": 1, "low": 0}.get(cl.importance, 0)
+            return (-imp, -cl.confidence)
+
+        claims = sorted(card.key_claims, key=_sort_key)
+        if mode == "quick":
+            claims = claims[:2]
+
+        for cl in claims:
             pq = cl.evidence.paper_quotes[0]
             cq = cl.evidence.corpus_quotes[0]
-            lines.append(
-                f"| {cl.id} | {cl.statement} | {cl.confidence:.2f} | [Paper: {pq.locator}] | [Corpus: {cq.locator}] |"
-            )
+            claim = _escape_md(cl.statement)
+            paper = _escape_md(f"{pq.doc_id} — {pq.locator}")
+            corpus = _escape_md(f"{cq.doc_id} — {cq.locator}")
+            lines.append(f"| {cl.id} | {claim} | {cl.confidence:.2f} | {paper} | {corpus} |")
         lines.append("")
     if card.suggested_experiments:
         lines.append("**Suggested Experiments**")
