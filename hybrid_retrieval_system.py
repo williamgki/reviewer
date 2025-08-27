@@ -20,6 +20,8 @@ import pickle
 import logging
 from dataclasses import dataclass, asdict
 
+from reranker import CrossEncoderReranker
+
 # Setup logging
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -106,7 +108,7 @@ class HybridRetrievalSystem:
         self.dense_weight = dense_weight or 0.55
         self.bm25_weight = bm25_weight or 0.35
         self.link_weight = link_weight or 0.10
-        
+
         # Initialize components
         self.embedding_model = None
         self.faiss_index = None
@@ -115,6 +117,12 @@ class HybridRetrievalSystem:
         self.chunk_texts = None
         self.stop_words = set(stopwords.words('english')) if STOPWORDS_AVAILABLE else set()
         self.building_index = False  # Track when building indexes to use CPU
+        self.reranker = None
+        if config and config.get('use_reranker', False):
+            try:
+                self.reranker = CrossEncoderReranker()
+            except Exception:
+                self.reranker = None
         
         logger.info(f"🔍 Initializing Hybrid Retrieval System")
         logger.info(f"   Dense weight: {dense_weight}")
@@ -428,6 +436,14 @@ class HybridRetrievalSystem:
                 search_results.append(result)
         
         logger.info(f"✅ Found {len(search_results)} results")
+        if self.reranker and search_results:
+            pairs = [(r.doc_id, r.content) for r in search_results][:50]
+            scores = self.reranker.rerank(query, pairs)
+            score_map = {doc: score for doc, score in scores}
+            for r in search_results:
+                if r.doc_id in score_map:
+                    r.combined_score = score_map[r.doc_id]
+            search_results = sorted(search_results, key=lambda r: r.combined_score, reverse=True)[:k]
         return search_results
 
 def main():

@@ -37,7 +37,12 @@
       "file_selection": "round_robin"
     }
   },
-  
+
+  "min_pairing_score": 0.38,
+  "require_entity_overlap": true,
+  "critic_drop_threshold": 0.4,
+  "modes": ["quick", "deep", "skeptic"],
+
   "corpus_path": "/Users/willkirby/scrape 2/LW_scrape/chunked_corpus/contextual_chunks_complete.parquet",
   
   "processing": {

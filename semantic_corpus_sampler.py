@@ -6,6 +6,9 @@ import json
 import numpy as np
 from typing import List, Dict, Any, Optional
 from pathlib import Path
+from urllib.parse import urlparse
+
+from reranker import CrossEncoderReranker
 
 try:
     from hybrid_retrieval_system import HybridRetrievalSystem
@@ -15,6 +18,37 @@ except ImportError as e:
     raise ImportError(
         "HybridRetrievalSystem is required but could not be imported."
     ) from e
+
+TOPIC_KEYWORDS = {
+    "alignment",
+    "evals",
+    "rlhf",
+    "oversight",
+    "interpretability",
+    "mechanistic",
+}
+
+
+def filter_candidates(results, config, paper_text):
+    """Apply domain, score and entity filters to search results."""
+    min_score = config.get("min_pairing_score", 0.0)
+    whitelist = set(config.get("domain_whitelist", []))
+    require_entity = config.get("require_entity_overlap", False)
+    paper_tokens = set(paper_text.lower().split())
+
+    filtered = []
+    for r in results:
+        if getattr(r, "combined_score", 0.0) < min_score:
+            continue
+        domain = urlparse(getattr(r, "doc_id", "")).netloc
+        if whitelist and not any(d in domain for d in whitelist):
+            continue
+        if require_entity:
+            content_tokens = set(getattr(r, "content", "").lower().split())
+            if not (paper_tokens & content_tokens or TOPIC_KEYWORDS & content_tokens):
+                continue
+        filtered.append(r)
+    return filtered
 
 class SemanticCorpusConceptSampler:
     """
@@ -143,7 +177,24 @@ class SemanticCorpusConceptSampler:
                 # Apply per-document capping to ensure variety
                 capped_results = self._apply_per_doc_cap(all_search_results, per_doc_cap)
                 print(f"    📊 After per-doc cap: {len(capped_results)} results from {len(set(r.doc_id for r in capped_results))} unique docs")
-                
+
+                # Rerank using cross-encoder and keep top-5
+                if self.config.get("use_reranker", True) and capped_results:
+                    reranker = CrossEncoderReranker()
+                    pairs = [(r.doc_id, r.content) for r in capped_results][:50]
+                    scores = reranker.rerank(search_query, pairs)
+                    score_map = {doc: score for doc, score in scores}
+                    for r in capped_results:
+                        if r.doc_id in score_map:
+                            r.combined_score = score_map[r.doc_id]
+                    capped_results = sorted(capped_results, key=lambda x: x.combined_score, reverse=True)[:5]
+
+                # Apply domain/score/entity filters
+                capped_results = filter_candidates(
+                    capped_results, self.config, f"{concept_name} {concept_backpack}"
+                )
+                print(f"    📊 After filters: {len(capped_results)} results")
+
                 # Extract concepts from search results
                 corpus_concepts = self._extract_concepts_from_results(
                     capped_results, paper_concept, max_concepts=k_base
