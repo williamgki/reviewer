@@ -124,6 +124,22 @@ opt in explicitly if they want to skip rebuilding the semantic index.
 - **`paper_concepts.py`** - LLM-based concept extraction from papers
 - **`semantic_corpus_sampler.py`** - Intelligent corpus concept matching
 
+## Data Source Clients
+
+The project includes `paper_sources.py`, which provides helpers for pulling
+research content from a variety of APIs:
+
+- **OpenAlex** for canonical IDs, concepts and citation graphs
+- **arXiv** preprints filtered for AI/ML categories
+- **OpenReview** submissions and reviews from major conferences
+- **Crossref** DOI metadata and references
+- **Semantic Scholar** citation lookups
+- **Alignment blogs** (Alignment Forum, LessWrong, major lab blogs) via
+  sitemap scraping
+
+OpenAlex is used as the spine for deduplication and to unify records from other
+sources through shared identifiers such as DOI or arXiv IDs.
+
 ## Input Files
 
 Located in `pipeline/input/`:
